@@ -1,0 +1,59 @@
+:host {
+    width: 100%;
+    height: 100vh;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    background-color: #FFFFFF;
+}
+
+.form {
+    max-width: 480px;
+	// height: 100vh;
+    // display: flex;
+    // justify-content: center;
+    // flex-direction: column;
+}
+
+.title {
+    @media (max-width: 576px) {
+        font-size: 1.6rem; 
+    }
+    font-size: 1.875rem;
+    font-weight: 600;
+    font-family: "Be Vietnam Pro";
+}
+
+.custom-input {
+    width: 100%;
+}
+
+.custom-input:focus {
+    outline: none;
+}
+
+select:focus {
+    outline: none;
+}
+
+.title-setting {
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 38px;
+}
+
+::ng-deep .ng-select.ng-invalid.ng-touched, .ng-select.is-invalid {
+    .ng-select-container{
+        border-color: #f1416c !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .form {
+		margin-top: 30px;
+    }
+}
+
+.form-complete {
+    margin-top: 60px !important;
+}

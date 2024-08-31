@@ -1,0 +1,234 @@
+/*   margin  */
+$i: 0;
+@while $i <= 100 {
+  .mt#{$i} {margin-top: #{$i}px !important;}
+  .mb#{$i} {margin-bottom: #{$i}px !important;}
+  .mr#{$i} {margin-right: #{$i}px !important;}
+  .ml#{$i} {margin-left: #{$i}px !important;}
+  .m#{$i} {margin: #{$i}px !important;}
+  $i: ($i + 5);
+}
+/*   padding top  */
+$i: 5;
+@while $i <= 100 {
+  .pt#{$i} {padding-top: #{$i}px !important;}
+  .pb#{$i} {padding-bottom: #{$i}px !important;}
+  .pr#{$i} {padding-right: #{$i}px !important;}
+  .pl#{$i} {padding-left: #{$i}px !important;}
+  .p#{$i} {padding: #{$i}px !important;}
+  $i: ($i + 5);
+}
+/* Width percentage*/
+$i: 5;
+@while $i <= 100 {
+  .w-#{($i)} {width: #{($i)}#{"%"} !important;}
+  $i: ($i + 5);
+}
+
+/* Width percentage*/
+$i: 4;
+@while $i <= 7 {
+  .fw-#{($i)}00 {font-weight: #{($i)}00;}
+  $i: ($i + 1);
+}
+
+@mixin remove_icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #000;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  box-sizing: content-box;
+  font-size: 15px;
+}
+
+.paging-style {
+  border-bottom: 1px dashed #e0e0e0;
+  border-top: 1px dashed #e0e0e0;
+}
+
+.table-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--bs-primary);
+  padding-bottom: 1rem;
+  margin-top: 2rem;
+  border-bottom: 1px dashed gray;
+}
+
+.alert-error {
+  color: #f64e60;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-top: 0.3rem;
+}
+
+.item-content {
+  height: 300px;
+  overflow: auto;
+}
+
+.image-frame {
+  width: 300px;
+  height: 300px;
+  position: relative;
+
+  .remove-icon {
+    @include remove_icon;
+  }
+
+  .item-default-image {
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+    object-fit: contain;
+  }
+}
+
+.overflow-x-scroll {
+  overflow-x: auto;
+  -ms-overflow-x: auto;
+  overflow-y: hidden;
+}
+
+// .public-icon:before {
+//   margin-right: 4px;
+//   background-image: url("../media/icons/ionicons/globe-outline-light.svg");
+//   background-size: 14px 14px;
+//   display: inline-block;
+//   width: 14px;
+//   height: 14px;
+//   content:"";
+// }
+
+// .private-icon:before {
+//   margin-right: 4px;
+//   background-image: url("../media/icons/ionicons/lock-closed-outline-light.svg");
+//   background-size: 14px 14px;
+//   display: inline-block;
+//   width: 14px;
+//   height: 14px;
+//   content:"";
+// }
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.icon-delete:before {
+  color: #f64e60;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+.icon-edit:before {
+  color: #3b8cf8;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+.icon-view:before {
+  color: #167233;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+.icon-duplicate:before {
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+.remove-chip {
+  color: #f44336 !important;
+  padding: 4px;
+  border-radius: 10px;
+  width: 15px;
+  height: 15px;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.actions-btn {
+  border: none!important;
+}
+
+.chips-list {
+  max-height: 320px;
+  overflow: auto;
+}
+
+.md-drppicker td.active, .md-drppicker td.active:hover, .md-drppicker .ranges ul li button.active {
+  background-color: var(--kt-primary) !important;
+}
+
+.md-drppicker .ranges ul li button {
+  padding: 6px 12px !important;
+}
+
+
+.video-js .vjs-big-play-button {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.quill-min-h-300 .ql-editor {
+  min-height: 300px;
+}
+
+.btn-outline-base {
+  border: 1px solid #D0D5DD !important;
+  i {
+    color: #101828 !important;
+  }
+}
+
+.btn-outline-base:hover {
+  background-color: #D0D5DD !important;
+  color: #ffffff !important;
+  i {
+    color: #ffffff !important;
+  }
+}
+
+.btn {
+  i {
+    margin-bottom: 2px;
+  }
+}
+.line-gray {
+  border-top: 1px solid #D0D5DD;
+}
+.col-gray {
+  width: 1px;
+  background-color: #D9D9D9;
+  margin: 0 15px;
+  height: 25px;
+}
+#base-search-form {
+  .ng-select-container {
+    min-height: 39px !important;
+  }
+  .fix-drop-width .ng-dropdown-panel {
+    width: 376px;
+  }
+}
+.swal2-title {
+	font-family: "Be Vietnam Pro" !important;
+}

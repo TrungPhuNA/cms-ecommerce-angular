@@ -1,0 +1,12 @@
+<ng-container *ngIf="appContentContiner" class="app-container">
+  <div id="kt_app_content_container" class="app-container d-flex align-items-stretch justify-content-between"
+    [ngClass]="{'container-xxl': appContentContiner === 'fixed', 'container-fluid': appContentContiner === 'fluid'}">
+    <router-outlet></router-outlet>
+    <div class="position-fixed left-4 cursor-pointer img-container" (click)="linkTo()">
+        <img class="img-contact" src="./assets/media/icons/img-contact.png">
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="!appContentContiner">
+    <router-outlet></router-outlet>
+</ng-container>

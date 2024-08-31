@@ -1,0 +1,257 @@
+<div class="card card-body px-2">
+    <div class="welcome-text"><span translate>Hi</span>, {{ username }}</div>
+    <div style="font-size: 12px; font-weight: 400; color: #475467" translate>Have a good day!</div>
+
+    <div class="card-body p-0 mt-5 mb-5">
+        <div style="border: 1px solid #EAECF0; border-radius: 16px">
+            <div class="px-5 py-4">
+                <div class="row px-6">
+                    <div class="col-12 col-sm-8 mb-2 mb-sm-0">
+                        <span class="fw-600 fs18" style="line-height: 3;"><span translate>Tổng số yêu cầu</span>: <b>{{ paging.total | number }}</b></span><br>
+                        <span class="text-orange" [ngClass]="{ 'd-none': (summary && summary[3]?.total == 0) || isFilterStatus }">
+                            Có {{ summary && summary[3]?.total | number }} đề xuất giải pháp cần bạn phê duyệt!
+                            <a href="javascript:void()" (click)="filterByStatus(4)"><b class="text-decoration-underline">Xem ngay.</b></a>
+                        </span>
+                    </div>
+                    <div class="col-12 col-sm-4 d-flex align-items-center justify-content-sm-end">
+                        <button type="button" class="btn btn-orange text-right h-40 d-flex align-items-center gap-2" (click)="openModal(); tracking('adv_click_create_brief')">
+                            <i class="fa fa-plus m-0" style="color: #ffffff"></i>
+                            <span>Tạo mới</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr class="line-gray">
+            <div class="p-5">
+                <div class="graph-container">
+                    <div class="box-1 {{ getControl('filters[status]') == 1 ? 'border-selected' : '' }}" (click)="filterByStatus(1, scroll_target)">
+                        <div>
+                            <span [inlineSVG]="'./assets/media/icons/circle-half-dotted-clock01.svg'"></span>
+                        </div>
+                        <div>
+                            <p class="text-nowrap">Chờ tiếp nhận</p>
+                            <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[0]?.total : 0) | number }}</b></P>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <span [inlineSVG]="'./assets/media/icons/line01.svg'"></span>
+                        <span [inlineSVG]="'./assets/media/icons/line02.svg'"></span>
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-between h-100">
+                        <div class="box-2 {{ getControl('filters[status]') == 2 ? 'border-selected' : '' }}" (click)="filterByStatus(2, scroll_target)">
+                            <div>
+                                <span [inlineSVG]="'./assets/media/icons/circle-xmark01.svg'"></span>
+                            </div>
+                            <div>
+                                <p class="text-nowrap">Bị từ chối</p>
+                                <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[1]?.total : 0) | number }}</b></P>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="box-2 {{ getControl('filters[status]') == 3 ? 'border-selected' : '' }}" (click)="filterByStatus(3, scroll_target)">
+                                <div>
+                                    <span [inlineSVG]="'./assets/media/icons/circle-half-dotted-clock01.svg'"></span>
+                                </div>
+                                <div>
+                                    <p class="text-nowrap">Chờ gửi lại đề xuất</p>
+                                    <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[2]?.total : 0) | number }}</b></P>
+                                </div>
+                            </div>
+                            <span [inlineSVG]="'./assets/media/icons/line01.svg'"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="box-1 {{ getControl('filters[status]') == 4 ? 'border-selected' : '' }}" (click)="filterByStatus(4, scroll_target)">
+                        <div>
+                            <span [inlineSVG]="'./assets/media/icons/history01.svg'"></span>
+                        </div>
+                        <div>
+                            <p class="text-nowrap">Cần phê duyệt</p>
+                            <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[3]?.total : 0) | number }}</b></P>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <span [inlineSVG]="'./assets/media/icons/line01.svg'"></span>
+                        <span [inlineSVG]="'./assets/media/icons/line02.svg'"></span>
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-between h-100">
+                        <div class="box-2 {{ getControl('filters[status]') == 5 ? 'border-selected' : '' }}" (click)="filterByStatus(5, scroll_target)">
+                            <div>
+                                <span [inlineSVG]="'./assets/media/icons/circle-xmark01.svg'"></span>
+                            </div>
+                            <div>
+                                <p class="text-nowrap">Đã từ chối</p>
+                                <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[4]?.total : 0) | number }}</b></P>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <div class="box-2 {{ getControl('filters[status]') == 6 ? 'border-selected' : '' }}" (click)="filterByStatus(6, scroll_target)">
+                                <div>
+                                    <span [inlineSVG]="'./assets/media/icons/circle-half-dashed-check01.svg'"></span>
+                                </div>
+                                <div>
+                                    <p class="text-nowrap">Đang thực hiện</p>
+                                    <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[5]?.total : 0) | number }}</b></P>
+                                </div>
+                            </div>
+                            <span [inlineSVG]="'./assets/media/icons/line01.svg'" class="pt-6"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <span [inlineSVG]="'./assets/media/icons/line02.svg'"></span>
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-between h-100">
+                        <div class="box-2 {{ getControl('filters[status]') == 7 ? 'border-selected' : '' }}" (click)="filterByStatus(7, scroll_target)">
+                            <div>
+                                <span [inlineSVG]="'./assets/media/icons/media-pause01.svg'"></span>
+                            </div>
+                            <div>
+                                <p class="text-nowrap">Tạm dừng</p>
+                                <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[6]?.total : 0) | number }}</b></P>
+                            </div>
+                        </div>
+                        <div class="box-2 {{ getControl('filters[status]') == 8 ? 'border-selected' : '' }}" (click)="filterByStatus(8, scroll_target)">
+                            <div>
+                                <span [inlineSVG]="'./assets/media/icons/circle-check01.svg'"></span>
+                            </div>
+                            <div>
+                                <p class="text-nowrap">Đã hoàn thành</p>
+                                <P class="text-nowrap"><b>Số lượng: {{ (summary ? summary[7]?.total : 0) | number }}</b></P>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="line-gray">
+
+    <div class="card-body p-0 mt-5 mb-3">
+        <div class="d-flex justify-content-between">
+            <div class="fs18 fw-600" translate>Hot news</div>
+            <div class="cursor-pointer" (click)="viewMore()">
+                <span class="fs14px fw-500" style="line-height: 20px;">Xem thêm</span>
+                <i class="fa fa-chevron-right ml-2"></i>
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="controls controls-left p-2" (click)="prevSlide()" *ngIf="currentSlide">
+                <span class="button-slide"><i class="fa fa-chevron-left" style="font-size: 2rem;"></i></span>
+            </div>
+            <div class="slider">
+                <div class="slides" [style.transform]="'translateX(-' + (currentSlide * (widthSlide == 1 ? 100 : widthSlide == 2 ? 37.5 : 66.5)) + '%)'">
+                    <div class="slide" *ngFor="let slideGroup of groupedSlides">
+                        <ng-container *ngFor="let slide of slideGroup">
+                            <div class="content">
+                                <a [href]="slide.link" target="_blank" [ngStyle]="{'visibility': slide.id == 6 ? 'hidden' : ''}">
+                                    <img [src]="slide.image" alt="{{'news' + slide.id}}">
+                                </a>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <!-- <div class="dots">
+                    <span *ngFor="let slideGroup of groupedSlides; let i = index" (click)="goToSlide(i)" [class.active]="i === currentSlide"></span>
+                </div> -->
+            </div>
+            <div class="controls controls-right p-2" (click)="nextSlide()" *ngIf="currentSlide < maxTransform">
+                <span class="button-slide"><i class="fa fa-chevron-right" style="font-size: 2rem;"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="line-gray" #scroll_target>
+
+    <div class="card-body p-0 mt-5">
+        <div style="border: 1px solid #EAECF0; border-radius: 16px">
+            <div class="p-5">
+                <form class="row" [formGroup]="searchForm">
+                    <div class="col-12 d-md-flex justify-content-md-between">
+						<h5 class="fw-600 fs18 mb-4 text-break" style="line-height: 3;" translate>Danh sách yêu cầu</h5>
+                        <div class="d-md-flex justify-content-md-between flex-md-wrap align-items-center gap-3">
+                            <div class="d-flex align-items-center  mb-4">
+                                <span [inlineSVG]="'./assets/media/icons/search01.svg'" class="svg-icon svg-icon-1"></span>
+                                <input class="form-control search-input" placeholder="Tìm kiếm theo tên yêu cầu" formControlName="filters[name]" (ngModelChange)="keyBrief.next($event)">
+                            </div>
+                            <div style="min-width: 190px !important;" class=" mb-4">
+                                <ng-select [items]="statusConfig" bindLabel="name" bindValue="value" formControlName="filters[status]" (change)="changeStatus($event)" placeholder="Trạng thái"></ng-select>
+                            </div>
+                            <button type="button" class="btn btn-orange mb-4 text-right h-40 d-flex align-items-center gap-2" (click)="openModal(); tracking('adv_click_create_brief')">
+                                <i class="fa fa-plus m-0" style="color: #ffffff"></i>
+                                <span>Tạo mới</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="table-responsive" style="overflow-y: auto; max-height:2000px">
+                <table class="table table-row-bordered table-hover align-middle cursor-default">
+                    <div class="position-relative h-400px" *ngIf="loading">
+                        <app-spinner [loading]="loading" [fullScreen]="false" [bdColor]="'#ffffff'"></app-spinner>
+                    </div>
+                    <ng-container *ngIf="!loading">
+                        <thead style="background-color: #F9FAFB;">
+                            <tr class="fw-500 border-top">
+                                <th class="text-nowrap text-center px-2" translate>STT</th>
+                                <th class="text-nowrap" translate>Created at</th>
+                                <th class="text-nowrap" translate>Name</th>
+                                <th class="text-nowrap" translate>Description</th>
+                                <th class="text-nowrap" translate>Timeline</th>
+                                <th class="text-nowrap" translate>Status</th>
+                                <th class="text-nowrap text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="briefs?.length > 0">
+                                <ng-container *ngFor="let item of briefs; index as i">
+                                    <tr class="border-bottom" [routerLink]="'brief/' + item.id">
+                                        <td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i + 1 }}</td>
+                                        <td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
+                                        <td style="min-width: 200px;">
+                                            <p class="text-truncate" style="max-width: 300px;" [ngbTooltip]="item.name">{{ item.name }}</p>
+                                        </td>
+                                        <td style="min-width: 200px;">
+                                            <p class="text-truncate" style="max-width: 300px;" [ngbTooltip]="item.description">{{ item.description }}</p>
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <span *ngIf="item.actual_timeline_start && item.actual_timeline_end">
+                                                {{ item.actual_timeline_start | date: 'dd/MM/YYYY' }} - {{ item.actual_timeline_end | date: 'dd/MM/YYYY' }}
+                                            </span>
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <span class="text-{{renderStatus(item.status)?.color}}">{{ renderStatus(item.status)?.name }}</span>
+                                        </td>
+                                        <td class="text-nowrap text-center px-4">
+                                            <i *ngIf="item.status != 4" class="fa fa-arrow-right cursor-pointer p-2" [routerLink]="'brief/' + item.id" (click)="tracking('adv_view_detail_brief')"></i>
+                                            <span *ngIf="item.status == 4"  class="badge badge-light-success cursor-pointer fw-600 p-3" (click)="tracking('adv_view_detail_brief')"
+                                                style="color: #079455" [routerLink]="'brief/' + item.id">Duyệt ngay</span>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </ng-container>
+                            <tr class="border-bottom-0" *ngIf="briefs?.length == 0">
+                                <td class="text-nowrap text-center" colspan="7" translate>Empty data</td>
+                            </tr>
+                        </tbody>
+                    </ng-container>
+                </table>
+
+                <div class="d-flex justify-content-between align-items-center px-6" *ngIf="!loading && paging.total > 0">
+                    <div class="total-items col-md-4"><span translate>Total</span>: <strong>{{ paging.total | number }}</strong></div>
+                    <div class="paging">
+                        <ngb-pagination [collectionSize]="paging.total" [(page)]="paging.page" [maxSize]="5"
+                            [pageSize]="paging.page_size" [rotate]="true" [boundaryLinks]="true"
+                            (pageChange)="changePage($event)" class="pagination justify-content-end mb-5 mt-5"></ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,311 @@
+.box-history {
+    position: relative;
+    &:hover {
+        .crosscheck-history {
+            display: block;
+        }
+    }
+}
+.crosscheck-history {
+    display: none;
+    position: absolute;
+    right: 0;
+    width: 350px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #EAECF0;
+    box-shadow: 0 1px 3px 0 #1018281A;
+}
+.process-item {
+    display: flex;
+    align-items: center;
+    .process-icon {
+        width: 24px;
+        height: 24px;
+        margin-left: 10px;
+        background-color: #ffffff;
+        border: 2px solid #D0D5DD;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &-center {
+            display: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 8px;
+            background-color: #D0D5DD;
+        }
+        &-reject {
+            display: none;
+            line-height: 1;
+            i {
+                color: #D92D20;
+            }
+        }
+        &-approve {
+            display: none;
+            line-height: 1;
+            i {
+                color: #039855;
+            }
+        }
+        i {
+            margin-top: 1px;
+            font-size: 15px;
+        }
+    }
+    .process-title {
+        font-weight: 600;
+        color: #344054;
+    }
+
+    &.default {
+        .process-icon {
+            &-center {
+                display: block;
+            }
+        }
+    }
+
+    &.waiting {
+        .process-icon {
+            background-color: #FFFAEB;
+            border: 2px solid #DC6803;
+            &-center {
+                display: block;
+                background-color: #DC6803;
+            }
+        }
+    }
+
+    &.approve {
+        .process-icon {
+            background-color: #ECFDF3;
+            border: 2px solid #039855;
+            &-approve {
+                display: block;
+            }
+        }
+    }
+    &.reject {
+        .process-icon {
+            background-color: #FEF3F2;
+            border: 2px solid #D92D20;
+            &-reject {
+                display: block;
+            }
+        }
+    }
+}
+.list-history {
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 400px;
+}
+.history-item {
+    margin-bottom: 10px;
+    &:not(:last-child) {
+        padding-bottom: 10px;
+        border-bottom: 2px solid #F9FAFB;
+    }
+    .history-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+}
+
+.btn-class {
+    display: -webkit-box;
+    max-height: 34px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+::ng-deep .ng-value-container {
+    flex-flow: row !important;
+}
+
+::ng-deep .ng-select .ng-select-container {
+    min-height: 44.44px !important;
+}
+
+::ng-deep .ng-select.ng-select-single .ng-select-container {
+    height: 44.44px !important;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 25px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    // right: 0;
+    background-color: #ffffff;
+    min-width: 80px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    border-radius: 8px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    border-radius: 8px;
+    background-color: #f5f8fa;
+    cursor: pointer;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content-sub {
+    padding: 2px;
+    display: none;
+    position: absolute;
+    left: 0;
+    background-color: #ffffff;
+    min-width: 80px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    border-radius: 8px;
+}
+
+.dropdown-content-sub a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: 300;
+}
+
+.dropdown-content-sub a:hover {
+    border-radius: 8px;
+    background-color: #f5f8fa;
+    cursor: pointer;
+}
+
+.dropdown:hover .dropdown-content-sub {
+    display: block;
+}
+
+.box-dropdown {
+    min-height: 44.44px;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    width: 250px; 
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    padding: 3px 8px;
+}
+
+.dropdown-content-custom {
+    top: 35px;
+    left: -10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.mycustomcheckbox {
+    padding-left: 10px;
+}
+
+.custom-checkbox {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    padding-left: 30px;
+}
+
+.custom-checkbox input {
+    // position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    // background: #eee;
+    border-radius: 6px;
+    border: 1.5px solid #d0d5dd;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-checkbox .checkmark:after {
+    top: 40%;
+    left: 50%;
+    width: 5px;
+    height: 10px;
+    border: 1px solid #1570ef;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.custom-checkbox input:checked~.checkmark {
+    border: 1.5px solid #1570ef;
+    background: #eff8ff;
+}
+
+.custom-checkbox input:checked~.checkmark:after {
+    display: block;
+}
+
+.box-campaign {
+    padding: 3px 10px;
+    background-color: #e9edf1;
+    border-radius: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 182px;
+}
+
+.box-sub-campaign {
+    padding: 3px 8px;
+    background-color: #e9edf1;
+    border-radius: 20px;
+    margin-left: 5px;
+}
+
+.text-placeholder {
+    color: #A1A5B7 !important;
+    font-weight: 500;
+    line-height: 25.45px;
+    font-size: 14px;
+    top: 11px !important;
+    margin-left: 15px;
+}

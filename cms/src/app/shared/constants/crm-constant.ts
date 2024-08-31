@@ -1,0 +1,1 @@
+export const STATUS_ERROR_API = ['fail_validator', 'fail', 'fail_validate', 'fail_validation']

@@ -1,0 +1,57 @@
+<div class="card">
+    <ng-container *ngIf="showApproved">
+        <ng-container *ngIf="!showApporvedSuccess">
+            <div class="text-center fs16 fw-500 mb-8">Bạn chắc chắn muốn duyệt giải pháp được đề xuất này?</div>
+            <div class="d-flex justify-content-between gap-3">
+                <button class="btn btn-sm btn-outline-base w-100" (click)="onClose()">Hủy</button>
+                <button class="btn btn-sm btn-orange w-100" (click)="approve()">Xác nhận</button>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="showApporvedSuccess">
+            <div class="position-absolute cursor-pointer p-2" style="right: 0;" (click)="onClose({ success: true })">
+                <i class="fa fa-xmark fs16"></i>
+            </div>
+            <div class="d-flex justify-content-center mb-5">
+                    <span [inlineSVG]="'./assets/media/icons/success02.svg'"></span>
+            </div>
+            <div class="fs18 fw-600 mb-2" style="line-height: 28px;">Cảm ơn bạn đã tin tưởng & lựa chọn!</div>
+            <div class="fw-500">Chúng tôi đã nhận được thông tin phê duyệt của bạn và sẽ sớm liên hệ trực tiếp để tiến hành các bước tiếp theo.</div>
+        </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="showRejected">
+        <div class="d-flex justify-content-center mb-5">
+            <span [inlineSVG]="'./assets/media/icons/fail01.svg'"></span>
+        </div>
+        <div class="fs18 fw-600 mb-4" style="line-height: 28px;">Từ chối giải pháp được đề xuất</div>
+        <div class="fw-500 mb-3">Chúng tôi rất tiếc vì điều này. Vui lòng cho chúng tôi biết lý do để chúng tôi điều chỉnh & gửi lại bản giải pháp đề xuất mới.</div>
+        <textarea rows="5" class="form-control mb-5" placeholder="Nhập lý do của bạn..." [(ngModel)]="reason"></textarea>
+        <div class="d-flex justify-content-between gap-3">
+            <button class="btn btn-sm btn-outline-base w-100" (click)="onClose()">Hủy</button>
+            <button class="btn btn-sm btn-orange w-100" (click)="submit()" [disabled]="!reason">Gửi</button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="showReason">
+        <div class="position-absolute right-0 px-2 cursor-pointer" (click)="onClose()"><i class="fa fa-xmark" style="font-size: 1.25rem;"></i></div>
+        <div class="mb-4">
+            <div class="d-flex justify-content-center">
+                <span [inlineSVG]="'./assets/media/icons/fail01.svg'"></span>
+            </div>
+            <div class="fs18 fw-600 text-center mb-4" style="line-height: 28px;">Lý do bị từ chối</div>
+            <div class="overflow-y-scroll" style="max-height: 400px; scrollbar-width: thin;">
+                <div [innerHTML]="text" style="white-space: break-spaces; font-size: 1.05rem"></div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="showAlertCloseCreate">
+        <div class="text-center fs16 fw-500 mb-8">Bạn có chắc chắn muốn hủy không? Các thông tin bạn nhập sẽ không được lưu.</div>
+        <div class="d-flex justify-content-between gap-3">
+            <button class="btn btn-sm btn-outline-base w-100 fs12" (click)="onClose()">Hủy</button>
+            <button class="btn btn-sm btn-orange w-100 fs12" (click)="onClose({ close: true })">Xác nhận</button>
+        </div>
+    </ng-container>
+</div>
+
+<app-spinner [loading]="loading"></app-spinner>

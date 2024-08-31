@@ -1,0 +1,14 @@
+<div class="card-header border-0 pb-5">
+  <h3 class="card-title align-items-start flex-column">
+    <span class="card-label fw-bolder fs-3 mb-1">{{title}}</span>
+  </h3>
+  <ng-container *ngIf="breadcrumb">
+    <ul class="flex">
+      <li *ngFor="let item of breadcrumb; let i = index">
+        <a [routerLink]="item.link" [class]="'fs-6 font-light text-muted' + (i === breadcrumb.length - 1 ? ' active' : '')" *ngIf="item.link">{{item.label}}</a>
+        <span [class]="'fs-6 font-light text-muted' + (i === breadcrumb.length - 1 ? ' active' : '')" *ngIf="!item.link">{{item.label}}</span>
+        <span *ngIf="i !== breadcrumb.length - 1" class="breadcrumb-separator text-muted">{{ separator }}</span>
+      </li>
+    </ul>
+  </ng-container>
+</div>

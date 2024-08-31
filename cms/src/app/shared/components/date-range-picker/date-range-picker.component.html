@@ -1,0 +1,58 @@
+<form class="row row-cols-sm-auto">
+  <div class="col-sm-6">
+    <div class="dp-hidden position-absolute">
+      <div class="input-group">
+        <input
+          #datepicker="ngbDatepicker"
+          (click)="datepicker.toggle()"
+          (dateSelect)="onDateSelection($event)"
+          [autoClose]="'outside'"
+          [dayTemplate]="t"
+          [displayMonths]="2"
+          [startDate]="fromDate!"
+          class="form-control"
+          name="datepicker"
+          ngbDatepicker
+          outsideDays="hidden"
+          tabindex="-1"
+        />
+        <ng-template #t let-date let-focused="focused">
+					<span
+            (mouseenter)="hoveredDate = date"
+            (mouseleave)="hoveredDate = null"
+            [class.faded]="isHovered(date) || isInside(date)"
+            [class.focused]="focused"
+            [class.range]="isRange(date)"
+            class="custom-day"
+          >
+						{{ date.day }}
+					</span>
+        </ng-template>
+      </div>
+    </div>
+    <div class="input-group">
+      <input
+        #dpFromDate
+        (click)="datepicker.toggle()"
+        (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+        [value]="formatter.format(fromDate)"
+        class="form-control  fw-semibold"
+        name="dpFromDate"
+        placeholder="yyyy-mm-dd"
+      />
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="input-group">
+      <input
+        #dpToDate
+        (click)="datepicker.toggle()"
+        (input)="toDate = validateInput(toDate, dpToDate.value)"
+        [value]="formatter.format(toDate)"
+        class="form-control"
+        name="dpToDate"
+        placeholder="yyyy-mm-dd"
+      />
+    </div>
+  </div>
+</form>

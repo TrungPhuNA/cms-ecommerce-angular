@@ -1,0 +1,31 @@
+:host {
+  height: 100%;
+  margin: 0;
+
+  .flex-root {
+    height: 100%;
+  }
+}
+
+.page-loaded {
+  app-layout {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+  }
+}
+
+#kt_content_container {
+  margin: 0 auto;
+}
+
+.ml-i-0 {
+  margin-left: 0px !important;
+}
+
+.l-i-0 {
+  left: 0 !important;
+}
+
+.border-bottom-l {
+  border-bottom: 1px solid var(--kt-app-sidebar-light-separator-color) !important;
+}

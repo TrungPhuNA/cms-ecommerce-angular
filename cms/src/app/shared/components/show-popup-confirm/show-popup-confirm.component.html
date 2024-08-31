@@ -1,0 +1,22 @@
+<div class="card">
+	<div class="position-absolute right-0 px-2 cursor-pointer" 
+		(click)="onClose(1)">
+		<i class="fa fa-xmark" style="font-size: 1.25rem;"></i>
+	</div>
+
+	<div class="d-flex justify-content-center mb-5" *ngIf="icon">
+		<span [inlineSVG]="icon"></span>
+	</div>
+	<h2 class="fs18 fw-600 mb-4 {{config.classTitle}}" style="line-height: 28px;">
+		{{title}}
+	</h2>
+	<p class="fw-500 mb-3 {{config.classContent}}" *ngIf="content">
+		{{content}}
+	</p>
+	<hr class="line-gray mt-5 mb-5">
+
+	<div class="d-flex justify-content-between gap-3 mb-5">
+		<button class="btn btn-sm btn-outline-base w-100" (click)="onClose(2)" *ngIf="config.showCancel">{{config.cancelText }}</button>
+		<button class="btn btn-sm btn-orange w-100" (click)="submit()" >{{config.confirmText || 'Xác nhận'}}</button>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+:host {
+    border-left: 1px solid #E4E6EF;
+    height: 100%;
+}
+
+.img-container {
+    z-index: 99999;
+    bottom: 5%;
+}
+
+.img-contact {
+    @media (max-width: 576px) {
+        width: 75px;
+        height: 75px;
+    }
+
+    @media (min-width: 576px) {
+        width: 100px;
+        height: 100px;
+    }
+}

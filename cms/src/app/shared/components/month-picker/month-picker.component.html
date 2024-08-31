@@ -1,0 +1,36 @@
+<div class="form-group" style="position: relative">
+  <input type="text" class="form-control" placeholder="Kỳ làm việc" (click)="showBoxPicker()" [value]="'Kỳ tháng '+selectedTime" style="text-indent: 25px; padding: 8px 10px">
+  <div style="position: absolute; top: 10px; left: 16px">
+    <i class="fa fa-calendar"></i>
+  </div>
+  <div class="box-month-picker {{ showPicker ? 'd-block' : '' }}">
+    <div class="form-group">
+      <ng-select [items]="listYears"
+                 data-hide-search="true"
+                 class="select-custom-style"
+                 [clearable]="false"
+                 [searchable]="false"
+                 (change)="changeYear($event)"
+                  [(ngModel)]="selectedMonth.year">
+      </ng-select>
+    </div>
+    <div class="row">
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 1 ? 'active' : ''}}" (click)="changeMonth(1)">Tháng 1</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 2 ? 'active' : ''}}" (click)="changeMonth(2)">Tháng 2</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 3 ? 'active' : ''}}" (click)="changeMonth(3)">Tháng 3</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 4 ? 'active' : ''}}" (click)="changeMonth(4)">Tháng 4</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 5 ? 'active' : ''}}" (click)="changeMonth(5)">Tháng 5</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 6 ? 'active' : ''}}" (click)="changeMonth(6)">Tháng 6</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 7 ? 'active' : ''}}" (click)="changeMonth(7)">Tháng 7</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 8 ? 'active' : ''}}" (click)="changeMonth(8)">Tháng 8</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 9 ? 'active' : ''}}" (click)="changeMonth(9)">Tháng 9</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 10 ? 'active' : ''}}" (click)="changeMonth(10)">Tháng 10</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 11 ? 'active' : ''}}" (click)="changeMonth(11)">Tháng 11</a></div>
+      <div class="col-4 mt-2"><a href="javascript:void(0)" class="pick-month-item {{selectedMonth.month == 12 ? 'active' : ''}}" (click)="changeMonth(12)">Tháng 12</a></div>
+    </div>
+    <div class="text-right mt-3">
+      <button class="btn btn-secondary btn-sm" (click)="cancelChange()">Cancel</button>
+      <button class="btn btn-primary btn-sm ml-2" (click)="change()" [disabled]="!selectedMonth.year || !selectedMonth.month">OK</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<ng-container *ngIf="appFooterContainerCSSClass">
+    <!--begin::Footer container-->
+    <div class="app-container" [ngClass]="appFooterContainerCSSClass">
+        <ng-container *ngTemplateOutlet="footerView"></ng-container>
+    </div>
+    <!--end::Footer container-->
+</ng-container>
+
+<ng-container *ngIf="!appFooterContainerCSSClass">
+    <ng-container *ngTemplateOutlet="footerView"></ng-container>
+</ng-container>
+
+<ng-template #footerView>
+    <!--begin::Copyright-->
+    <div class="text-dark order-2 order-md-1">
+        <!--    <span class="text-muted fw-semibold me-1">{{currentDateStr}}&copy;</span>-->
+        <!--    <a href="https://accesstrade.vn/" target="_blank" class="text-gray-800 text-hover-primary">-->
+        <!--      All Rights Reserved by Interspace Vietnam.-->
+        <!--    </a>-->
+    </div>
+    <!--end::Copyright-->
+
+    <!--begin::Menu-->
+    <ul class="menu menu-gray-600 menu-hover-primary order-1">
+        <li class="menu-item">
+            <span class="text-muted fw-semibold me-1">&copy;{{currentDateStr}}</span>
+            <a href="https://accesstrade.vn/" target="_blank" class="text-gray-800 text-hover-primary">
+                Bản quyền thuộc về Interspace Việt Nam 
+            </a>
+        </li>
+    </ul>
+    <!--end::Menu-->
+
+</ng-template>

@@ -1,0 +1,12 @@
+.border-right-l {
+    border-right: 1px solid var(--kt-app-sidebar-light-separator-color);
+    height: 100% !important;
+}
+
+.search-input {
+    width: 100%;
+}
+
+.search-input:focus {
+    outline: none;
+}

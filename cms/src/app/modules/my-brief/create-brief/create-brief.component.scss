@@ -1,0 +1,62 @@
+::ng-deep .mat-dialog-container {
+    border-radius: 15px;
+}
+
+textarea {
+    resize: none;
+}
+
+.custom-input {
+    width: 100%;
+}
+
+.custom-input:focus {
+    outline: none;
+}
+
+select:focus {
+    outline: none;
+}
+
+::ng-deep .ng-dropdown-panel.ng-select-top {
+    bottom: unset;
+    top: 100%;
+}
+
+::ng-deep .mat-dialog-container {
+	overflow: hidden;
+}
+.form {
+	max-height: 66vh;
+	overflow: scroll;
+}
+::ng-deep .ng-select.is-invalid {
+    .ng-select-container{
+        border-color: #f1416c !important;
+    }
+}
+::ng-deep .ng-select {
+	.ng-dropdown-panel-items {
+		max-height: 175px !important;
+		overflow: auto !important;
+	}
+}
+
+@media (max-width: 578px) {
+	::ng-deep .cdk-overlay-container {
+		.create-brief {
+			min-height: 98vh;
+			max-height: 98vh;
+	
+			.form-link-onl {
+				padding-bottom: 14px;
+				padding-top: 14px;
+		
+				.form-link-onl--select {
+					margin-top: 15px;
+					width: 80%;
+				}
+			}
+		}
+	}   
+}

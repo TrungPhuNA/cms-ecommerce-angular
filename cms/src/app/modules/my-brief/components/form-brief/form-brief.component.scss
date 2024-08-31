@@ -1,0 +1,65 @@
+:host {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.container {
+    border-radius: 24px;
+    border: 1px solid #E4E6EF;
+    padding: 20px
+}
+
+textarea {
+    resize: none;
+}
+
+.welcome-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #101828;
+	
+}
+.welcome-text-content {
+    font-size: 16px;
+    font-weight: 600;
+    color: #101828;
+}
+
+
+
+.box-container {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #F9FAFB;
+    padding: 20px;
+}
+
+a:hover {
+    text-decoration: underline !important;
+}
+
+::ng-deep .ng-select.is-invalid {
+    .ng-select-container{
+        border-color: #f1416c !important;
+    }
+}
+::ng-deep .ng-select {
+	.ng-dropdown-panel-items {
+		max-height: 175px !important;
+		overflow: auto !important;
+	}
+}
+
+
+
+@media (max-width: 410px) {
+    .is-hide {
+        display: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+	.w-md-50 {
+		width: 50% !important;
+	}
+}

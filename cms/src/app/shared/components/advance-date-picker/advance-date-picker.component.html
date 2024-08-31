@@ -1,0 +1,20 @@
+<input type="text"
+       class="form-control"
+       [ngClass]="className"
+       ngxDaterangepickerMd
+       [showCustomRangeLabel]="showCustomRangeLabel"
+       [singleDatePicker]="singleDatePicker"
+       [ranges]="showRange ?  ranges : null"
+       [alwaysShowCalendars]="true"
+	[showClearButton]="showClearButton"
+       [opens]="'right'"
+       [linkedCalendars]="true"
+       [isInvalidDate]="isInvalidDate"
+       [(ngModel)]="selected"
+       [minDate]="minDate"
+	(ngModelChange)="change($event)"
+       [autoApply]="showClearButton ? false : autoApply"
+       [maxDate]="maxDate"
+       [placeholder]="placeholder"
+       />
+

@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/sass/style";
+// @import "./assets/fonts/Inter/stylesheet";
+@import "./assets/fonts/BeVietnamePro/stylesheet";
+// Replace above style with this css file to enable RTL styles
+@import "src/assets/sass/plugins";
+// @import "./assets/css/style.rtl.css";
+@import "src/assets/sass/style.angular";
+
+@import "src/assets/sass/splash-screen";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
