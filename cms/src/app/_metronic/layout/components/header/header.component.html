@@ -28,25 +28,7 @@
         <!--end::Mobile logo-->
     </ng-container>
     
-    <div class="video-container d-flex align-items-center">
-        <button class="btn btn-sm btn-orange-linear d-flex align-items-center show-video" (click)="openModal()">
-            <span [inlineSVG]="'./assets/media/icons/play-circle.svg'"></span>
-            <span class="text-white ml-2">Hướng dẫn</span>
-        </button>
-        <div class="video-tutorial position-absolute p-8 justify-content-center align-items-center flex-column">
-            <div class="video-info mb-4">
-                <h4>ACCESSTRADE | Growth Platform</h4>
-                <p class="fw-600">dành cho doanh nghiệp</p>
-            </div>
-            <iframe width="300" height="170"
-                    src="https://www.youtube.com/embed/Ty63dxzYQB4?autoplay=1&enablejsapi=1&mute=1&loop=1&controls=0&modestbranding=1&showinfo=0" 
-                    title="Hướng dẫn sử dụng ACCESSTRADE | Growth Platform" 
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                    encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" playsinline>
-            </iframe>
-        </div>
-    </div>
+  
 
     <ng-container *ngIf="!appSidebarDisplay">
         <!--begin::Logo-->

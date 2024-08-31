@@ -20,14 +20,16 @@ export class AuthGuard implements CanActivate {
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return new Promise((resolve) => {
             // setTimeout(() => {
-                const isAuthenticated = Helpers.prototype.getCookie('jwt');
-                if (!isAuthenticated) {
-                    // this.router.navigate(['auth/login']);
-                    window.location.href = 'auth/login';
-                    resolve(false);
-                } else {
-                    resolve(true);
-                }
+				resolve(true);
+
+                // const isAuthenticated = Helpers.prototype.getCookie('jwt');
+                // if (!isAuthenticated) {
+                //     // this.router.navigate(['auth/login']);
+                //     window.location.href = 'auth/login';
+                //     resolve(false);
+                // } else {
+                //     resolve(true);
+                // }
             // }, 0);
         });
     }
