@@ -23,6 +23,7 @@ import {SidebarMenuComponent} from './components/sidebar/sidebar-menu/sidebar-me
 import {NavbarComponent} from './components/header/navbar/navbar.component';
 import {Routing} from "../../routing";
 
+import {UserInnerComponent} from "../partials/layout/extras/dropdown-inner/user-inner/user-inner.component";
 import {LayoutScrollTopComponent} from "../partials/layout/extras/scroll-top/scroll-top.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BaseSearchFormComponent} from "./components/header/base-search-form/base-search-form.component";
@@ -31,6 +32,7 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {NgxDaterangepickerMd} from "ngx-daterangepicker-material";
 
 const ExtraComponents = [
+  UserInnerComponent,
   LayoutScrollTopComponent,
 ];
 const routes: Routes = [
