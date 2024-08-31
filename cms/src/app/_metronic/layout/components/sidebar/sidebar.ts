@@ -16,12 +16,5 @@ export const SideBarItem: ISideBarItem[] = [
         module_prefix: ['overview'],
         sub_menu: []
     },
-    {
-        path: 'https://solutions.accesstrade.vn/?utm_source=brandsite',
-        title:'Discovery',
-        icon:'./assets/media/icons/discovery.svg',
-        module_prefix: ['discovery'],
-		_target: true,
-        sub_menu: []
-    },
+    
 ];

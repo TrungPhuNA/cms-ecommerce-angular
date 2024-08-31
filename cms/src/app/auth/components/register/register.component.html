@@ -49,9 +49,7 @@
 							<at-error [control]="form.get('website_url')" validation="required"
 								message="Website giới thiệu không được để trống.">
 							</at-error>
-							<at-error [control]="form.get('website_url')" validation="pattern"
-								message="Website giới thiệu không đúng định dạng (ví dụ: solutions.accesstrade.vn, ...)">
-							</at-error>
+							
 							<at-error [control]="form.get('website_url')" validation="maxlength"
 								message="Website giới thiệu có độ dài tối đa 255 ký tự.">
 							</at-error>

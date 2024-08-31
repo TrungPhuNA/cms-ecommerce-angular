@@ -3,7 +3,6 @@
 //
 
 html {
-  font-family: "Be Vietnam Pro" !important;
   text-size-adjust: 100%;
 }
 
@@ -16,7 +15,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: $app-general-root-font-size-desktop !important;
     font-weight: $font-weight-base;
-    font-family: $font-family-be-vietnam-pro;
+    font-family: $font-family-sans-serif;
 
     // Tablet mode
     @include media-breakpoint-down(lg) {

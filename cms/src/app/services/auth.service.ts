@@ -271,7 +271,7 @@ export class AuthService {
 			scope: 'user_info',
 			response_type: 'code',
 			redirect_uri: environment.domain + '/auth/login',
-			state: sha256('loginaccesstrade' + moment().format('DDMMYYYHHMMSS'))
+			state: sha256('123' + moment().format('DDMMYYYHHMMSS'))
 		}
 		
 		let oauthSso = `${environment.sso_url}/oauth/authorize?${this.params(params)}`;
