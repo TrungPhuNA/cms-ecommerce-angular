@@ -24,30 +24,31 @@ export class UserInnerComponent implements OnInit, OnDestroy {
         private cdr: ChangeDetectorRef,
         private router: Router,
     ) {
-        let data: any = localStorage.getItem('user_crm_info');
+        let data: any = localStorage.getItem('user');
 
         if (!data) {
             this.authService.getMe().subscribe(res => {
                 if (res?.status) {
                     this.userInfo = res?.data;
-                    localStorage.setItem('user_crm_info', JSON.stringify(this.userInfo));
+                    localStorage.setItem('user', JSON.stringify(this.userInfo));
                 }
             });
         } else this.userInfo = JSON.parse(data);
+		console.log(this.userInfo);
 
-        this.router.events.subscribe((event) => {
-			if (event instanceof NavigationEnd) {
-                data = localStorage.getItem('user_crm_info');
-                if (!data) {
-                    this.authService.getMe().subscribe(res => {
-                        if (res?.status) {
-                            this.userInfo = res?.data;
-                            localStorage.setItem('user_crm_info', JSON.stringify(this.userInfo));
-                        }
-                    });
-                } else this.userInfo = JSON.parse(data);
-			}
-		});
+        // this.router.events.subscribe((event) => {
+		// 	if (event instanceof NavigationEnd) {
+        //         data = localStorage.getItem('user');
+        //         if (!data) {
+        //             this.authService.getMe().subscribe(res => {
+        //                 if (res?.status) {
+        //                     this.userInfo = res?.data;
+        //                     localStorage.setItem('user', JSON.stringify(this.userInfo));
+        //                 }
+        //             });
+        //         } else this.userInfo = JSON.parse(data);
+		// 	}
+		// });
     }
 
     ngOnInit(): void {
@@ -60,7 +61,6 @@ export class UserInnerComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.tracking('adv_log_out');
         this.authService.logout();
 		this.authService.logoutWithoutCache();
     }

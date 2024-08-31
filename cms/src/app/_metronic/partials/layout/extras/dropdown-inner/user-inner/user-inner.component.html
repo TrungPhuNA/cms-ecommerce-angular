@@ -1,12 +1,12 @@
 <div class="menu-item px-3">
     <div class="menu-content d-flex align-items-center px-3">
         <div class="symbol symbol-50px me-5">
-            <img alt="Logo" [src]="userInfo?.avatar_url || './assets/media/logos/AT_hatori_direction.svg'" class="object-fit-cover"/>
+            <img alt="Logo" [src]="userInfo?.avatar || './assets/media/auth/tim_80x80.png'" class="object-fit-cover"/>
         </div>
 
         <div class="d-flex flex-column">
             <div class="fw-bolder d-flex align-items-center fs-5">
-                {{ userInfo?.full_name || userInfo?.first_name }}
+                Xin chào {{ userInfo?.name || userInfo?.email }}
             </div>
             <!-- <a class="fw-bold text-muted text-hover-primary fs-7">
                 <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1">{{(userInfo?.roles && userInfo?.roles.length > 0) ? userInfo?.roles[0].display_name : ''}}</span>
@@ -20,9 +20,9 @@
 <!--  <div class="separator my-2"></div>-->
 
 <div class="menu-item px-5">
-    <a routerLink="/my-profile" class="menu-link px-5" (click)="tracking('adv_profile_infor')">
+    <a routerLink="/profile" class="menu-link px-5">
         <i class="fa fa-user fs16 mr-2"></i>
-        <span translate>Thông tin doanh nghiệp</span>
+        <span translate>Thông tin</span>
     </a>
 </div>
 
@@ -38,23 +38,8 @@
             </span>
         </span>
     </a>
-    <!-- <div class="menu-sub menu-sub-dropdown w-175px py-4">
-        <div *ngFor="let l of langs" class="menu-item px-3 cursor-pointer" (click)="selectLanguage(l.lang)">
-            <a class="menu-link d-flex px-5" [ngClass]="l.lang === language.lang ? 'active' : ''">
-                <span class="symbol symbol-20px me-4">
-                    <img class="rounded-1" [src]="l.flag" alt="metronic" />
-                </span>
-                {{ l.name | translate }}
-            </a>
-        </div>
-    </div> -->
+    
 </div>
-
-<!--  <div class="menu-item px-5 my-1">-->
-<!--    <a routerLink="/crafted/account/settings" class="menu-link px-5">-->
-<!--      Account Settings-->
-<!--    </a>-->
-<!--  </div>-->
 
 <div class="menu-item px-5">
     <a (click)="logout()" class="menu-link px-5">

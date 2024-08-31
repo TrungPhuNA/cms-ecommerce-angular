@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { IPaging } from '../../models';
-import { config } from '../../constants';
 
 @Component({
   selector: 'app-pagination',
@@ -18,7 +16,6 @@ export class PaginationComponent implements OnChanges{
 
 	@Output() changePaged = new EventEmitter();
 
-	defaultClass = config.paginationClass;
 
 	ngOnChanges(changes: SimpleChanges): void {
 	}

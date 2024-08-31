@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, first, map, Observable, of, Subscription, switchMap } from "rxjs";
+import { BehaviorSubject, first, map, Observable, of, Subscription,  } from "rxjs";
 import { environment } from "../../environments/environment";
-import { PARTNER_TOKEN, ResponseUserModel, UserModel } from "../auth";
-import { API_CORE, API_V1, Helpers } from "../shared";
+import { ResponseUserModel, UserModel } from "../auth";
+import { API_V1, Helpers } from "../shared";
 import { catchError } from "rxjs/operators";
-import Swal from "sweetalert2";
 import { AlertService, ApiService, HelperService } from "./common";
 import moment from "moment";
-import sha256 from 'crypto-js/sha256';
 
 
 export type UserType = UserModel | undefined;
@@ -18,8 +16,7 @@ export type UserType = UserModel | undefined;
 })
 export class AuthService {
 	tokenField = environment.tokenField;
-	partnerTokenKey = PARTNER_TOKEN;
-	loginCrmAdvKey = 'loginCrmAdv';
+	loginCrmAdvKey = 'CMS_ECOMMERCE_V1';
 	isLoading$: Observable<boolean>;
 
 	loggedInStatus: boolean;
@@ -43,42 +40,7 @@ export class AuthService {
 	headers = new HttpHeaders({
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',
-        'x-type': 'ADV',
 	});
-
-	verifyGoogleToken(code: string, redirectUrl: string) {
-		const payload = JSON.stringify({ 'code': code, 'redirect_url': redirectUrl });
-		return this.http.post<any>(`${this.getBaseUrl()}/user/login_google`, payload, { headers: this.headers })
-			.pipe(
-				first(),
-				map((resp) => {
-					if (resp.token) {
-						this.setJwtToken(this.partnerTokenKey, resp.token_1_point_5, resp.expire);
-						this.setJwtToken(this.tokenField, resp.token, resp.expire);
-						Helpers.prototype.setCookie(this.loginCrmAdvKey, moment().format(), 7)
-						this.logoutAfterTimeout();
-						return
-					}
-					if (resp.errors) {
-						return this.alertService.fireSmall('error', 'Invalid token');
-					}
-					if (resp.message) {
-						return this.alertService.fireSmall('error', resp.message);
-					}
-				}),
-				catchError((err) => {
-					Swal.fire({
-						text: err.message,
-						icon: 'error',
-						toast: true,
-						position: 'top-right',
-						showConfirmButton: false,
-						timer: 2000
-					})
-					return of(undefined);
-				})
-			);
-	}
 
 	logoutAfterTimeout(): void {
 		const loginTime = moment(Helpers.prototype.getCookie(this.loginCrmAdvKey));
@@ -95,136 +57,51 @@ export class AuthService {
 	}
 
 	register(data: any, type?: any): Observable<any> {
-		let url = `register-account`;
-		if(type == 'social') {
-			url = 'register-social'
+		let url = `admin/auth/register`;
+		if(type) {
+			url = 'auth/register'
 		}
-		return this.http.post<any>(`${this.getBaseUrl()}/oauth/${url}`, data, { headers: this.headers }).pipe(
+		return this.http.post<any>(`${this.getBaseUrl()}/${url}`, data).pipe(
 			map(response => response),
 			catchError((err) => { return of(err) })
 		);
 	}
 
-    registerPub(data: any):Observable<any> {
-        return this.http.put<any>(`${this.getBaseUrl()}/oauth/update-user`, data, { headers: this.headers }).pipe(
-			map(response => response),
-			catchError((err) => { return of(err) })
-		);
-    }
-
-	activeAccount(data: any): Observable<any> {
-		return this.http.post<any>(`${this.getBaseUrl()}/oauth/active-account`, data, { headers: this.headers }).pipe(
-			map(response => response),
-			catchError((err) => { return of(err) })
-		);
-	}
-
-	checkActiveAccount(data: any): Observable<any> {
-		return this.http.post<any>(`${this.getBaseUrl()}/oauth/check-active`, data, { headers: this.headers }).pipe(
-			map(response => response),
-			catchError((err) => { return of(err) })
-		)
-	}
-
-	login(data: any): Observable<any> {
-		return this.http.post<any>(`${this.getBaseUrl()}/oauth/login`, data, { headers: this.headers })
-			.pipe(
-				first(),
-				map((res) => {
-					//set token
-					if (res.data) {
-						this.setDataAccount(res.data);
-						this.setJwtToken(this.tokenField, res.data.access_token, res.data.expires_in);
-						Helpers.prototype.setCookie(this.loginCrmAdvKey, moment().format(), 7);
-						// this.logoutAfterTimeout();
-						return res;
-					}
-					if (res.message) {
-						return this.alertService.fireSmall('error', res.message);
-					}
-				}),
-				catchError((err) => { return of(err) })
-			);
-	}
-
-	loginByAccessToken(data: any): Observable<any> {
-		return this.http.post<any>(`${this.getBaseUrl()}/oauth/login-by-token`, {access_token: data?.access_token}, { headers: this.headers })
-			.pipe(
-				first(),
-				map((res) => {
-					//set token
-					let userInfo = this.helperService.getLocalStorage('user_crm_info')
-					if (res.data) {
-						let dataRes = {...data, ...res.data};
-						this.setDataAccount(dataRes);
-						this.setJwtToken(this.tokenField, dataRes?.access_token, dataRes?.expires_in);
-						Helpers.prototype.setCookie(this.loginCrmAdvKey, moment().format(), 7);
-						// this.logoutAfterTimeout();
-						return res;
-					}
-					if (res.message) {
-						return this.alertService.fireSmall('error', res.message);
-					}
-				}),
-				catchError((err) => { return of(err) })
-			);
+    
+	
+	
+	login(data: any, type?: any): Observable<any> {
+		let url = `admin/auth/login`;
+		if(type) {
+			url = 'auth/login'
+		}
+		return this.http.post<any>(`${this.getBaseUrl()}/${url}`, data, { headers: this.headers })
+			.pipe(catchError((err) => { return of(err) }));
 	}
 
 	logout() {
 		localStorage.removeItem('username');
+		localStorage.removeItem('user');
 		localStorage.removeItem('user_id');
-		localStorage.removeItem('refresh_token');
-		localStorage.removeItem('user_crm_info');
-		Helpers.prototype.deleteCookie('jwt');
-		Helpers.prototype.deleteCookie('loginCrmAdv');
-		this.helperService.removeLocalStorage('login_type');
+		localStorage.removeItem('access_token');
+		localStorage.removeItem('user');
 		this.loggedInStatus = false;
 	}
 
-	get isLoggedIn() {
-		return this.loggedInStatus;
-	}
-
-	getAuthorizationToken(): string | undefined {
-		if (Helpers.prototype.getCookie(this.tokenField)) {
-			return Helpers.prototype.getCookie(this.tokenField);
-		}
-		return undefined;
-	}
-
-	getPartnerToken(): string | undefined {
-		if (Helpers.prototype.getCookie(this.partnerTokenKey)) {
-			return Helpers.prototype.getCookie(this.partnerTokenKey);
-		}
-		return undefined;
-	}
-
 	getMe(): Observable<any> {
-		return this.http.get<ResponseUserModel>(`${this.getBaseUrl()}/adv/me`, {
-			headers: {
-				'Authorization': `Bearer ${this.getAuthorizationToken()}`,
-			}
-		});
+		return this.http.get<ResponseUserModel>(`${this.getBaseUrl()}/adv/me`);
 	}
 
 	updateMe(data: any): Observable<any> {
-		return this.http.put<ResponseUserModel>(`${this.getBaseUrl()}/adv/me`, data, {
-			headers: {
-				'Authorization': `Bearer ${this.getAuthorizationToken()}`,
-			}
-		}).pipe(map(response => response), catchError((err) => { return of(err) }));
+		return this.http.put<ResponseUserModel>(`${this.getBaseUrl()}/adv/me`, data).pipe(map(response => response), catchError((err) => { return of(err) }));
 	}
 
     updatePassword(data: any): Observable<any> {
-        return this.http.post<ResponseUserModel>(`${this.getBaseUrl()}/adv/update-password`, data, {
-			headers: {
-				'Authorization': `Bearer ${this.getAuthorizationToken()}`,
-			}
-		}).pipe(map(response => response), catchError((err) => { return of(err) }));
+        return this.http.post<ResponseUserModel>(`${this.getBaseUrl()}/adv/update-password`, data).pipe(map(response => response), catchError((err) => { return of(err) }));
     }
 
 	getUser(): Observable<any> {
-		let user: any = localStorage.getItem('user_crm_info');
+		let user: any = localStorage.getItem('user');
 		return user ? JSON.parse(user) : null;
 	}
 
@@ -239,76 +116,8 @@ export class AuthService {
 		return environment.apiUrl + API_V1;
 	}
 
-	getUrlAdv() {
-		return environment.apiUrl + API_CORE + '/crosscheck-service' + API_V1;
-	}
-
-	getCaptchaKey() {
-		return environment.google_captcha_site_key;
-	}
-
-	setDataAccount(data: any) {
-		localStorage.setItem('refresh_token', data.refresh_token);
-		localStorage.setItem('user_crm_info', JSON.stringify({ ...data.user, 
-			username: data?.user_name || data?.username || data?.user?.username, 
-			user_id: data?.user_id || data?.user?.id
-		}));
-		localStorage.setItem('user_id', data?.user_id || data?.user?.id);
-		localStorage.setItem('username', data?.user_name || data?.username || data?.user?.username);
-	}
-
-	resendActive(data: any) {
-		return this.http.post<any>(`${this.getBaseUrl()}/oauth/resend-active`, data, { headers: this.headers }).pipe(
-			map(response => response),
-			catchError((err) => { return of(err) })
-		)
-	}
-
-	loginSocial(provider: any = 'google') {
-		let params: any = {
-			client_id: environment.client_id,
-			provider: provider,
-			scope: 'user_info',
-			response_type: 'code',
-			redirect_uri: environment.domain + '/auth/login',
-			state: sha256('123' + moment().format('DDMMYYYHHMMSS'))
-		}
-		
-		let oauthSso = `${environment.sso_url}/oauth/authorize?${this.params(params)}`;
-		window.location.href = oauthSso;
-	}
-
 	logoutWithoutCache(params?: any) {
-
-		this.helperService.removeLocalStorage('user_crm_info');
-		this.helperService.removeLocalStorage('login_type');
-		let authUrl = `${environment.sso_url}/logout`;
-		let pr: any = null;
-		if(params) {
-			delete params.code;
-			delete params.state;
-			pr =  new URLSearchParams(params);
-		}
 		this.logout();
-		const parameters = {
-		'redirect_uri' : environment.domain + `/auth/login${pr ? '?' + pr : ''}`,
-		};
-		authUrl += '?' + this.params(parameters);
-
-		window.location.href = authUrl;
-	}
-
-
-	getAccessToken(code: any) {
-		let data = {
-			'grant_type': 'authorization_code',
-			'code': code,
-			redirect_uri: environment.domain + '/auth/login',
-		}
-		
-		return this.http.post<any>(`${this.getBaseUrl()}/oauth/login-social`, data, { headers: this.headers })
-		.pipe(catchError(error => of(error)))
-
 	}
 
 	params(object: any) {
@@ -321,50 +130,5 @@ export class AuthService {
 
 		return parameters.join('&');
 	}
-
-	switchAccount(token: any) {
-		return this.http.get<any>(`${this.getBaseUrl()}/oauth/switch-account`, {params: {token: token}})
-			.pipe(
-				first(),
-				map((res) => {
-					//set token
-					if(res?.status == 'success') {
-						if (res.data) {
-							let dataRes = {...res.data};
-							this.setDataAccount(dataRes);
-							let d: Date = new Date();
-        					let cacheExpired = d.getTime() + 0.5 * 24 * 60 * 60 * 1000;
-							this.setJwtToken(this.tokenField, dataRes?.access_token, cacheExpired);
-							Helpers.prototype.setCookie(this.loginCrmAdvKey, moment().format(), 0.5);
-							// this.logoutAfterTimeout();
-							return res;
-						}
-					} else {
-						return res;
-					}
-				}),
-				catchError((err) => { return of(err) })
-			);
-	}
-
-    forgotPassword(data: any) {
-        return this.http.post<any>(`${this.getBaseUrl()}/oauth/reset-password`, data, { headers: this.headers }).pipe(
-			map(response => response),
-			catchError((err) => { return of(err) })
-		);
-    }
-
-    resetPassword(data: any) {
-        return this.http.post<any>(`${this.getBaseUrl()}/oauth/renew-password`, data, { headers: this.headers }).pipe(
-			map(response => response),
-			catchError((err) => { return of(err) })
-		)
-    }
     
-    verifyOtp(data: any) {
-        return this.http.post<any>(`${this.getBaseUrl()}/oauth/verify-otp-password`, data, { headers: this.headers }).pipe(
-			map(response => response),
-			catchError((err) => { return of(err) })
-		)
-    }
 }

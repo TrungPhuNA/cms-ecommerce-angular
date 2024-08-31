@@ -21,34 +21,34 @@ export class NavbarComponent implements OnInit {
     avatar: any;
 
     constructor(private router: Router, private authService: AuthService,) {
-        let data: any = localStorage.getItem('user_crm_info');
+        let data: any = localStorage.getItem('user');
         if (!data) {
             this.authService.getMe().subscribe(res => {
                 if (res?.status) {
                     this.user_info = res?.data;
-                    this.avatar = this.user_info.avatar_url;
-                    localStorage.setItem('user_crm_info', JSON.stringify(this.user_info));
+                    this.avatar = this.user_info.avatar;
+                    localStorage.setItem('user', JSON.stringify(this.user_info));
                 }
             });
         } else {
             this.user_info = JSON.parse(data);
-            this.avatar = this.user_info?.avatar_url;
+            this.avatar = this.user_info?.avatar;
         }
 
         this.router.events.subscribe((event) => {
 			if (event instanceof NavigationEnd) {
-                data = localStorage.getItem('user_crm_info');
+                data = localStorage.getItem('user');
                 if (!data) {
                     this.authService.getMe().subscribe(res => {
                         if (res?.status) {
                             this.user_info = res?.data;
-                            this.avatar = this.user_info.avatar_url;
-                            localStorage.setItem('user_crm_info', JSON.stringify(this.user_info));
+                            this.avatar = this.user_info.avatar;
+                            localStorage.setItem('user', JSON.stringify(this.user_info));
                         }
                     });
                 } else {
                     this.user_info = JSON.parse(data);
-                    this.avatar = this.user_info?.avatar_url;
+                    this.avatar = this.user_info?.avatar;
                 }
 			}
 		});

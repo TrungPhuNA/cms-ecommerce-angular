@@ -21,18 +21,12 @@ export class LoginGuard implements CanActivate {
 
     canActivate(): Observable<boolean> | Promise<boolean> | boolean {
         return new Promise((resolve) => {
-            // setTimeout(() => {
+			const access_token = localStorage.getItem('access_token');
+			if (access_token && access_token != '') {
 				resolve(true);
-
-                // const isAuthenticated = Helpers.prototype.getCookie('jwt');
-                // if (isAuthenticated) {
-                //     // this.router.navigate(['overview']);
-                //     window.location.href = 'overview';
-                //     resolve(false);
-                // } else {
-                //     resolve(true);
-                // }
-            // }, 0);
+			} else {
+				resolve(false);
+			}
         });
     }
 }

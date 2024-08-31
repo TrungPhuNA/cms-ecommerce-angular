@@ -24,7 +24,7 @@ export class SidebarMenuComponent implements OnInit {
     constructor(
         private router: Router,
     ) {
-        const user_info: any = localStorage.getItem('user_crm_info');
+        const user_info: any = localStorage.getItem('user');
         this.userInfo = JSON.parse(user_info);
     }
 

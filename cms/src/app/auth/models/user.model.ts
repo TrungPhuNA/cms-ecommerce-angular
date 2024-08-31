@@ -15,4 +15,3 @@ export class UserModel extends AuthModel {
   permissions = [];
 }
 
-export const PARTNER_TOKEN = 'partner_token';

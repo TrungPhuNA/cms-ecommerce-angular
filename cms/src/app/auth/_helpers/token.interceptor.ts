@@ -13,12 +13,12 @@ export class TokenInterceptor implements HttpInterceptor {
     constructor(private auth: AuthService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (!req.url.includes('adv/config')) {
+        if (!(req.url.includes('login') || req.url.includes('register'))) {
             // if the request has "Authorization" we return the request
             if (req.headers.has('Authorization')) {
                 return next.handle(req);
             }
-            const authToken = this.auth.getAuthorizationToken();
+            const authToken = localStorage.getItem('access_token');
             let token = `Bearer ${authToken}`;
             let authReq = req.clone({
                 headers: req.headers.set('Authorization', token)

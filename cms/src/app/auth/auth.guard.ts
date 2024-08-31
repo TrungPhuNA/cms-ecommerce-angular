@@ -6,31 +6,25 @@ import { Router } from '@angular/router';
 import { AuthService } from "../services/auth.service";
 
 @Injectable({
-    providedIn: 'root'
+	providedIn: 'root'
 })
 
 export class AuthGuard implements CanActivate {
 
-    constructor(
-        private auth: AuthService,
-        private router: Router,
-    ) {
-    }
+	constructor(
+		private auth: AuthService,
+		private router: Router,
+	) {
+	}
 
-    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        return new Promise((resolve) => {
-            // setTimeout(() => {
+	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+		return new Promise((resolve) => {
+			const access_token = localStorage.getItem('access_token');
+			if (access_token && access_token != '') {
 				resolve(true);
-
-                // const isAuthenticated = Helpers.prototype.getCookie('jwt');
-                // if (!isAuthenticated) {
-                //     // this.router.navigate(['auth/login']);
-                //     window.location.href = 'auth/login';
-                //     resolve(false);
-                // } else {
-                //     resolve(true);
-                // }
-            // }, 0);
-        });
-    }
+			} else {
+				resolve(false);
+			}
+		});
+	}
 }

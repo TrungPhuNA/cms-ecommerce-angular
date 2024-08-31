@@ -18,11 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CurrencyPipe } from "@angular/common";
-import { ConfigService } from './services/config.service';
 
-export function loadConfig(globalService: ConfigService): Function {
-	return () => globalService.load();
-}
+
 
 @NgModule({
 	declarations: [AppComponent],
@@ -54,12 +51,7 @@ export function loadConfig(globalService: ConfigService): Function {
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
 		{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-		{
-			provide: APP_INITIALIZER,
-			useFactory: loadConfig,
-			deps: [ConfigService],
-			multi: true
-		},
+		
 		ErrorInterceptor,
 	],
 	bootstrap: [AppComponent],

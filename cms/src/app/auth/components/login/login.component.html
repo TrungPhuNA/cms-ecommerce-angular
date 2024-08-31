@@ -11,23 +11,23 @@
 				<div class="row">
 					<div class="col-12 mb-5">
 						<label class="form-label">Tên đăng nhập / Email</label>
-						<input placeholder="Nhập tên đăng nhập hoặc email" formControlName="username"
+						<input placeholder="Nhập tên đăng nhập hoặc email" formControlName="email"
 							(change)="onChange($event)"
-							(focusout)="helperService.onTrimFocusOutForm(loginForm, 'username', $event)"
-							(input)="helperService.onInputForm(loginForm, 'username', $event, {trim: true, lower: true})"
-							[ngClass]="{'is-invalid': (helperService.showStatusError(loginForm, 'username') || (fails && fails['username']))}"
+							(focusout)="helperService.onTrimFocusOutForm(loginForm, 'email', $event)"
+							(input)="helperService.onInputForm(loginForm, 'email', $event, {trim: true, lower: true})"
+							[ngClass]="{'is-invalid': (helperService.showStatusError(loginForm, 'email') || (fails && fails['email']))}"
 							class="form-control">
-						<at-error [control]="loginForm.get('username')" validation="required"
-							[message]="errors.username.required">
+						<at-error [control]="loginForm.get('email')" validation="required"
+							[message]="errors.email.required">
 						</at-error>
-						<at-error [control]="loginForm.get('username')" validation="minlength"
+						<at-error [control]="loginForm.get('email')" validation="minlength"
 							[message]="'Tên đăng nhập có độ dài không hợp lệ (tối thiểu 5 ký tự).'">
 						</at-error>
-						<at-error [control]="loginForm.get('username')" validation="invalidUsernameOrEmail"
+						<at-error [control]="loginForm.get('email')" validation="invalidemailOrEmail"
 							[message]="'Tên đăng nhập không đúng định dạng.'">
 						</at-error>
-						<ng-container *ngIf="fails && fails['username']">
-							<at-error [isForm]="false" [message]="fails['username'][0]">
+						<ng-container *ngIf="fails && fails['email']">
+							<at-error [isForm]="false" [message]="fails['email'][0]">
 							</at-error>
 						</ng-container>
 					</div>
@@ -54,7 +54,7 @@
 							<span>{{ fails['password'][0] }}</span>
 						</div> -->
 						<ng-container *ngIf="fails && fails['password']">
-							<at-error [isForm]="false" [message]="fails['username'][0]">
+							<at-error [isForm]="false" [message]="fails['email'][0]">
 							</at-error>
 						</ng-container>
 					</div>

@@ -35,9 +35,6 @@ export class FormValidatorService {
 			if (notRegister) {
 				isValid = REGEX_PHONE.test(value)
 			}
-			// if(!value.startsWith('0') && value.length >= 10) {
-			// 	isValid = true;
-			// }
 			return isValid ? null : { 'pattern': true };
 		};
 	}

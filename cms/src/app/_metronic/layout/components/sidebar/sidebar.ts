@@ -11,9 +11,16 @@ export interface ISideBarItem {
 export const SideBarItem: ISideBarItem[] = [
     {
         path: 'overview',
-        title:'Quản lý yêu cầu',
+        title:'Overview',
         icon:'./assets/media/icons/home-line.svg',
         module_prefix: ['overview'],
+        sub_menu: []
+    },
+	{
+        path: 'category',
+        title:'Danh mục',
+        icon:'./assets/media/icons/my-brief.svg',
+        module_prefix: ['category'],
         sub_menu: []
     },
     
