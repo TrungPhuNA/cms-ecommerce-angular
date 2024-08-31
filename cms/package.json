@@ -1,9 +1,9 @@
 {
-  "name": "at-web-crm-portal",
+  "name": "cms-ecommerce-angular",
   "version": "8.1.6",
   "scripts": {
-    "start dev": "ng serve -c dev --port 4200",
-    "start dev ssl": "ng serve -c dev --port 4200 --open --ssl",
+    "ng": "ng",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "rtl": "webpack --config=rtl.config.js",

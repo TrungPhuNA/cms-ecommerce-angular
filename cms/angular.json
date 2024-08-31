@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "at-web-crm-portal": {
+    "cms-ecommerce-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/at-web-crm-portal",
+            "outputPath": "dist/cms-ecommerce-angular",
             "allowedCommonJsDependencies": [
               "object-path",
               "clipboard.js",
@@ -46,57 +46,11 @@
             "scripts": []
           },
           "configurations": {
-            "dev": {
+			"development": {
               "optimization": false,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "5mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "10kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.ts"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "staging": {
-              "optimization": false,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "5mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "10kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.stag.ts"
-                }
-              ],
-              "outputHashing": "all"
+              "extractLicenses": false,
+              "sourceMap": true,
+              "vendorChunk": false
             },
             "production": {
               "budgets": [
@@ -119,13 +73,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "at-web-crm-portal:build:production"
+              "browserTarget": "cms-ecommerce-angular:build:production"
             },
             "dev": {
-              "browserTarget": "at-web-crm-portal:build:dev"
+              "browserTarget": "cms-ecommerce-angular:build:dev"
             },
             "staging": {
-              "browserTarget": "at-web-crm-portal:build:staging"
+              "browserTarget": "cms-ecommerce-angular:build:staging"
             }
           },
           "defaultConfiguration": "dev"
@@ -133,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "at-web-crm-portal:build"
+            "browserTarget": "cms-ecommerce-angular:build"
           }
         },
         "test": {
@@ -166,7 +120,7 @@
       }
     }
   },
-  "defaultProject": "at-web-crm-portal",
+  "defaultProject": "cms-ecommerce-angular",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics",
     "analytics": "c0b08a31-d312-47d1-91cf-60cf7becc150"
