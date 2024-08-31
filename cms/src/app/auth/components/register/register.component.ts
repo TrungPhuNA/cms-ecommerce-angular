@@ -6,7 +6,6 @@ import { AlertService, HelperService } from 'src/app/services';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormValidatorService } from 'src/app/services/common/form-validation.service';
 import { ConfigService } from 'src/app/services/config.service';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 import {  Helpers } from 'src/app/shared';
 import { STATUS_ERROR_API } from 'src/app/shared/constants/crm-constant';
 import { REGEX_EMAIL, REGEX_LINK, REGEX_LINK_V3, REGEX_NAME, REGEX_PHONE_VN, REGEX_USERNAME } from 'src/app/shared/constants/regex-data';
@@ -92,7 +91,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		private router: Router,
 		private formValidatorService: FormValidatorService,
         private activatedRoute: ActivatedRoute,
-        private gaService: GoogleAnalyticsService
 	) {
         
 	}
@@ -223,7 +221,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 				if(this.helper.getCookie('utm_source') &&  this.helper.getCookie('utm_source')!= '') {
 					this.helper.deleteCookie('utm_source')
 				}
-                if (data?.utm_source) this.gaService.sendEvent('login_register_form_bf_st_mail', { utm_source: data.utm_source });
 				this.fails = null;
 				if(this.login_type == 'social') {
 					this.alertService.fireSmall("success", "Đăng ký tài khoản thành công.");

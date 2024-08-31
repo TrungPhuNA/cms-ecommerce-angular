@@ -10,14 +10,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RegisterComponent } from './components/register/register.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { InlineSVGModule } from 'ng-inline-svg-2';
-import { ActiveAccountComponent } from './components/active-account/active-account.component';
 import { SpinnerModule } from '../shared';
 import {RecaptchaModule} from 'ng-recaptcha';
 import { FormMgsModule } from '../shared/components/forms/form-Invalid-message.module';
-import { SwitchAccountComponent } from './components/switch-account/switch-account.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { RegisterPubComponent } from './components/register-pub/register-pub.component';
 
 @NgModule({
     declarations: [
@@ -25,11 +20,6 @@ import { RegisterPubComponent } from './components/register-pub/register-pub.com
         LogoutComponent,
         AuthComponent,
         RegisterComponent,
-        ActiveAccountComponent,
-        SwitchAccountComponent,
-        ResetPasswordComponent,
-        ForgotPasswordComponent,
-        RegisterPubComponent,
     ],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA

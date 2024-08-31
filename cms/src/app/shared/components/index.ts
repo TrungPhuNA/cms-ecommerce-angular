@@ -11,4 +11,3 @@ export * from './advance-date-picker/advance-date-picker.module';
 export * from './oat-page-title/oat-page-title.component';
 export * from './oat-page-title/oat-page-title.model';
 export * from './month-picker/month-picker.module';
-export * from './show-popup-confirm/show-popup-confirm.module';

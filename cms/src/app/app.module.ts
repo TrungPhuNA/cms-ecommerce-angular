@@ -19,7 +19,6 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CurrencyPipe } from "@angular/common";
 import { ConfigService } from './services/config.service';
-import { GoogleAnalyticsService } from './services/google-analytics.service';
 
 export function loadConfig(globalService: ConfigService): Function {
 	return () => globalService.load();
@@ -62,7 +61,6 @@ export function loadConfig(globalService: ConfigService): Function {
 			multi: true
 		},
 		ErrorInterceptor,
-        GoogleAnalyticsService
 	],
 	bootstrap: [AppComponent],
 })

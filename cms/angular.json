@@ -50,6 +50,7 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
+			  "cache": false,
               "vendorChunk": false
             },
             "production": {
@@ -75,14 +76,12 @@
             "production": {
               "browserTarget": "cms-ecommerce-angular:build:production"
             },
-            "dev": {
-              "browserTarget": "cms-ecommerce-angular:build:dev"
-            },
-            "staging": {
-              "browserTarget": "cms-ecommerce-angular:build:staging"
+            "development": {
+              "browserTarget": "cms-ecommerce-angular:build:development"
             }
+            
           },
-          "defaultConfiguration": "dev"
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

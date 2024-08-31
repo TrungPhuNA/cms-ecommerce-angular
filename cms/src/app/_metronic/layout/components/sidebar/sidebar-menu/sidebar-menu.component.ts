@@ -1,7 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ISideBarItem, SideBarItem } from '../sidebar';
 import { Router } from '@angular/router';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 
 @Component({
     selector: 'app-sidebar-menu',
@@ -24,7 +23,6 @@ export class SidebarMenuComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private gaService: GoogleAnalyticsService
     ) {
         const user_info: any = localStorage.getItem('user_crm_info');
         this.userInfo = JSON.parse(user_info);
@@ -57,6 +55,5 @@ export class SidebarMenuComponent implements OnInit {
     }
 
     tracking(e: any) {
-        if (e?.target?.href?.includes('solutions.accesstrade.vn')) this.gaService.sendEvent('adv_click_discovery', { username: this.userInfo?.username });
     }
 }

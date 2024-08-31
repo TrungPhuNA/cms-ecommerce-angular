@@ -3,7 +3,6 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthService, UserType } from "../../../../../../services/auth.service";
 import { TranslateService } from "@ngx-translate/core";
 import { NavigationEnd, Router } from '@angular/router';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 
 @Component({
     selector: 'app-user-inner',
@@ -24,7 +23,6 @@ export class UserInnerComponent implements OnInit, OnDestroy {
         private translateService: TranslateService,
         private cdr: ChangeDetectorRef,
         private router: Router,
-        private gaService: GoogleAnalyticsService
     ) {
         let data: any = localStorage.getItem('user_crm_info');
 
@@ -91,7 +89,6 @@ export class UserInnerComponent implements OnInit, OnDestroy {
     }
 
     tracking(eventName: any) {
-        this.gaService.sendEvent(eventName, { username: this.userInfo?.username });
     }
 }
 

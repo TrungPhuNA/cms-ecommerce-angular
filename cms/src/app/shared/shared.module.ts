@@ -13,7 +13,6 @@ import { MonthPickerModule } from "./components/month-picker/month-picker.module
 import { BaseSearchFormService } from "./data/baseSearchForm.service";
 import { PipesModule } from './pipes/pipes.module';
 import { DirectivesModule } from './modules/directives.module';
-import { ShowPopupConfirmComponent } from './components/show-popup-confirm/show-popup-confirm.component';
 
 @NgModule({
     declarations: [

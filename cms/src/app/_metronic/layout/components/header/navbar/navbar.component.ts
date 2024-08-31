@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 
 @Component({
     selector: 'app-navbar',
@@ -21,7 +20,7 @@ export class NavbarComponent implements OnInit {
     user_info: any;
     avatar: any;
 
-    constructor(private router: Router, private authService: AuthService, private gaService: GoogleAnalyticsService) {
+    constructor(private router: Router, private authService: AuthService,) {
         let data: any = localStorage.getItem('user_crm_info');
         if (!data) {
             this.authService.getMe().subscribe(res => {
@@ -58,6 +57,5 @@ export class NavbarComponent implements OnInit {
     ngOnInit(): void { }
 
     tracking(eventName: any) {
-        this.gaService.sendEvent(eventName, { username: this.user_info?.username });
     }
 }

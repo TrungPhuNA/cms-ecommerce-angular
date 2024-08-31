@@ -9,7 +9,6 @@ import { isObject } from 'lodash';
 import { FormValidatorService } from 'src/app/services/common/form-validation.service';
 import { Helpers } from 'src/app/shared';
 import moment from 'moment';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 
 @Component({
     selector: 'app-login',
@@ -45,7 +44,6 @@ export class LoginComponent implements OnInit {
         private alertService: AlertService,
 		private FormValidatorService : FormValidatorService,
 		public helperService: HelperService,
-        private gaService: GoogleAnalyticsService
     ) {
         this.activatedRoute.queryParams.subscribe(res => {
             this.tracking_params = res;
@@ -82,12 +80,10 @@ export class LoginComponent implements OnInit {
                         let userInfo: any = res.data;
                         localStorage.setItem('user_crm_info', JSON.stringify(userInfo));
 						if(userInfo?.is_registering) {
-                            this.gaService.sendEvent('login_google_form_infor', { username: userInfo.username });
 							localStorage.setItem('login_type', 'social');
                         	this.route.navigate(['auth/register']);
 						} else {
 							if (res?.data) {
-                                this.gaService.sendEvent('login_google_login_success', { username: res.data?.user_name });
 								this.authService.setDataAccount(res.data);
 								this.authService.setJwtToken(this.authService.tokenField, res.data.access_token, res.data.expires_in);
 								Helpers.prototype.setCookie(this.authService.loginCrmAdvKey, moment().format(), 7);
@@ -132,7 +128,6 @@ export class LoginComponent implements OnInit {
 
     loginGoogle(event: Event) {
         event.preventDefault();
-        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${environment.google_client_id}&redirect_uri=${environment.google_redirect_url}&scope=email%20profile&prompt=select_account%20consent`;
     }
 
     login() {
@@ -140,7 +135,6 @@ export class LoginComponent implements OnInit {
         this.disabledButton = true;
         this.authService.login(this.loginForm.value).subscribe((res: any) => {
             if (res?.status == 'success') {
-                this.gaService.sendEvent('login_normal_login_success', { username: res?.data?.user_name });
                 this.fails = false;
                 window.location.href = 'overview';
             } else if (res?.status == 'fail_validate' || res?.status == 'fail') {
@@ -182,7 +176,6 @@ export class LoginComponent implements OnInit {
     }
 
     routeToRegister() {
-        this.gaService.sendEvent('login_register_form_click');
         this.route.navigate(['auth/register'],
             {
                 queryParams: { ...this.tracking_params }
@@ -191,7 +184,6 @@ export class LoginComponent implements OnInit {
     }
 
 	loginSocial(provider: string) {
-        if (provider == 'google') this.gaService.sendEvent('login_google_login_click');
 		this.authService.loginSocial(provider);
 	}
 

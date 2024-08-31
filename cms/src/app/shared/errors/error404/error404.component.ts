@@ -10,7 +10,6 @@ import {
     ToggleComponent,
 } from '../../../_metronic/kt/components';
 import { ThemeModeService } from '../../../_metronic/partials/layout/theme-mode-switcher/theme-mode.service';
-import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 
 @Component({
     selector: 'app-error404',
@@ -21,8 +20,7 @@ export class Error404Component implements OnInit, OnDestroy {
     private unsubscribe: Subscription[] = [];
     userType: any = localStorage.getItem('user_type');
 
-    constructor(private router: Router, private modeService: ThemeModeService, private gaService: GoogleAnalyticsService) {
-        this.gaService.sendEvent('adv_404_page');
+    constructor(private router: Router, private modeService: ThemeModeService) {
     }
 
     ngOnInit(): void {
