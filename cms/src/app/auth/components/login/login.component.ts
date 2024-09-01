@@ -67,9 +67,10 @@ export class LoginComponent implements OnInit {
         this.authService.login(this.loginForm.value).subscribe((res: any) => {
             if (res?.status == 'success') {
                 this.fails = false;
+				console.log(res?.data);
 				localStorage.setItem('access_token', res?.data?.user?.access_token);
 				localStorage.setItem('user', JSON.stringify(res?.data?.user));
-                // window.location.href = 'overview';
+				this.route.navigate(['/overview'])
             } else if (STATUS_ERROR_API.includes(res?.status)) {
                 this.fails = res.data;
                 this.disabledButton = false;

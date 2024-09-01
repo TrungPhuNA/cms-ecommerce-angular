@@ -20,13 +20,12 @@ export class LoginGuard implements CanActivate {
     }
 
     canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-        return new Promise((resolve) => {
-			const access_token = localStorage.getItem('access_token');
-			if (access_token && access_token != '') {
-				resolve(true);
-			} else {
-				resolve(false);
-			}
-        });
+        const access_token = localStorage.getItem('access_token');
+		console.log(access_token);
+		if (access_token && access_token != '') {
+			return true;
+		} 
+		this.router.navigate(['/auth/login'])
+		return false;
     }
 }

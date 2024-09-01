@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.modeService.init();
-    this.authService.logoutAfterTimeout();
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;

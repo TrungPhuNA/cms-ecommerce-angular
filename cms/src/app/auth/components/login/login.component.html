@@ -49,18 +49,14 @@
 						<at-error [control]="loginForm.get('password')" validation="minlength"
 							[message]="errors.password.minlength">
 						</at-error>
-						
-						<!-- <div class="sub-invalid" *ngIf="fails && fails['password']">
-							<span>{{ fails['password'][0] }}</span>
-						</div> -->
 						<ng-container *ngIf="fails && fails['password']">
 							<at-error [isForm]="false" [message]="fails['email'][0]">
 							</at-error>
 						</ng-container>
 					</div>
-					<div class="col-12 text-right mb-5">
+					<!-- <div class="col-12 text-right mb-5">
 						<a href="/auth/forgot-password"><label class="form-label text-orange fw-600 mb-0 cursor-pointer">Quên mật khẩu</label></a>
-					</div>
+					</div> -->
 					<div class="col-12 mb-5 mt-4">
 						<button *ngIf="!disabledButton" class="btn btn-orange w-100" (click)="login()"
 							[disabled]="loginForm.invalid || disabledButton">Đăng nhập</button>

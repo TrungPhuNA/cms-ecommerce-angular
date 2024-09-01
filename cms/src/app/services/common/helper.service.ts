@@ -281,5 +281,13 @@ export class HelperService {
 		localStorage.removeItem(key)
 	}
 
+	buildPaging(meta: any) {
+		return {
+			page: meta?.current_page || meta?.page,
+			total: meta?.total || 0,
+			page_size: meta?.per_page || meta?.page_size
+		}
+	}
+
 	
 }

@@ -12,7 +12,7 @@ export class AlertService {
     ) {
     }
 
-    fireSmall(type: any, title: any, timer?: any) {
+    fireSmall(type: any, title: any, timer?: any, reload?: boolean) {
         Swal.fire({
             icon: type,
             title: title,
@@ -21,6 +21,9 @@ export class AlertService {
             position: 'top-end',
             timer: timer ? timer : 3000
         });
+		if(reload) {
+			window.location.reload()
+		}
     }
 
 	

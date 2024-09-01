@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, finalize, map } from 'rxjs/operators';
 import { environment } from "../../../environments/environment";
 import { API_V1 } from "../../shared";
 import { AuthService } from "../auth.service";
@@ -20,21 +20,20 @@ export class ApiService {
         private http: HttpClient,
         private authService: AuthService,
         private helperService: HelperService,
-        private alertService: AlertService
+        private alertService: AlertService,
     ) {
         this.headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'x-type': 'ADV',
         });
     }
 
 
     getBaseApiUrl(): string {
-        return environment.apiUrl + API_V1 + '/adv';
+        return environment.apiUrl + API_V1 + '/admin';
     }
 
-    getData(path: string, filters?: any): Observable<any> {
+    getData(path: string, filters?: any, cdr?: any): Observable<any> {
         let params = this.helperService.buildParams(filters);
         return this.http.get<any>(this.getBaseApiUrl() + path, { headers: this.headers, params: params }).pipe(
             map(response => response),

@@ -18,10 +18,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 		return next.handle(req).pipe(catchError(err => {
 			let dataError = err?.error?.error_code || null;
 			if (err?.status === 401 || dataError == 'code002' || dataError == 'code001') {
-				// auto logout if 401 response returned from api
-				this.auth.logout();
-				this.auth.logoutWithoutCache();
-				// window.location.href = '/auth/login';
 			}
 			const error = err.error
 			return throwError(error);

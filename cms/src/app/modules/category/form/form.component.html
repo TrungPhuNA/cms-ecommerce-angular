@@ -1,1 +1,25 @@
-<p>form works!</p>
+<div class="card">
+	<h2 class="fs16 fw-600 mb-5">{{title}}</h2>
+	<div class="position-absolute right-0 px-2 cursor-pointer" (click)="onClose()">
+		<i class="fa fa-xmark" style="font-size: 1.25rem;"></i>
+	</div>
+	<form [formGroup]="form">
+		<div class="row mt-5">
+			<div class="col-12 form-group">
+				<label class="form-label required" translate>Tên</label>
+				<input class="form-control" [ngClass]="{'is-invalid': 
+					(helperService.showStatusError(form, 'name', submitted))}"
+					(focusout)="helperService.onTrimFocusOutForm(form, 'name', $event)"
+					placeholder="{{ 'Nhập giá trị'}}" formControlName="name" maxlength="255" />
+				<at-error [submitted]="submitted" [control]="form.get('name')" validation="required"
+					message="Trường này không được để trống.">
+				</at-error>
+			</div>
+		</div>
+	</form>
+	<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
+		<button class="btn btn-sm btn-outline-base mx-3" (click)="onClose()" translate>Cancel</button>
+		<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
+	</div>
+</div>
+<app-spinner [loading]="loading" [fullScreen]="false" [bdColor]="'#ffffff'"></app-spinner>

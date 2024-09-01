@@ -42,19 +42,6 @@ export class AuthService {
 		'Content-Type': 'application/json',
 	});
 
-	logoutAfterTimeout(): void {
-		const loginTime = moment(Helpers.prototype.getCookie(this.loginCrmAdvKey));
-		if (!loginTime) {
-			this.logout();
-			return;
-		}
-		const logoutTime = loginTime.add(6, 'hours');
-		const now = moment();
-		const timeToLogout = logoutTime.diff(now);
-		setTimeout(() => {
-			this.logout();
-		}, timeToLogout);
-	}
 
 	register(data: any, type?: any): Observable<any> {
 		let url = `admin/auth/register`;
@@ -89,15 +76,17 @@ export class AuthService {
 	}
 
 	getMe(): Observable<any> {
-		return this.http.get<ResponseUserModel>(`${this.getBaseUrl()}/adv/me`);
+		return this.http.get<ResponseUserModel>(`${this.getBaseUrl()}/admin/me`)
+		.pipe(map(response => response), catchError((err) => { return of(err) }));
 	}
 
 	updateMe(data: any): Observable<any> {
-		return this.http.put<ResponseUserModel>(`${this.getBaseUrl()}/adv/me`, data).pipe(map(response => response), catchError((err) => { return of(err) }));
+		return this.http.put<ResponseUserModel>(`${this.getBaseUrl()}/admin/me`, data)
+		.pipe(map(response => response), catchError((err) => { return of(err) }));
 	}
 
     updatePassword(data: any): Observable<any> {
-        return this.http.post<ResponseUserModel>(`${this.getBaseUrl()}/adv/update-password`, data).pipe(map(response => response), catchError((err) => { return of(err) }));
+        return this.http.post<ResponseUserModel>(`${this.getBaseUrl()}/admin/update-password`, data).pipe(map(response => response), catchError((err) => { return of(err) }));
     }
 
 	getUser(): Observable<any> {
@@ -117,7 +106,6 @@ export class AuthService {
 	}
 
 	logoutWithoutCache(params?: any) {
-		this.logout();
 	}
 
 	params(object: any) {

@@ -50,7 +50,6 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-			  "cache": false,
               "vendorChunk": false
             },
             "production": {
