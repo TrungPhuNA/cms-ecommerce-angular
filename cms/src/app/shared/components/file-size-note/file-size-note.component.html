@@ -1,0 +1,6 @@
+<span *ngIf="imgSize" class="mt-1 note text-gray-600 d-flex gap-2 align-items-center">
+  <i class="fa fa-check-circle" *ngIf="imgSize <= maxSize"></i>
+  <i class="fa fa-exclamation-circle" *ngIf="imgSize > maxSize" [ngbTooltip]="tipContent" [positionTarget]="noteTarget"></i>
+  {{noteLabel}} <b #noteTarget [ngClass]="{'text-rose-500': imgSize>maxSize, 'text-lime-500': imgSize<=maxSize}">{{imgSize}}MB</b>
+</span>
+<ng-template #tipContent>Dung lượng ảnh không vượt quá <strong>{{maxSize}}MB</strong></ng-template>

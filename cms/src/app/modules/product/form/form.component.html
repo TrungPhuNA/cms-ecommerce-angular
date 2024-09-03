@@ -1,0 +1,87 @@
+<div class="py-5">
+	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
+
+	<div class="card">
+		<form [formGroup]="form">
+			<div class="row  mt-5">
+				<div class="col-md-5 col-12 mb-5">
+					<app-upload-image imageWidth="300px" imageHeight="200px" [imageFiles]="images"
+						requiredMessage="Hình ảnh là bắt buộc!" [maxItem]="1" [isRequired]="true"
+						(imagesToUpload)="getImages($event)" (imagesInvalid)="handleUpload($event)"
+						(itemsToRemove)="imageToRemove($event)"></app-upload-image>
+					<app-file-size-note [imgSize]="images[0]?.imgSize" [maxSize]="0.5"></app-file-size-note>
+					<small>Vui lòng chọn ảnh tối đa 500KB</small>
+				</div>
+				<div class="col-md-7 col-12 mb-5">
+					<div class="row">
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label required" translate>Tên</label>
+							<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'name', submitted))}"
+								(focusout)="helperService.onTrimFocusOutForm(form, 'name', $event)"
+								placeholder="{{ 'Nhập giá trị'}}" formControlName="name" maxlength="255" />
+							<at-error [submitted]="submitted" [control]="form.get('name')" validation="required"
+								[message]="requiredForm">
+							</at-error>
+						</div>
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label required" translate>Danh mục</label>
+							<ng-select [items]="listCategories" bindLabel="name"
+								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'category_id')}"
+								bindValue="id" formControlName="category_id" placeholder="Chọn giá trị"
+								[searchable]="true"></ng-select>
+							<at-error [submitted]="submitted" [control]="form.controls['status']" validation="required"
+								[message]="requiredForm"></at-error>
+
+						</div>
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label required" translate>Trạng thái</label>
+							<ng-select [items]="statuses" bindLabel="name"
+								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'status')}"
+								bindValue="value" formControlName="status" placeholder="Chọn giá trị"
+								[searchable]="true"></ng-select>
+							<at-error [submitted]="submitted" [control]="form.controls['status']" validation="required"
+								[message]="requiredForm"></at-error>
+
+						</div>
+						<div class="col-md-6 col-12 mb-5 form-group">
+							<label class="form-label required" translate>Số lượng</label>
+							<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'number', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
+								formControlName="number" />
+							<at-error [submitted]="submitted" [control]="form.get('number')" validation="required"
+								[message]="requiredForm">
+							</at-error>
+						</div>
+						<div class="col-md-6 col-12 mb-5 form-group">
+							<label class="form-label required" translate>Giá</label>
+							<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'price', submitted))}"
+								(focusout)="helperService.onTrimFocusOutForm(form, 'price', $event)"
+								placeholder="{{ 'Nhập giá trị'}}" formControlName="price" />
+							<at-error [submitted]="submitted" [control]="form.get('price')" validation="required"
+								[message]="requiredForm">
+							</at-error>
+						</div>
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label required" translate>Mô tả</label>
+							<div formControlName="description" [ngxSummernote]="config"
+								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'description')}"
+								(summernoteModelChange)="logEvent($event)">
+							</div>
+							
+							<at-error [submitted]="submitted" [control]="form.get('description')" validation="required"
+								[message]="requiredForm">
+							</at-error>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
+			<button class="btn btn-sm btn-outline-base mx-3" translate>Cancel</button>
+			<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
+		</div>
+	</div>
+	<app-spinner [loading]="loading" [fullScreen]="true" [bdColor]="'rgba(0, 0, 0, 0.5)'" ></app-spinner>
+</div>

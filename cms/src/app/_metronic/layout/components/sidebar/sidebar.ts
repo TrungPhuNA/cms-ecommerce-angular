@@ -12,15 +12,29 @@ export const SideBarItem: ISideBarItem[] = [
     {
         path: 'overview',
         title:'Overview',
-        icon:'./assets/media/icons/home-line.svg',
+        icon:'fa-sharp-duotone fa-solid fa-chart-simple',
         module_prefix: ['overview'],
         sub_menu: []
     },
 	{
         path: 'category',
         title:'Danh mục',
-        icon:'./assets/media/icons/my-brief.svg',
+        icon:'fa-sharp-duotone fa-solid fa-layer-group',
         module_prefix: ['category'],
+        sub_menu: []
+    },
+	{
+        path: 'product',
+        title:'Sản phẩm',
+        icon:'fa-sharp-duotone fa-solid fa-list',
+        module_prefix: ['product'],
+        sub_menu: []
+    },
+	{
+        path: 'warehouse',
+        title:'Kho',
+        icon:'fa-sharp-duotone fa-solid fa-house',
+        module_prefix: ['warehouse'],
         sub_menu: []
     },
     

@@ -2,6 +2,8 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserType } from "../auth.service";
+import { environment } from 'src/environments/environment';
+import { DEFAULT_IMG } from 'src/app/shared/constants/crm-constant';
 
 @Injectable({
 	providedIn: 'root'
@@ -287,6 +289,13 @@ export class HelperService {
 			total: meta?.total || 0,
 			page_size: meta?.per_page || meta?.page_size
 		}
+	}
+
+	buildImage(image: any, is_user: any = false) {
+		if(image) {
+			return `${environment.apiUrl}api/v1/${image}`
+		}
+		return is_user? DEFAULT_IMG : DEFAULT_IMG;
 	}
 
 	
