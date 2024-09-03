@@ -10,4 +10,5 @@ export * from './advance-date-picker/advance-date-picker.component';
 export * from './advance-date-picker/advance-date-picker.module';
 export * from './oat-page-title/oat-page-title.component';
 export * from './oat-page-title/oat-page-title.model';
+export * from './upload/upload.module';
 export * from './month-picker/month-picker.module';

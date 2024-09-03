@@ -1,0 +1,45 @@
+<div class="images-content" [ngClass]="class">
+  <ng-container *ngIf="imageFiles.length > 0">
+    <div class="image-frame" [ngStyle]="{'width': imageWidth || imageWH, 'height': imageHeight || imageWH}"
+         *ngFor="let image of imageFiles, index as index ">
+      <div *ngIf="!disable" class="actions-overlay">
+          <i class="icon-close mr-3" (mouseup)="deleteImage($event, index)"></i>
+          <i class="icon-refresh" (click)="changeFile.click()"></i>
+      </div>
+      <img src="{{image.imgBase64 || image.imgLink}}" onError="this.src='assets/media/common/non-img.jpeg';"
+	  class="h-100 w-100" 
+	  alt=""/>
+      <input [disabled]="disable" (click)="onInputClick($event)" style="display: none" type="file" #changeFile
+             (change)="onFileChanged($event, index)" accept="image/*"/>
+      <i
+        *ngIf="imageRatio && image.imageMeta && (image.imageMeta.ratio !== ratioNumber)"
+        class="fa fa-exclamation-circle icon-warning"
+        ngbTooltip="Tỉ lệ ảnh không phù hợp"></i>
+    </div>
+  </ng-container>
+  <ng-template [ngIf]="showAddNewImage && applyRole">
+    <ng-container *ngTemplateOutlet="imageFrame"></ng-container>
+  </ng-template>
+  <br>
+
+  <ng-template [ngIf]="imageFiles.length < maxItem && !applyRole">
+    <ng-container *ngTemplateOutlet="imageFrame"></ng-container>
+  </ng-template>
+
+
+</div>
+<p *ngIf="minItem && imageFiles.length < minItem" class="alert-error">Yêu cầu tối thiểu {{minItem}} ảnh</p>
+<div class="alert-error" *ngIf="isWrongRatio">Tỉ lệ ảnh yêu cầu {{requiredRatio.width}}:{{requiredRatio.height}}</div>
+<app-file-size-note *ngIf="maxSize" [noteLabel]="noteLabel" [maxSize]="maxSize"
+                    [imgSize]="totalImgSize"></app-file-size-note>
+
+
+<ng-template #imageFrame>
+  <div class="image-frame"
+      [ngStyle]="{'width': imageWidth || imageWH, 'height': imageHeight ||imageWH}">
+      <i class="icon-plus" (click)="newFile.click()"></i>
+      <input (click)="onInputClick($event)" style="display: none" type="file" #newFile
+            (change)="onAddFiles($event)"
+            accept="image/*" multiple/>
+  </div>
+</ng-template>

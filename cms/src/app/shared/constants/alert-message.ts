@@ -13,5 +13,6 @@ export const ALERT_ERROR = {
 	update: "Cập nhật thất bại.",
 	delete: "Xóa thất bại.",
 	form_invalid: "Form không đúng định dạng",
+	not_found: "Dữ liệu không tồn tại",
 	common: "Có lỗi xảy ra, vui lòng thử lại"
 };

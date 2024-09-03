@@ -18,20 +18,8 @@ export class FileUploadService {
     upload(file: any): Observable<any> {
         const formData: FormData = new FormData();
         formData.append('file', file);
-        return this.http.post(this.baseUrl + 'api/v1/adv/upload-file', formData)
+        return this.http.post(this.baseUrl + 'api/v1/uploads', formData)
             .pipe(catchError(error => error));
     }
-
-    // uploadMultiImages(files: any): Observable<any> {
-    //     const uploadData = new FormData();
-    //     const headers = this.headers;
-    //     if (files && files.length > 0) {
-    //         files.forEach((file: File) => {
-    //             uploadData.append('files[]', file);
-    //         });
-    //     }
-    //     return this.http.post(this.baseUrl + '/api/v1/multi-upload', uploadData, { headers })
-    //         .pipe(catchError(error => error));
-    // }
 
 }

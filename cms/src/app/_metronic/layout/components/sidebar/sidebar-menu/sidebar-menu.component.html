@@ -60,7 +60,9 @@
 </ng-template>
 <ng-template #menuParentItemTmpl let-svgIcon="svgIcon" let-title="title">
     <span class="menu-link">
-        <span class="menu-icon"><span class="svg-icon svg-icon-2" [inlineSVG]="svgIcon"></span></span>
+        <span class="menu-icon"><span class="svg-icon svg-icon-2" >
+			<i class="{{svgIcon}}"></i>
+		</span></span>
         <span class="menu-title">{{title | translate}}</span><span class="menu-arrow"></span></span>
 </ng-template>
 
@@ -68,13 +70,17 @@
     <div class="menu-item" (click)="tracking($event)">
         <a *ngIf="!target" class="menu-link without-sub" [routerLink]="routerLink" routerLinkActive="active">
             <span class="menu-icon">
-                <span [inlineSVG]="svgIcon" class="svg-icon svg-icon-2"></span>
+                <span  class="svg-icon svg-icon-2">
+					<i class="{{svgIcon}}"></i>
+				</span>
             </span>
             <span class="menu-title">{{title | translate}}</span>
         </a>
         <a *ngIf="target" class="menu-link without-sub" href="{{routerLink}}" target="_blank">
             <span class="menu-icon">
-                <span [inlineSVG]="svgIcon" class="svg-icon svg-icon-2"></span>
+                <span class="svg-icon svg-icon-2">
+					<i class="{{svgIcon}}"></i>
+				</span>
             </span>
             <span class="menu-title">{{title | translate}}</span>
         </a>
