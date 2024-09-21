@@ -65,9 +65,8 @@ export class LoginComponent implements OnInit {
     login() {
         this.disabledButton = true;
         this.authService.login(this.loginForm.value).subscribe((res: any) => {
-            if (res?.status == 'success') {
+            if (res?.status == 'success' && res?.data?.user?.access_token) {
                 this.fails = false;
-				console.log(res?.data);
 				localStorage.setItem('access_token', res?.data?.user?.access_token);
 				localStorage.setItem('user', JSON.stringify(res?.data?.user));
 				this.route.navigate(['/overview'])
