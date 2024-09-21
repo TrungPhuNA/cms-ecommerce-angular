@@ -121,42 +121,46 @@ export class ProfileComponent implements OnInit {
 	submit() {
 		this.loading = true;
 		this.submitted = true;
-		// if (this.file) {
-		// 	this.uploadService.upload(this.file).subscribe(res => {
-		// 		if (res?.status == 'success') {
-		// 			let data = { ...this.form.value, avatar: res?.data?.file }
-		// 			this.authService.updateMe(data).subscribe(response => {
-		// 				this.loading = false;
-		// 				if (response?.status == 'success') {
-		// 					this.submitted = false;
-		// 					this.alertService.fireSmall('success', 'Cập nhật ảnh đại diện thành công!');
-		// 				} else this.alertService.fireSmall('error', response?.message || 'Có lỗi xảy ra!');
-		// 				this.cdr.detectChanges();
-		// 			});
-		// 		} else
-		// 			this.alertService.fireSmall('error', res?.message || 'Có lỗi xảy ra!');
-		// 		this.cdr.detectChanges();
-		// 	}, error => {
-		// 		this.loading = false;
-		// 		this.cdr.detectChanges();
-		// 	});
-		// } else {
-			let data = { ...this.form.value }
-			this.authService.updateMe(data).subscribe(response => {
-				this.loading = false;
-
-				if (response?.status == 'success') {
-					this.submitted = false;
-					this.userInfo = response?.data?.user;
-					localStorage.setItem('user', JSON.stringify(this.userInfo));
-					
-					this.alertService.fireSmall('success', ALERT_SUCCESS.update, null, true)
+		if (this.file) {
+			this.uploadService.upload(this.file).subscribe(res => {
+				if (res?.status == 'success') {
+					let data = { ...this.form.value, avatar: res?.data?.file }
+					this.authService.updateMe(data).subscribe(response => {
+						this.loading = false;
+						if (response?.status == 'success') {
+							this.submitted = false;
+							this.alertService.fireSmall('success', 'Cập nhật thành công!');
+						} else this.alertService.fireSmall('error', response?.message || 'Có lỗi xảy ra!');
+						this.cdr.detectChanges();
+					});
 				} else {
-					this.alertService.fireSmall('error', response?.message || 'Có lỗi xảy ra!');
+					this.loading = false;
+					this.alertService.fireSmall('error', res?.message || 'Có lỗi xảy ra!');
+
 				}
 				this.cdr.detectChanges();
 			});
-		// }
+		} else {
+			this.updateProfile();
+		}
+	}
+
+	updateProfile() {
+		let data = { ...this.form.value }
+		this.authService.updateMe(data).subscribe(response => {
+			this.loading = false;
+
+			if (response?.status == 'success') {
+				this.submitted = false;
+				this.userInfo = response?.data?.user;
+				localStorage.setItem('user', JSON.stringify(this.userInfo));
+
+				this.alertService.fireSmall('success', ALERT_SUCCESS.update, null, true)
+			} else {
+				this.alertService.fireSmall('error', response?.message || 'Có lỗi xảy ra!');
+			}
+			this.cdr.detectChanges();
+		});
 	}
 
 	openModal() {
@@ -174,8 +178,8 @@ export class ProfileComponent implements OnInit {
 	}
 
 	changeText(event: any, key: string) {
-		if(event) {
-			if(this.fails && this.fails[`${key}`]) {
+		if (event) {
+			if (this.fails && this.fails[`${key}`]) {
 				this.fails[`${key}`] = null;
 			}
 		}
@@ -189,7 +193,7 @@ export class ProfileComponent implements OnInit {
 
 	resetForm() {
 		this.form.reset();
-		this.form.patchValue({...this.userInfo});
+		this.form.patchValue({ ...this.userInfo });
 		this.submitted = false;
 		this.fails = {
 			email: null,
