@@ -9,7 +9,7 @@ import { isObject } from 'lodash';
 import { FormValidatorService } from 'src/app/services/common/form-validation.service';
 import { Helpers } from 'src/app/shared';
 import moment from 'moment';
-import { STATUS_ERROR_API } from 'src/app/shared/constants/crm-constant';
+import { STATUS_ERROR_API } from 'src/app/shared/constants/common';
 
 @Component({
     selector: 'app-login',

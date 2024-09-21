@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
 import { AlertService, HelperService, ProductService } from 'src/app/services';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/shared';
-import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/crm-constant';
+import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
 
 @Component({
 	selector: 'app-index',

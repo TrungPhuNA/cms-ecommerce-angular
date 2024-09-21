@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FormValidatorService } from 'src/app/services/common/form-validation.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ALERT_SUCCESS } from 'src/app/shared';
-import { DEFAULT_IMG } from 'src/app/shared/constants/crm-constant';
+import { AVATAR_DEFAULT, DEFAULT_IMG } from 'src/app/shared/constants/common';
 import { REGEX_EMAIL, REGEX_NAME } from 'src/app/shared/constants/regex-data';
 
 @Component({
@@ -69,6 +69,8 @@ export class ProfileComponent implements OnInit {
 
 	}
 
+	defaultAvatar = AVATAR_DEFAULT
+
 	getInfo() {
 		this.loading = true;
 		this.authService.getMe().subscribe(res => {
@@ -78,7 +80,7 @@ export class ProfileComponent implements OnInit {
 				this.form.patchValue({
 					...res?.data?.user
 				});
-				this.base64Image = this.userInfo?.avatar || null;
+				this.base64Image = this.userInfo?.avatar || AVATAR_DEFAULT;
 			}
 			this.cdr.detectChanges();
 		}, error => {

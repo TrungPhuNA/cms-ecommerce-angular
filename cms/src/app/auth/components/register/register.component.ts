@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FormValidatorService } from 'src/app/services/common/form-validation.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { ALERT_SUCCESS, Helpers } from 'src/app/shared';
-import { STATUS_ERROR_API } from 'src/app/shared/constants/crm-constant';
+import { STATUS_ERROR_API } from 'src/app/shared/constants/common';
 import { REGEX_EMAIL, REGEX_NAME,  } from 'src/app/shared/constants/regex-data';
 
 @Component({
