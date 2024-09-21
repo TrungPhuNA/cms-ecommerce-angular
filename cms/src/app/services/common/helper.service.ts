@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserType } from "../auth.service";
 import { environment } from 'src/environments/environment';
-import { DEFAULT_IMG } from 'src/app/shared/constants/crm-constant';
+import { DEFAULT_IMG } from 'src/app/shared/constants/common';
 
 @Injectable({
 	providedIn: 'root'

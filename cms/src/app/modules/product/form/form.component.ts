@@ -7,7 +7,7 @@ import { finalize } from 'rxjs';
 import { AlertService, FileUploadService, HelperService, ProductService } from 'src/app/services';
 import { CategoryService } from 'src/app/services/category.service';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, FileUploadModel, HomeBreadcrumb } from 'src/app/shared';
-import { STATUS_PRODUCTS } from 'src/app/shared/constants/crm-constant';
+import { STATUS_PRODUCTS } from 'src/app/shared/constants/common';
 @Component({
 	selector: 'app-form',
 	templateUrl: './form.component.html',

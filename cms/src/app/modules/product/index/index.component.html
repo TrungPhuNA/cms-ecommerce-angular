@@ -28,7 +28,7 @@
 				<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
 					<table class="table table-row-bordered table-hover align-middle cursor-default">
 						<div class="position-relative h-400px" *ngIf="loading">
-							<app-spinner [loading]="loading" [fullScreen]="false" [bdColor]="'#ffffff'"></app-spinner>
+							<app-spinner [loading]="loading"></app-spinner>
 						</div>
 						<ng-container *ngIf="!loading">
 							<thead style="background-color: #F9FAFB;">

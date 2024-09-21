@@ -4,7 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
 import { AlertService, HelperService } from 'src/app/services';
 import { CategoryService } from 'src/app/services/category.service';
-import { DEFAULT_IMG } from 'src/app/shared/constants/crm-constant';
+import { DEFAULT_IMG } from 'src/app/shared/constants/common';
 import { FormComponent } from '../form/form.component';
 import { ALERT_ERROR, ALERT_SUCCESS } from 'src/app/shared';
 
