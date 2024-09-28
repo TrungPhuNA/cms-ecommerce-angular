@@ -59,6 +59,11 @@ export class OutcomeComponent implements OnInit {
 		this.getListData();
 	}
 
+	reset() {
+		this.searchForm.reset();
+		this.search()
+	}
+
 	getListData() {
 		this.loading = true;
 		let params = {

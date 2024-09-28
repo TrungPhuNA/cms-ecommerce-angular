@@ -4,25 +4,34 @@
 		<div class="card-body p-0 mt-5">
 			<div style="border: 1px solid #EAECF0; border-radius: 16px">
 				<div class="p-5">
-					<div class="row">
-						<div class="col-12 d-md-flex justify-content-md-between">
-							<div class="d-md-flex justify-content-md-between flex-md-wrap align-items-center gap-3">
-								<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
-									<div class="d-flex align-items-center  mb-4">
-										<span [inlineSVG]="'./assets/media/icons/search01.svg'"
-											class="svg-icon svg-icon-1" (click)="search()"></span>
-										<input class="form-control search-input" placeholder="Tìm kiếm theo tên"
-											formControlName="name">
-									</div>
-								</form>
-								<a class="btn btn-orange mb-4 text-right h-40 d-flex align-items-center gap-2"
-									routerLink="/product/store">
-									<i class="fa fa-plus m-0" style="color: #ffffff"></i>
-									<span>Tạo mới</span>
-								</a>
-							</div>
+					<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
+						<div class="form-group col-md-4 col-12">
+							<label class="form-label">Product Name:</label>
+							<input class="form-control search-input" placeholder="Product name" formControlName="name">
 						</div>
+
+					</form>
+
+					<div class=" d-flex justify-content-between align-items-end my-3">
+						<div class="d-flex gap-5">
+							<a class="btn btn-primary text-right h-40 d-flex align-items-center gap-2"
+								(click)="search()">
+								<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+								<span>Tìm kiếm</span>
+							</a>
+							<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2"
+								(click)="reset()">
+								<i class="fa fa-sync m-0"></i>
+								
+							</a>
+						</div>
+						<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
+							routerLink="/warehouse/income/store">
+							<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+							<span>Tạo mới</span>
+						</a>
 					</div>
+
 				</div>
 
 				<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
@@ -35,10 +44,11 @@
 								<tr class="fw-500 border-top">
 									<th class="text-nowrap text-center px-2" translate>#</th>
 									<th class="text-nowrap text-center" translate>Avatar</th>
-									<th class="text-nowrap" translate>Name</th>
-									<th class="text-nowrap" translate>Slug</th>
-									<th class="text-nowrap" translate>Status</th>
-									<th class="text-nowrap" translate>Created at</th>
+									<th class="text-nowrap" translate>Product Name</th>
+									<th class="text-nowrap" translate>Quantity</th>
+									<th class="text-nowrap" translate>Price</th>
+									<th class="text-nowrap" translate>Income at</th>
+									<th class="text-nowrap" translate>User</th>
 									<th class="text-nowrap text-center" translate>Action</th>
 								</tr>
 							</thead>
@@ -46,24 +56,23 @@
 								<ng-container *ngIf="listData?.length > 0, else noData">
 									<ng-container *ngFor="let item of listData; index as i">
 										<tr class="border-bottom">
-											<td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i + 1
+											<td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i
+												+ 1
 												}}</td>
 											<td class="text-nowrap ">
-												<img class="mx-auto" [src]="helperService.buildImage(item.avatar)" alt="{{item?.id}}"
-													style="width: 80px; height: 80px;">
+												<img class="mx-auto" [src]="helperService.buildImage(item.avatar)"
+													alt="{{item?.id}}" style="width: 80px; height: 80px;">
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.name }}
+												{{ item.product?.name }}
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.slug }}
+												{{ item.quantity }}
 											</td>
 											<td class="text-nowrap">
-												<span class="{{item.status_class}}">
-													{{item.status_name}}
-												</span>
+												{{item.price | thousandsSeparator:'đ'}}
 											</td>
-											<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
+											<td class="text-nowrap">{{ item.date | date: 'dd/MM/YYYY' }}</td>
 
 											<td class="text-nowrap text-center px-4">
 												<button mat-icon-button [matMenuTriggerFor]="menu"
@@ -72,8 +81,7 @@
 												</button>
 												<mat-menu #menu="matMenu">
 													<a mat-menu-item class="d-flex align-items-center"
-														[routerLink]="'/product/edit/'+item.id"
-													>
+														[routerLink]="'/warehouse/income/edit/'+item.id">
 														<span>Cập nhật</span>
 													</a>
 													<button mat-menu-item class="d-flex align-items-center"

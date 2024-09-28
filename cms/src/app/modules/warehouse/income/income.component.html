@@ -7,17 +7,30 @@
 					<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
 						<div class="form-group col-md-4 col-12">
 							<label class="form-label">Product Name:</label>
-							<input class="form-control search-input" placeholder="Product name"
-								formControlName="name">
+							<input class="form-control search-input" placeholder="Product name" formControlName="name">
 						</div>
-						<div class="col-md-4 col-12">
-							<a class="btn btn-orange mb-4 text-right h-40 d-flex align-items-center gap-2"
-								routerLink="/warehouse/income/store">
+
+					</form>
+
+					<div class=" d-flex justify-content-between align-items-end my-3">
+						<div class="d-flex gap-5">
+							<a class="btn btn-primary text-right h-40 d-flex align-items-center gap-2"
+								(click)="search()">
 								<i class="fa fa-plus m-0" style="color: #ffffff"></i>
-								<span>Tạo mới</span>
+								<span>Tìm kiếm</span>
+							</a>
+							<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2"
+								(click)="reset()">
+								<i class="fa fa-sync m-0"></i>
+								
 							</a>
 						</div>
-					</form>
+						<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
+							routerLink="/warehouse/income/store">
+							<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+							<span>Tạo mới</span>
+						</a>
+					</div>
 
 				</div>
 
