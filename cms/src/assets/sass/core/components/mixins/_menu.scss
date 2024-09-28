@@ -224,7 +224,7 @@
 	&.show > .menu-link {
 		transition: $transition-link;
 
-		@include menu-link-theme($title-color, $icon-color, $bullet-color, $arrow-color, $bg-color);
+		// @include menu-link-theme($title-color, $icon-color, $bullet-color, $arrow-color, $bg-color);
 	}
 }
 
