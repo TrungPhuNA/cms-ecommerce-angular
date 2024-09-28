@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IndexComponent } from './index/index.component';
-import { FormComponent } from './form/form.component';
-import { OatPageTitleModule, SharedModule } from 'src/app/shared';
+import { IncomeComponent } from './income/income.component';
+import { OutcomeComponent } from './outcome/outcome.component';
+import { OatPageTitleModule, PipesModule, SharedModule } from 'src/app/shared';
 import { PaginationModule } from 'src/app/shared/components/pagination/pagination.module';
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule, Routes } from '@angular/router';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormMgsModule } from 'src/app/shared/components/forms/form-Invalid-message.module';
@@ -15,26 +15,40 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { SpinnerModule } from "../../shared/components/spinner/spinner.module";
+import { UploadModule } from 'src/app/shared/components/upload/upload.module';
+import { FileSizeNoteModule } from 'src/app/shared/components/file-size-note/file-size-note.module';
+import { NgxSummernoteModule } from 'ngx-summernote';
 
-const routes: Routes = [
+const routes: Route[] = [
 	{
 		path: '',
-		redirectTo: 'list',
-		pathMatch: 'full'
-	},
-	{
-		path: 'list',
-		component: IndexComponent,
-	},
+		children: [
+			{
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'income'
+			},
+			{
+				path: 'income',
+				component: IncomeComponent
+			},
+			{
+				path: 'outcome',
+				component: OutcomeComponent
+			},
+		]
+	}
 ]
+
 
 @NgModule({
 	declarations: [
-		IndexComponent,
-		FormComponent
+		IncomeComponent,
+		OutcomeComponent
 	],
 	imports: [
 		CommonModule,
+		OatPageTitleModule,
 		SharedModule,
 		PaginationModule,
 		RouterModule.forChild(routes),
@@ -48,7 +62,10 @@ const routes: Routes = [
 		TranslateModule,
 		InlineSVGModule,
 		SpinnerModule,
-		OatPageTitleModule
+		UploadModule,
+		FileSizeNoteModule,
+		PipesModule,
+		NgxSummernoteModule
 	]
 })
-export class CategoryModule { }
+export class WarehouseModule { }
