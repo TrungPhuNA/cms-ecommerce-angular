@@ -1,24 +1,20 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
-import { AlertService, HelperService } from 'src/app/services';
-import { CategoryService } from 'src/app/services/category.service';
-import { DEFAULT_IMG } from 'src/app/shared/constants/common';
-import { FormComponent } from '../form/form.component';
+import { AlertService, HelperService, ProductService } from 'src/app/services';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/shared';
+import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
+
 
 @Component({
-	selector: 'app-index',
-	templateUrl: './index.component.html',
-	styleUrls: ['./index.component.scss']
+	selector: 'app-income',
+	templateUrl: './income.component.html',
+	styleUrls: ['./income.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class IncomeComponent implements OnInit {
 
 	loading: boolean = false;
-	title  = 'Danh sách';
-	breadcrumbs: any;
-
 
 	paging: any = {
 		page: 1,
@@ -29,30 +25,43 @@ export class IndexComponent implements OnInit {
 
 	defaultImg = DEFAULT_IMG;
 
+	statuses = STATUS_PRODUCTS;
+
+
 	searchForm: any = new FormGroup({
 		name: new FormControl(null)
-	})
+	});
+
+	breadcrumbs: any;
+	title = 'Danh sách';
+
 	constructor(
-		private helperService: HelperService,
+		public helperService: HelperService,
 		private alertService: AlertService,
-		private service: CategoryService,
+		private service: ProductService,
 		private cdr: ChangeDetectorRef,
 		private dialog: MatDialog,
 
-	) { }
-
-	ngOnInit(): void {
+	) {
 		this.breadcrumbs = [
 			new HomeBreadcrumb(),
-			new Breadcrumb('Danh mục', '/category'),
+			new Breadcrumb('Sản phẩm', '/product'),
 			new Breadcrumb('Danh sách', ''),
 		];
-		this.search();
+	}
+
+	ngOnInit(): void {
+		this.search()
 	}
 
 	search() {
 		this.paging.page = 1;
 		this.getListData();
+	}
+
+	reset() {
+		this.searchForm.reset();
+		this.search()
 	}
 
 	getListData() {
@@ -66,7 +75,12 @@ export class IndexComponent implements OnInit {
 			.subscribe((res: any) => {
 				this.loading = false;
 				if (res?.status == 'success') {
-					this.listData = res?.data?.categories || [];
+					this.listData = res?.data?.products?.map((item: any) => {
+						let status = this.statuses.find((e: any) => e?.value == item?.status);
+						item.status_name = status?.name;
+						item.status_class = status?.class;
+						return item;
+					}) || [];
 					this.paging = this.helperService.buildPaging(res?.data?.meta);
 				}
 			});
@@ -77,30 +91,6 @@ export class IndexComponent implements OnInit {
 		this.getListData();
 	}
 
-	openModal(item?: any) {
-		const dialogConfig = new MatDialogConfig();
-
-		dialogConfig.width = '500px';
-		dialogConfig.maxHeight = '95vh';
-		dialogConfig.maxWidth = '95vw';
-		dialogConfig.disableClose = true;
-		dialogConfig.data = {
-			item: item,
-			title: item ? 'Cập nhật' : 'Tạo mới'
-		};
-
-		dialogConfig.panelClass = 'create-category'
-
-		let dialogRef = this.dialog.open(FormComponent, dialogConfig);
-
-		// action sau khi đóng modal
-		dialogRef.afterClosed().subscribe((event: any) => {
-			if (event?.success) {
-				this.getListData();
-			}
-		});
-	}
-
 	deleteData(item: any) {
 		this.alertService.fireConfirm('Bạn chắc chắn muốn xóa danh mục này chứ ?', '', 'warning', 'Hủy', 'Xóa')
 			.then((resAlert: any) => {
@@ -108,10 +98,10 @@ export class IndexComponent implements OnInit {
 					this.loading = true;
 					this.service.deleteData(item.id)
 						.pipe((finalize(() => this.cdr.detectChanges())))
-						.subscribe(res => {
+						.subscribe((res: any) => {
 							this.loading = false;
 							if (res?.status == 'success') {
-								this.alertService.fireSmall('success', ALERT_SUCCESS.create)
+								this.alertService.fireSmall('success', ALERT_SUCCESS.delete)
 							} else {
 								this.alertService.fireSmall('error', res?.message || ALERT_ERROR.delete)
 							}
@@ -121,3 +111,4 @@ export class IndexComponent implements OnInit {
 	}
 
 }
+

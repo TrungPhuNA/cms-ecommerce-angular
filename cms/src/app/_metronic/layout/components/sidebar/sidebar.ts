@@ -31,11 +31,22 @@ export const SideBarItem: ISideBarItem[] = [
         sub_menu: []
     },
 	{
-        path: 'warehouse',
+        path: '',
         title:'Kho',
         icon:'fa-sharp-duotone fa-solid fa-house',
         module_prefix: ['warehouse'],
-        sub_menu: []
+        sub_menu: [
+			{
+				path: 'warehouse/income',
+				title:'Nhập kho',
+				icon:'',
+			},
+			{
+				path: 'warehouse/outcome',
+				title:'Xuất kho',
+				icon:'',
+			}
+		]
     },
     
 ];

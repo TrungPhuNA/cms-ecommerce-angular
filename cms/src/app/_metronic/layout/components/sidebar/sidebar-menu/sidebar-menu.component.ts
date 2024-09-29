@@ -13,6 +13,7 @@ export class SidebarMenuComponent implements OnInit {
     @Input() toggleEnabled: boolean;
     @Input() toggleState: string = '';
     @Input() toggleType: string = '';
+	
     toggleAttr: any;
 
     sideBarNavItem: ISideBarItem[];
