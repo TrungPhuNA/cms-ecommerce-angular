@@ -9,7 +9,7 @@ use Modules\Admin\Database\factories\ProductFactory;
 class Product extends Model
 {
     use HasFactory;
-    protected $table = 'products';
+    protected $table = 'ec_products';
     protected $guarded = [''];
 
     /**
