@@ -1,3 +1,5 @@
+# MẪU
+`https://ninico.botble.com/admin`
 # Reset Db
 ```PHP
 php artisan db:drop --force
