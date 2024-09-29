@@ -61,9 +61,9 @@ export class UserInnerComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-		console.log(1);
         this.authService.logout();
 		this.authService.logoutWithoutCache();
+		window.location.href = '/'
     }
 
     selectLanguage(lang: string) {

@@ -23,6 +23,24 @@ const Routing: Routes = [
         path: 'warehouse',
         loadChildren: () => import('./modules/warehouse/warehouse.module').then((m) => m.WarehouseModule),
     },
+	{
+        path: 'account',
+		children: [
+			{
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'user'
+			},
+			{
+				path: 'user',
+				loadChildren: () => import('./modules/users/users.module').then((m) => m.UsersModule),
+			},
+			{
+				path: 'setting',
+				loadChildren: () => import('./modules/roles-permissions/roles-permissions.module').then((m) => m.RolesPermissionsModule),
+			}
+		]
+    },
     {
         path: '**',
         redirectTo: 'error/404',
