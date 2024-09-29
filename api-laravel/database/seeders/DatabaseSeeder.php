@@ -14,13 +14,5 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
-        $types = ['ADMIN','USER','SYSTEM'];
-        foreach ($types as $item) {
-            UserType::updateOrCreate([
-                'name' => $item
-            ], [
-                'name' => $item
-            ]);
-        }
     }
 }

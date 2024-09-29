@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class UserApi extends Authenticatable
 {
+    use HasFactory;
+
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    protected $guard_name = "api";
+    protected $table = "users";
 
     /**
      * The attributes that are mass assignable.
@@ -46,20 +50,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected static function booted()
-    {
-        static::created(function ($user) {
-            $typeName = $user->type_name ?? 'USER';
-            $defaultType = UserType::where('name', $typeName)->first();
-            if ($defaultType) {
-                $user->types()->attach($defaultType->id);
-            }
-        });
-    }
-
     public function types()
     {
-        return $this->belongsToMany(UserType::class,'users_has_types');
+        return $this->belongsToMany(UserType::class,'users_has_types',"user_id","user_type_id");
     }
 
     public function rolesAccount()
