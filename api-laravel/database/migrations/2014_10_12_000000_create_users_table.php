@@ -35,7 +35,19 @@ return new class extends Migration
         Schema::create('users_has_types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_type_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_type_id');
+            $table->foreign('user_type_id')->references('id')->on('users_types')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+
+        Schema::create('banks', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('code')->nullable();
+            $table->string('short_name')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('swift_code')->nullable();
             $table->timestamps();
         });
 
@@ -50,16 +62,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('banks', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->string('code')->nullable();
-            $table->string('short_name')->nullable();
-            $table->string('logo')->nullable();
-            $table->string('swift_code')->nullable();
-            $table->timestamps();
-        });
-
         Schema::create('users_wallets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -68,7 +70,8 @@ return new class extends Migration
         });
         Schema::create('users_wallets_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wallet_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('wallet_id');
+            $table->foreign('wallet_id')->references('id')->on('users_wallets')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['credit', 'debit']);
             $table->enum('status', ['pending', 'paid','reject','cancel']);
