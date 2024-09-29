@@ -26,7 +26,7 @@ return new class extends Migration
             $table->tinyInteger('index_seo')->default(1);
             $table->timestamps();
         });
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('ec_products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('ec_attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
@@ -46,9 +46,9 @@ return new class extends Migration
             $table->string('status')->default("active");
             $table->timestamps();
         });
-        Schema::create('attribute_values', function (Blueprint $table) {
+        Schema::create('ec_attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attribute_id')->constrained('attributes')->onDelete('cascade');
+            $table->foreignId('attribute_id')->constrained('ec_attributes')->onDelete('cascade');
             $table->tinyInteger('is_default')->default(0);
             $table->string('color')->nullable();
             $table->string('image')->nullable();
@@ -56,7 +56,7 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->timestamps();
         });
-        Schema::create('product_options', function (Blueprint $table) {
+        Schema::create('ec_product_options', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
@@ -64,16 +64,16 @@ return new class extends Migration
             $table->string('status')->default("active");
             $table->timestamps();
         });
-        Schema::create('product_options_values', function (Blueprint $table) {
+        Schema::create('ec_product_options_values', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_option_id')->constrained('product_options')->onDelete('cascade');
+            $table->foreignId('product_option_id')->constrained('ec_product_options')->onDelete('cascade');
             $table->string('name')->nullable();
             $table->string('value')->nullable();
             $table->timestamps();
         });
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('ec_products')->onDelete('cascade');
             $table->integer('price');
             $table->integer('stock');
             $table->string('image')->nullable();
@@ -82,22 +82,22 @@ return new class extends Migration
         Schema::create('variant_attributes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('variant_id')->constrained('product_variants')->onDelete('cascade');
-            $table->foreignId('attribute_value_id')->constrained('attribute_values')->onDelete('cascade');
+            $table->foreignId('attribute_value_id')->constrained('ec_attribute_values')->onDelete('cascade');
             $table->timestamps();
         });
 
-        Schema::create('stock_ins', function (Blueprint $table) {
+        Schema::create('ec_stock_ins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('ec_products')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('price')->default(0)->nullable();
             $table->date('date');
             $table->timestamps();
         });
 
-        Schema::create('stock_outs', function (Blueprint $table) {
+        Schema::create('ec_stock_outs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('ec_products')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('price')->default(0)->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
@@ -112,14 +112,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('variant_attributes');
-        Schema::dropIfExists('attribute_values');
+        Schema::dropIfExists('ec_attribute_values');
         Schema::dropIfExists('product_variants');
         Schema::dropIfExists('product_options_values');
         Schema::dropIfExists('product_options');
-        Schema::dropIfExists('attributes');
-        Schema::dropIfExists('stock_ins');
-        Schema::dropIfExists('stock_outs');
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('ec_attributes');
+        Schema::dropIfExists('ec_stock_ins');
+        Schema::dropIfExists('ec_stock_outs');
+        Schema::dropIfExists('ec_products');
         Schema::dropIfExists('categories');
     }
 };
