@@ -9,7 +9,7 @@ use Modules\Admin\Database\factories\AttributeValueFactory;
 class AttributeValue extends Model
 {
     use HasFactory;
-    protected $table = 'attribute_values';
+    protected $table = 'ec_attribute_values';
     protected $guarded = [''];
 
     /**

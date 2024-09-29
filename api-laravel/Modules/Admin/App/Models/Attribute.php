@@ -9,7 +9,7 @@ use Modules\Admin\Database\factories\AttributeFactory;
 class Attribute extends Model
 {
     use HasFactory;
-    protected $table = 'attributes';
+    protected $table = 'ec_attributes';
     protected $guarded = [''];
 
     /**
@@ -20,5 +20,10 @@ class Attribute extends Model
     protected static function newFactory(): AttributeFactory
     {
         //return AttributeFactory::new();
+    }
+
+    public function attributeValue()
+    {
+        return $this->hasMany(AttributeValue::class,'attribute_id');
     }
 }
