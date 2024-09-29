@@ -10,3 +10,13 @@
 .search-input:focus {
     outline: none;
 }
+
+.menu-accordion.menu-item.show .menu-link.menu-parent  {
+	span, .menu-icon i, .menu-arrow {
+		color: var(--kt-gray-900);
+	}
+
+	.menu-arrow::after {
+		background-color: var(--kt-gray-900);
+	}
+}

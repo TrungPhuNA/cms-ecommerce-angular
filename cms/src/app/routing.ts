@@ -19,6 +19,10 @@ const Routing: Routes = [
         path: 'profile',
         loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule),
     },
+	{
+        path: 'warehouse',
+        loadChildren: () => import('./modules/warehouse/warehouse.module').then((m) => m.WarehouseModule),
+    },
     {
         path: '**',
         redirectTo: 'error/404',
