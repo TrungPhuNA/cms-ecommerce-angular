@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\User\Service\UserTypeService;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -74,11 +76,32 @@ return new class extends Migration
             $table->foreign('wallet_id')->references('id')->on('users_wallets')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['credit', 'debit']);
-            $table->enum('status', ['pending', 'paid','reject','cancel']);
+            $table->enum('status', ['pending', 'paid', 'reject', 'cancel']);
             $table->decimal('amount', 15, 2);
             $table->string('description')->nullable();
             $table->timestamps();
         });
+
+        $types = ['ADMIN', 'USER', 'SYSTEM'];
+        foreach ($types as $item) {
+            UserType::updateOrCreate([
+                'name' => $item
+            ], [
+                'name' => $item
+            ]);
+        }
+
+        $userCreate = [
+            "email"     => "admin@gmail.com",
+            "name"      => "ADMIN",
+            "phone"     => "0986420994",
+            "password"  => bcrypt("123456789"),
+            "type_name" => "ADMIN"
+        ];
+
+        $user = User::create($userCreate);
+        $userType = UserTypeService::findByName("ADMIN");
+        $user->types()->attach($userType->id);
     }
 
     /**
