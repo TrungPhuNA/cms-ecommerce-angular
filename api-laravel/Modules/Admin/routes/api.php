@@ -12,6 +12,9 @@ use Modules\Admin\App\Http\Controllers\Api\ApiAdminStockOutController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminUserController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminAttributeController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminAttributeValueController;
+use Modules\Admin\App\Http\Controllers\Api\ApiAdminPermissionController;
+use Modules\Admin\App\Http\Controllers\Api\ApiAdminRoleController;
+use Modules\Admin\App\Http\Controllers\Api\ApiAdminAccountController;
 /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -50,5 +53,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::resource('products',ApiAdminProductController::class);
         Route::resource('stock-in',ApiAdminStockInController::class);
         Route::resource('stock-out',ApiAdminStockOutController::class);
+
+        Route::resource('permissions',ApiAdminPermissionController::class);
+        Route::resource('roles',ApiAdminRoleController::class);
     });
 });

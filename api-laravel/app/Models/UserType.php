@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class UserType extends Model
 {
     use HasFactory;
-    protected $table = 'user_types';
+    protected $table = 'users_types';
     protected $guarded = [''];
     protected $hidden = ['pivot'];
 
     public function users()
     {
-        return $this->belongsToMany(User::class,'user_has_types');
+        return $this->belongsToMany(User::class,'users_has_types');
     }
 }
