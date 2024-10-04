@@ -30,7 +30,11 @@
 					<div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
 						<ng-container *ngFor="let childItem of item.sub_menu">
 							<ng-container [ngTemplateOutlet]="menuSubItemTmpl"
-								[ngTemplateOutletContext]="{ routerLink: childItem.path,  title: childItem.title}">
+								[ngTemplateOutletContext]="{ 
+									routerLink: childItem.path,  
+									title: childItem.title,
+									svgIcon: childItem?.icon
+									}">
 							</ng-container>
 						</ng-container>
 					</div>
@@ -51,11 +55,19 @@
 </div>
 
 
-<ng-template #menuSubItemTmpl let-routerLink="routerLink" let-title="title">
+<ng-template #menuSubItemTmpl let-routerLink="routerLink" let-title="title" let-svgIcon="svgIcon">
 	<div class="menu-item">
-		<a class="menu-link without-sub" routerLinkActive="active" [routerLink]="routerLink"><span
-				class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">{{title |
-				translate}}</span></a>
+		<a class="menu-link without-sub" routerLinkActive="active" [routerLink]="routerLink">
+			<span class="menu-bullet">
+				<span class="menu-icon" *ngIf="svgIcon">
+					<span class="svg-icon svg">
+						<i class="{{svgIcon}}"></i>
+					</span>
+				</span>
+				<span class="bullet bullet-dot" *ngIf="!svgIcon"></span>
+				</span>
+				<span class="menu-title">{{title | translate}}</span>
+			</a>
 	</div>
 </ng-template>
 <ng-template #menuParentItemTmpl let-svgIcon="svgIcon" let-title="title">
