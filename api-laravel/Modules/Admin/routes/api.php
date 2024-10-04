@@ -15,6 +15,7 @@ use Modules\Admin\App\Http\Controllers\Api\ApiAdminAttributeValueController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminPermissionController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminRoleController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminProductOptionController;
+use Modules\Admin\App\Http\Controllers\Api\ApiAdminOrderController;
 /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -52,6 +53,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::post('products/store-v2',[ApiAdminProductController::class,'storeV2']);
         Route::get('products/show-v2/{id}',[ApiAdminProductController::class,'showV2']);
         Route::resource('products',ApiAdminProductController::class);
+        Route::resource('orders',ApiAdminOrderController::class);
         Route::resource('stock-in',ApiAdminStockInController::class);
         Route::resource('stock-out',ApiAdminStockOutController::class);
 
