@@ -87,4 +87,18 @@ class ApiAdminOrderController extends Controller
             return ResponseService::sendError($message);
         }
     }
+
+    public function updateColumnOrder(Request $request, $id)
+    {
+        try{
+            $orderUpdate = OrderQueryService::updateColumnOrder($request, $id);
+            $data = [
+                'order' => $orderUpdate
+            ];
+            return ResponseService::sendSuccess($data);
+        }catch (\Exception $exception){
+            $message = ErrorLogService::logException($request->route()->getName(), $exception);
+            return ResponseService::sendError($message);
+        }
+    }
 }

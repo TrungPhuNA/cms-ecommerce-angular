@@ -53,7 +53,10 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::post('products/store-v2',[ApiAdminProductController::class,'storeV2']);
         Route::get('products/show-v2/{id}',[ApiAdminProductController::class,'showV2']);
         Route::resource('products',ApiAdminProductController::class);
+
+        Route::put('orders/update-column/{id}',[ApiAdminOrderController::class,'updateColumnOrder']);
         Route::resource('orders',ApiAdminOrderController::class);
+
         Route::resource('stock-in',ApiAdminStockInController::class);
         Route::resource('stock-out',ApiAdminStockOutController::class);
 
