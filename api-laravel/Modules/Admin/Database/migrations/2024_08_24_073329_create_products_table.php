@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -33,6 +32,9 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->integer('number')->default(0);
             $table->integer('price')->default(0);
+            $table->float("length")->nullable();
+            $table->float("width")->nullable();
+            $table->float("height")->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });
@@ -86,6 +88,27 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('ec_orders', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->bigInteger("total_price")->default(0);
+            $table->bigInteger("total_shipping_fee")->default(0);
+            $table->string('status_payment')->nullable()->default("pending");
+            $table->string("status")->nullable()->default("pending");
+            $table->timestamps();
+        });
+        Schema::create('ec_transactions', function (Blueprint $table) {
+            $table->id();
+            $table->string('notes')->nullable();
+            $table->foreignId('order_id')->constrained('ec_orders');
+            $table->foreignId('product_id')->constrained('ec_products');
+            $table->integer('qty')->default(1);
+            $table->bigInteger("price")->default(0);
+            $table->bigInteger("total_price")->default(0);
+            $table->string("status")->nullable()->default("pending");
+            $table->timestamps();
+        });
+
         Schema::create('ec_stock_ins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('ec_products')->onDelete('cascade');
@@ -104,6 +127,34 @@ return new class extends Migration
             $table->date('date');
             $table->timestamps();
         });
+
+        $categories = ["Quần áo nam", "Quần áo nữ"];
+        foreach ($categories as $category) {
+            \Illuminate\Support\Facades\DB::table("categories")->insert([
+                "name"       => $category,
+                "slug"       => \Illuminate\Support\Str::slug($category),
+                "created_at" => Carbon\Carbon::now()
+            ]);
+        }
+        $products = [
+            [
+                "name"  => "Sản phẩm 1",
+                "price" => 200000
+            ],
+            [
+                "name"  => "Sản phẩm 2",
+                "price" => 250000
+            ],
+        ];
+        foreach ($products as $product) {
+            \Illuminate\Support\Facades\DB::table("ec_products")->insert([
+                "name"        => $product["name"],
+                "slug"        => \Illuminate\Support\Str::slug($product['name']),
+                "price"       => $product["price"],
+                "category_id" => \Illuminate\Support\Facades\DB::table("categories")->inRandomOrder()->first()->id,
+                "created_at"  => Carbon\Carbon::now()
+            ]);
+        }
     }
 
     /**
@@ -114,11 +165,13 @@ return new class extends Migration
         Schema::dropIfExists('variant_attributes');
         Schema::dropIfExists('ec_attribute_values');
         Schema::dropIfExists('product_variants');
-        Schema::dropIfExists('product_options_values');
-        Schema::dropIfExists('product_options');
+        Schema::dropIfExists('ec_product_options_values');
+        Schema::dropIfExists('ec_product_options');
         Schema::dropIfExists('ec_attributes');
         Schema::dropIfExists('ec_stock_ins');
         Schema::dropIfExists('ec_stock_outs');
+        Schema::dropIfExists('ec_transactions');
+        Schema::dropIfExists('ec_orders');
         Schema::dropIfExists('ec_products');
         Schema::dropIfExists('categories');
     }
