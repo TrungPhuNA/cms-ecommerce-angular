@@ -27,14 +27,14 @@ class OrderQueryService extends ModelService
 
     public static function getAll(Request $request, $items = null)
     {
-        $items = Order::with('user:id,name,email','transactions');
+        $items = Order::with('user:id,name,email', 'transactions');
         return parent::getAll($request, $items);
     }
 
     public static function create(Request $request)
     {
         $dataInput = $request->all();
-        $dataInput["created_at"]  = Carbon::now();
+        $dataInput["created_at"] = Carbon::now();
         $order = Order::create($dataInput);
         if ($order) {
             if (!empty($request->products)) {
@@ -60,7 +60,8 @@ class OrderQueryService extends ModelService
     public static function update(Request $request, $id)
     {
         $dataInput = $request->all();
-        $update =  Order::find($id)->update($dataInput);
+        $order = Order::find($id);
+        $update = Order::find($id)->update($dataInput);
         if (!empty($request->products)) {
             foreach ($request->products ?? [] as $item) {
                 $data = [
@@ -72,14 +73,33 @@ class OrderQueryService extends ModelService
                     "status"      => $order->status,
                     "created_at"  => Carbon::now()
                 ];
+                if(isset($item['transaction_id'])) {
+                    Transaction::find($item['transaction_id'])->update($data);
+                }else {
+                    Transaction::create($data);
+                }
 
-                Transaction::create($data);
             }
         }
+
+        return self::findById($request, $id);
     }
 
     public static function findById(Request $request, $id)
     {
-        return Order::with('user:id,name,email','transactions')->find($id);
+        return Order::with('user:id,name,email', 'transactions')->find($id);
+    }
+
+    public static function updateColumnOrder(Request $request, $id)
+    {
+        $order = Order::find($id);
+        if($order) {
+            $order->update([
+                $request->column => $request->value,
+                'updated_at' => Carbon::now()
+            ]);
+        }
+
+        return self::findById($request, $id);
     }
 }
