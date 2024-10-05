@@ -20,4 +20,18 @@ export const STATUS_PRODUCTS = [
 		name: 'Hoạt động',
 		class: 'badge badge-light-success'
 	}
+];
+
+export const STATUS_BY_NUMBER = [
+	
+	{
+		value: -1,
+		name: 'Dừng hoạt động',
+		class: 'badge badge-light-danger'
+	},
+	{
+		value: 1,
+		name: 'Hoạt động',
+		class: 'badge badge-light-success'
+	}
 ]

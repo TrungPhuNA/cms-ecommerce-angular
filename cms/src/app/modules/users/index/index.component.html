@@ -26,7 +26,7 @@
 							</a>
 						</div>
 						<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
-							routerLink="/warehouse/income/store">
+							routerLink="/account/user/store">
 							<i class="fa fa-plus m-0" style="color: #ffffff"></i>
 							<span>Tạo mới</span>
 						</a>
@@ -44,12 +44,12 @@
 								<tr class="fw-500 border-top">
 									<th class="text-nowrap text-center px-2" translate>#</th>
 									<th class="text-nowrap text-center" translate>Avatar</th>
-									<th class="text-nowrap" translate>Product Name</th>
-									<th class="text-nowrap" translate>Quantity</th>
-									<th class="text-nowrap" translate>Price</th>
-									<th class="text-nowrap" translate>Income at</th>
-									<th class="text-nowrap" translate>User</th>
-									<th class="text-nowrap text-center" translate>Action</th>
+									<th class="text-nowrap" translate>Name</th>
+									<th class="text-nowrap" translate>Email</th>
+									<th class="text-nowrap" translate>Phone Number</th>
+									<th class="text-nowrap" translate>Status</th>
+									<th class="text-nowrap" translate>Created at</th>
+									<th class="text-nowrap text-center" translate>Operations</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -64,15 +64,20 @@
 													alt="{{item?.id}}" style="width: 80px; height: 80px;">
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.product?.name }}
+												{{ item?.name }}
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.quantity }}
+												{{ item?.email }}
 											</td>
 											<td class="text-nowrap">
-												{{item.price | thousandsSeparator:'đ'}}
+												{{item.phone}}
 											</td>
-											<td class="text-nowrap">{{ item.date | date: 'dd/MM/YYYY' }}</td>
+											<td class="text-nowrap">
+												<span class="{{item.status_class}}">
+													{{item.status_name}}
+												</span>
+											</td>
+											<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
 
 											<td class="text-nowrap text-center px-4">
 												<button mat-icon-button [matMenuTriggerFor]="menu"
@@ -81,7 +86,7 @@
 												</button>
 												<mat-menu #menu="matMenu">
 													<a mat-menu-item class="d-flex align-items-center"
-														[routerLink]="'/warehouse/income/edit/'+item.id">
+														[routerLink]="'/account/user/edit/'+item.id">
 														<span>Cập nhật</span>
 													</a>
 													<button mat-menu-item class="d-flex align-items-center"

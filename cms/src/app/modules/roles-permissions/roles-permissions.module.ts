@@ -28,7 +28,17 @@ const routes: Route[] = [
 			{
 				path: '',
 				pathMatch: 'full',
-				redirectTo: 'list'
+				redirectTo: 'role/list'
+			},
+			{
+				path: 'role',
+				pathMatch: 'full',
+				redirectTo: 'role/list'
+			},
+			{
+				path: 'permission',
+				pathMatch: 'full',
+				redirectTo: 'permission/list'
 			},
 			{
 				path: 'role/list',

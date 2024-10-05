@@ -86,7 +86,7 @@ export class IndexComponent implements OnInit {
 	}
 
 	deleteData(item: any) {
-		this.alertService.fireConfirm('Bạn chắc chắn muốn xóa danh mục này chứ ?', '', 'warning', 'Hủy', 'Xóa')
+		this.alertService.fireConfirm('Bạn chắc chắn muốn xóa sản phẩm này chứ ?', '', 'warning', 'Hủy', 'Xóa')
 			.then((resAlert: any) => {
 				if (resAlert?.isConfirmed) {
 					this.loading = true;
