@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
-import { AlertService, HelperService, ProductService } from 'src/app/services';
+import { AccountService, AlertService, HelperService, ProductService } from 'src/app/services';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/shared';
 import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
 
@@ -38,7 +38,7 @@ export class IndexComponent implements OnInit {
 	constructor(
 		public helperService: HelperService,
 		private alertService: AlertService,
-		private service: ProductService,
+		private service: AccountService,
 		private cdr: ChangeDetectorRef,
 		private dialog: MatDialog,
 
@@ -70,12 +70,12 @@ export class IndexComponent implements OnInit {
 			...this.paging,
 			...this.helperService.buildSearchValueByKeyFilter(this.searchForm.value)
 		}
-		this.service.getListData(params)
+		this.service.getListUser(params)
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				this.loading = false;
 				if (res?.status == 'success') {
-					this.listData = res?.data?.products?.map((item: any) => {
+					this.listData = res?.data?.users?.map((item: any) => {
 						let status = this.statuses.find((e: any) => e?.value == item?.status);
 						item.status_name = status?.name;
 						item.status_class = status?.class;
@@ -92,11 +92,11 @@ export class IndexComponent implements OnInit {
 	}
 
 	deleteData(item: any) {
-		this.alertService.fireConfirm('Bạn chắc chắn muốn xóa danh mục này chứ ?', '', 'warning', 'Hủy', 'Xóa')
+		this.alertService.fireConfirm('Bạn chắc chắn muốn xóa tài khoản này chứ ?', '', 'warning', 'Hủy', 'Xóa')
 			.then((resAlert: any) => {
 				if (resAlert?.isConfirmed) {
 					this.loading = true;
-					this.service.deleteData(item.id)
+					this.service.deleteUser(item.id)
 						.pipe((finalize(() => this.cdr.detectChanges())))
 						.subscribe((res: any) => {
 							this.loading = false;
