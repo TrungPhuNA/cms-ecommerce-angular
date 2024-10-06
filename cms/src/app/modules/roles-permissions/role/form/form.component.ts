@@ -191,7 +191,8 @@ export class FormComponent implements OnInit {
 		console.log("dataPermissions-------> ", dataPermissions);
 		let data = {
 			name: this.form?.value?.name,
-			permissions: dataPermissions
+			permissions: dataPermissions?.length > 0 ? dataPermissions : null,
+			guard_name: 'api'
 		}
 		this.loading = true;
 		this.service.createOrUpdateRole(data, this.data?.id)

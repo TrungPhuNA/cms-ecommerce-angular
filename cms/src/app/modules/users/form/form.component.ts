@@ -4,15 +4,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSummernoteDirective } from 'ngx-summernote';
 import { finalize } from 'rxjs';
-import { AlertService, FileUploadService, HelperService, ProductService } from 'src/app/services';
+import { AccountService, AlertService, FileUploadService, HelperService, ProductService } from 'src/app/services';
 import { CategoryService } from 'src/app/services/category.service';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, FileUploadModel, HomeBreadcrumb } from 'src/app/shared';
-import { STATUS_PRODUCTS } from 'src/app/shared/constants/common';
+import { STATUS_PRODUCTS, VALIDATOR_MESSAGES } from 'src/app/shared/constants/common';
+import { REGEX_EMAIL } from 'src/app/shared/constants/regex-data';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+	selector: 'app-form',
+	templateUrl: './form.component.html',
+	styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
 
@@ -21,14 +22,26 @@ export class FormComponent implements OnInit {
 	data: any;
 	id: any;
 	submitted = false;
-	listCategories = [];
+	listRoles = [];
 	loading = false;
 
 	statuses = STATUS_PRODUCTS;
+
 	types = [
 		{
 			value: "ADMIN",
-			
+			name: 'Admin',
+
+		},
+		{
+			value: "USER",
+			name: 'User',
+
+		},
+		{
+			value: "SYSTEM",
+			name: 'System',
+
 		}
 	];
 
@@ -36,38 +49,30 @@ export class FormComponent implements OnInit {
 
 	form = new FormGroup({
 		name: new FormControl(null, Validators.required),
-		number: new FormControl(null, Validators.required),
-		price: new FormControl(null, Validators.required),
-		category_id: new FormControl(null, Validators.required),
+		email: new FormControl(null, [
+			Validators.required, Validators.pattern(REGEX_EMAIL),
+			Validators.maxLength(255)]),
+		phone: new FormControl(null,),
+		roles: new FormControl(null),
 		status: new FormControl(null, Validators.required),
-		description: new FormControl(null, Validators.required),
+		password: new FormControl(null, [
+			Validators.required,
+			Validators.minLength(8),
+			Validators.maxLength(16),
+			Validators.pattern(/^[A-Za-z0-9~`!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/]+$/)
+		]),
+		type_name: new FormControl(null, Validators.required),
 		avatar: new FormControl(null)
 	});
 
 
-	requiredForm = "Trường này không được để trống.";
+	validatorMessages = VALIDATOR_MESSAGES;
 
-	// @ViewChild(NgxSummernoteDirective) summernote: NgxSummernoteDirective;
-	// public config: any = {
-	// 	placeholder: 'Nội dung',
-	// 	tabsize: 2,
-	// 	height: '200px',
-	// 	// uploadImagePath: 'https://hq3-api.dev.accesstrade.me/api/v1/file-upload',
-	// 	toolbar: [
-	// 		['misc', ['codeview', 'undo', 'redo']],
-	// 		['style', ['bold', 'italic', 'underline', 'clear']],
-	// 		['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-	// 		['fontsize', ['fontname', 'fontsize', 'color']],
-	// 		['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
-	// 		['insert', ['table', 'picture', 'link', 'video', 'hr']]
-	// 	],
-	// 	fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
-	// }
+
 	constructor(
 		public helperService: HelperService,
 		private alertService: AlertService,
-		private service: ProductService,
-		private categoryService: CategoryService,
+		private service: AccountService,
 		private cdr: ChangeDetectorRef,
 		private activeRoute: ActivatedRoute,
 		private uploadService: FileUploadService
@@ -77,94 +82,105 @@ export class FormComponent implements OnInit {
 
 	}
 	ngOnInit(): void {
-		this.getListCategory({ page: 1, page_size: 1000 })
 		this.activeRoute.params.subscribe((res: any) => {
 			this.breadcrumbs = [
 				new HomeBreadcrumb(),
 				new Breadcrumb('Sản phẩm', '/product'),
 				new Breadcrumb(res?.id ? 'Cập nhật' : 'Tạo mới', ''),
 			];
-			if(res?.id) {
-				this.getDetail(res?.id);
-			}
+			this.getListRoles({ page: 1, page_size: 1000 }, res?.id)
+
 		});
 	}
 
-	getListCategory(filters: any) {
-		this.categoryService.getListData(filters)
+	getListRoles(filters: any, id?: any) {
+		this.service.getListRole(filters)
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				if (res?.status == 'success') {
-					this.listCategories = res?.data?.categories;
+					this.listRoles = res?.data?.roles;
+
+				}
+				if (id) {
+					this.getDetail(id)
 				}
 			})
 	}
 
 	getDetail(id: any) {
 		this.loading = true;
-		this.service.showData(id)
-		.pipe(finalize(() => this.cdr.detectChanges()))
-		.subscribe((res: any) => {
-			this.loading = false;
-			if(res?.status == 'success') {
-				this.data = res?.data?.product;
-				if(this.data) {
-					this.form.enable();
-					this.form.patchValue({
-						...this.data
-					});
-					let avatar = this.helperService.buildImage(this.data?.avatar);
-					this.images = [new FileUploadModel(null, avatar, true, avatar)];
+		this.service.showUser(id)
+			.pipe(finalize(() => this.cdr.detectChanges()))
+			.subscribe((res: any) => {
+				this.loading = false;
+				if (res?.status == 'success') {
+					this.data = res?.data?.user;
+					this.id = this.data?.id;
+
+					if (this.data) {
+						this.form.enable();
+						this.form.patchValue({
+							...this.data,
+							roles: this.data?.roles?.map((item: any) => item?.id),
+							type_name: this.data?.types?.find((item: any) => item != null)?.name
+						});
+						console.log(this.form);
+						this.submitted = false;
+						this.helperService.clearValidator(this.form, 'password')
+						let avatar = this.helperService.buildImage(this.data?.avatar);
+						this.images = [new FileUploadModel(null, avatar, true, avatar)];
+					} else {
+						this.alertService.fireSmall("error", ALERT_ERROR.not_found);
+						this.form.disable();
+					}
 				} else {
-					this.alertService.fireSmall("error",ALERT_ERROR.not_found);
-					this.form.disable();
+					this.alertService.fireSmall("error", res?.message || ALERT_ERROR.not_found)
 				}
-			} else {
-				this.alertService.fireSmall("error",res?.message ||  ALERT_ERROR.not_found)
-			}
-		})
+			})
 	}
 
 	submit() {
 		this.submitted = true;
-		if(this.form.invalid) {
+		console.log(this.form);
+
+		if (this.form.invalid) {
 			return;
 		}
 		let file = this.images[0]?.fileInfo;
 
 		this.loading = true;
-		if(file) {
+		if (file) {
 			this.uploadService.upload(file).pipe((finalize(() => this.cdr.detectChanges())))
-			.subscribe((res: any) => {
-				if(res?.status == 'success') {
-					this.form.patchValue({
-						avatar: res?.data?.file_name
-					});
-					this.createOrUpdateProduct();
-				} else {
-					this.alertService.fireSmall('error', res?.message);
-					this.loading = false;
-				}
-			})
+				.subscribe((res: any) => {
+					if (res?.status == 'success') {
+						this.form.patchValue({
+							avatar: res?.data?.file_name
+						});
+						this.createOrUpdate();
+					} else {
+						this.alertService.fireSmall('error', res?.message);
+						this.loading = false;
+					}
+				})
 		} else {
-			this.createOrUpdateProduct();
+			this.createOrUpdate();
 		}
-		
+
 	}
 
-	createOrUpdateProduct() {
-		this.service.createOrUpdateData(this.form.value, this.data?.id)
-		.pipe(finalize(() => this.cdr.detectChanges()))
-		.subscribe((res: any) => {
-			this.loading = false;
-			if(res?.status == 'success') {
-				this.submitted = false;
-				this.alertService.fireSmall("success", ALERT_SUCCESS.create)
-			} else {
-				this.alertService.fireSmall("error",res?.message ||  ALERT_ERROR.create)
+	createOrUpdate() {
+		this.service.createOrUpdateUser(this.form.value, this.data?.id)
+			.pipe(finalize(() => this.cdr.detectChanges()))
+			.subscribe((res: any) => {
+				this.loading = false;
+				if (res?.status == 'success') {
+					this.submitted = false;
+					this.alertService.fireSmall("success", this.data? ALERT_SUCCESS.update : ALERT_SUCCESS.create)
+				} else {
+					this.alertService.fireSmall("error", res?.message || (this.data? ALERT_ERROR.update : ALERT_ERROR.create))
 
-			}
-		})
+				}
+			})
 	}
 
 	getImages(e: any) {
@@ -178,12 +194,6 @@ export class FormComponent implements OnInit {
 	imageToRemove(e: any) {
 		console.log("imageToRemove--------> ", e);
 	}
-
-	logEvent(e: any) {
-		if (e) {
-		  this.form.patchValue({ description: e });
-		}
-	  }
 
 
 }

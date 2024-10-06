@@ -1,3 +1,8 @@
 .expand-card {
 	min-height: 240px;
 }
+::ng-deep .ng-select.is-invalid {
+    .ng-select-container{
+        border-color: #f1416c !important;
+    }
+}
