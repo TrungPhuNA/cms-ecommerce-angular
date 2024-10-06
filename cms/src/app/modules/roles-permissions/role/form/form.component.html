@@ -1,1 +1,65 @@
-<p>form works!</p>
+<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
+
+<div class="card card-body">
+	<form [formGroup]="form">
+		<div class=" mb-5">
+			<div class=" mb-5 form-group">
+				<label class="form-label required" translate>Role Name</label>
+				<input class="form-control" [ngClass]="{'is-invalid': 
+						(helperService.showStatusError(form, 'name', submitted))}"
+					(focusout)="helperService.onTrimFocusOutForm(form, 'name', $event)"
+					placeholder="{{ 'Nhập giá trị'}}" formControlName="name" maxlength="255" />
+				<at-error [submitted]="submitted" [control]="form.get('name')" validation="required"
+					[message]="validatorMessages.required">
+				</at-error>
+			</div>
+			<hr class="line-gray mt-5 mb-5">
+			<div class="d-flex justify-content-between align-items-center my-4 gap-4">
+				<h3 class="fs16 fw-bold">Danh sách permissions</h3>
+				<div class="form-group">
+					<div class="form-check form-check-inline mx-0 form-switch fv-row">
+						<input id="full_permission" type="checkbox" class="form-check-input w-40px"
+							formControlName="full_permission" />
+						<label class="form-check-label"></label>
+					</div>
+
+					<label for="full_permission" style="font-size: 14px" class="ml-2 form-label fs14">Chọn tất
+						cả</label>
+				</div>
+			</div>
+
+			<div formArrayName="permissions" *ngIf="permissions?.value?.length > 0">
+				<div class="group-role ">
+					<ng-container *ngFor="let item of permissions.controls,index as i">
+						<div class="my-2 p-2 " [formGroupName]="i">
+							<label class="fw-bold">{{item?.value?.group_name}}</label>
+							<div formArrayName="list_role" class="role-admin row my-3">
+								<div class="col-md-4"
+									*ngFor="let permissionItem of getListRoleControls(item),index as j">
+									<div class="form-group d-flex align-items-center gap-1 role-item mb-0"
+										[formGroupName]="j">
+										<div class="form-check form-check-inline mx-0 form-switch fv-row">
+											<input type="checkbox" class="form-check-input w-40px"
+												id="name{{i}}{{j}}" formControlName="check" />
+											<label class="form-check-label"></label>
+										</div>
+
+										<label for="name{{i}}{{j}}"
+											class="ml-2 form-label fs14">{{permissionItem?.value?.name}}</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+
+
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
+		<button class="btn btn-sm btn-outline-base mx-3" translate>Cancel</button>
+		<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
+	</div>
+</div>
+<app-spinner [loading]="loading"></app-spinner>

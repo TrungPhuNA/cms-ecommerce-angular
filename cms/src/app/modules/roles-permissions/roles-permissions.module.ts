@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IndexComponent as RoleIndex} from './role/index/index.component';
 import { FormComponent as RoleForm} from './role/form/form.component';
 import { FormComponent as PermissionForm } from './permission/form/form.component';
-import { FormComponent as PermissionIndex } from './permission/form/form.component';
+import { IndexComponent as PermissionIndex } from './permission/index/index.component';
 import { OatPageTitleModule, SharedModule } from 'src/app/shared';
 import { PaginationModule } from 'src/app/shared/components/pagination/pagination.module';
 import { Route, RouterModule, Routes } from '@angular/router';
@@ -28,7 +28,17 @@ const routes: Route[] = [
 			{
 				path: '',
 				pathMatch: 'full',
-				redirectTo: 'list'
+				redirectTo: 'role/list'
+			},
+			{
+				path: 'role',
+				pathMatch: 'full',
+				redirectTo: 'role/list'
+			},
+			{
+				path: 'permission',
+				pathMatch: 'full',
+				redirectTo: 'permission/list'
 			},
 			{
 				path: 'role/list',

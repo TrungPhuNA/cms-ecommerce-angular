@@ -1,13 +1,13 @@
-<div class="py-5">
+<div >
 	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
-	<div class="card">
+	<div class="card card-body">
 		<div class="card-body p-0 mt-5">
 			<div style="border: 1px solid #EAECF0; border-radius: 16px">
 				<div class="p-5">
 					<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
 						<div class="form-group col-md-4 col-12">
-							<label class="form-label">Product Name:</label>
-							<input class="form-control search-input" placeholder="Product name" formControlName="name">
+							<label class="form-label">Tên sản phẩm:</label>
+							<input class="form-control search-input" placeholder="Tên sản phẩm" formControlName="name">
 						</div>
 
 					</form>
@@ -26,7 +26,7 @@
 							</a>
 						</div>
 						<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
-							routerLink="/warehouse/income/store">
+							routerLink="/account/user/store">
 							<i class="fa fa-plus m-0" style="color: #ffffff"></i>
 							<span>Tạo mới</span>
 						</a>
@@ -44,12 +44,12 @@
 								<tr class="fw-500 border-top">
 									<th class="text-nowrap text-center px-2" translate>#</th>
 									<th class="text-nowrap text-center" translate>Avatar</th>
-									<th class="text-nowrap" translate>Product Name</th>
-									<th class="text-nowrap" translate>Quantity</th>
-									<th class="text-nowrap" translate>Price</th>
-									<th class="text-nowrap" translate>Income at</th>
-									<th class="text-nowrap" translate>User</th>
-									<th class="text-nowrap text-center" translate>Action</th>
+									<th class="text-nowrap" translate>Name</th>
+									<th class="text-nowrap" translate>Email</th>
+									<th class="text-nowrap" translate>Phone Number</th>
+									<th class="text-nowrap" translate>Status</th>
+									<th class="text-nowrap" translate>Created at</th>
+									<th class="text-nowrap text-center" translate>Operations</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -64,15 +64,20 @@
 													alt="{{item?.id}}" style="width: 80px; height: 80px;">
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.product?.name }}
+												{{ item?.name }}
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.quantity }}
+												{{ item?.email }}
 											</td>
 											<td class="text-nowrap">
-												{{item.price | thousandsSeparator:'đ'}}
+												{{item.phone}}
 											</td>
-											<td class="text-nowrap">{{ item.date | date: 'dd/MM/YYYY' }}</td>
+											<td class="text-nowrap">
+												<span class="{{item.status_class}}">
+													{{item.status_name}}
+												</span>
+											</td>
+											<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
 
 											<td class="text-nowrap text-center px-4">
 												<button mat-icon-button [matMenuTriggerFor]="menu"
@@ -81,7 +86,7 @@
 												</button>
 												<mat-menu #menu="matMenu">
 													<a mat-menu-item class="d-flex align-items-center"
-														[routerLink]="'/warehouse/income/edit/'+item.id">
+														[routerLink]="'/account/user/edit/'+item.id">
 														<span>Cập nhật</span>
 													</a>
 													<button mat-menu-item class="d-flex align-items-center"
@@ -103,17 +108,9 @@
 						</ng-container>
 					</table>
 
-					<div class="d-flex justify-content-between align-items-center px-6"
-						*ngIf="!loading && paging.total > 0">
-						<div class="total-items col-md-4"><span translate>Total</span>: <strong>{{ paging.total | number
-								}}</strong></div>
-						<div class="paging">
-							<ngb-pagination [collectionSize]="paging.total" [(page)]="paging.page" [maxSize]="5"
-								[pageSize]="paging.page_size" [rotate]="true" [boundaryLinks]="true"
-								(pageChange)="changePage($event)"
-								class="pagination justify-content-end mb-5 mt-5"></ngb-pagination>
-						</div>
-					</div>
+					
+					<app-pagination [paging]="paging"
+					(changePaged)="changePage($event)"></app-pagination>
 				</div>
 			</div>
 		</div>
