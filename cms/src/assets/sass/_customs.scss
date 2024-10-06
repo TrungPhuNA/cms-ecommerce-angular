@@ -229,3 +229,9 @@ $i: 4;
     width: 376px;
   }
 }
+
+::ng-deep .ng-select.ng-invalid.ng-touched, .ng-select.is-invalid {
+    .ng-select-container{
+        border-color: #f1416c !important;
+    }
+}

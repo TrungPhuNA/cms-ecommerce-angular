@@ -1,1 +1,107 @@
-<p>form works!</p>
+<div>
+	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
+
+	<div class="card card-body">
+		<form [formGroup]="form">
+			<div class="row  mt-5">
+				<div class="col-md-5 col-12 mb-5">
+					<app-upload-image imageWidth="300px" imageHeight="200px" [imageFiles]="images"
+						requiredMessage="Hình ảnh là bắt buộc!" [maxItem]="1" [isRequired]="true"
+						(imagesToUpload)="getImages($event)" (imagesInvalid)="handleUpload($event)"
+						(itemsToRemove)="imageToRemove($event)"></app-upload-image>
+					<app-file-size-note [imgSize]="images[0].imgSize" [maxSize]="0.5"></app-file-size-note>
+					<small>Vui lòng chọn ảnh tối đa 500KB</small>
+				</div>
+				<div class="col-md-7 col-12 mb-5">
+					<div class="row">
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label required" translate>Tên</label>
+							<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'name', submitted))}"
+								(focusout)="helperService.onTrimFocusOutForm(form, 'name', $event)"
+								placeholder="{{ 'Nhập giá trị'}}" formControlName="name" maxlength="255" />
+							<at-error [submitted]="submitted" [control]="form.get('name')" validation="required"
+								[message]="validatorMessages.required">
+							</at-error>
+						</div>
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label required" translate>Email</label>
+							<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'email', submitted))}"
+								(focusout)="helperService.onTrimFocusOutForm(form, 'email', $event)"
+								placeholder="{{ 'Nhập giá trị'}}" formControlName="email" maxlength="255" />
+							<at-error [submitted]="submitted" [control]="form.get('email')" validation="required"
+								[message]="validatorMessages.required">
+							</at-error>
+							<at-error [control]="form.get('email')" [submitted]="submitted" validation="pattern"
+								[message]="validatorMessages.pattern">
+							</at-error>
+						</div>
+						<div class="col-12 mb-5 form-group" *ngIf="!data?.id">
+							<label class="form-label required" translate>Password</label>
+							<input class="form-control" [ngClass]="{'is-invalid': 
+								(helperService.showStatusError(form, 'password', submitted))}"
+								(focusout)="helperService.onTrimFocusOutForm(form, 'password', $event)"
+								placeholder="{{ 'Nhập giá trị'}}" formControlName="password" maxlength="255" />
+							<at-error [submitted]="submitted" [control]="form.get('password')" validation="required"
+								[message]="validatorMessages.required">
+							</at-error>
+							<at-error [control]="form.get('password')" [submitted]="submitted" validation="pattern"
+								[message]="validatorMessages.pattern">
+							</at-error>
+						</div>
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label required" translate>Phone</label>
+							<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'phone', submitted))}"
+								onkeypress="return (event.charCode == 8 || event.charCode == 0 ) ? null : event.charCode >= 48 && event.charCode <= 57"
+								(focusout)="helperService.onTrimFocusOutForm(form, 'phone', $event)"
+								placeholder="{{ 'Nhập giá trị'}}" formControlName="phone" maxlength="255" />
+							<at-error [submitted]="submitted" [control]="form.get('phone')" validation="required"
+								[message]="validatorMessages.required">
+							</at-error>
+							<at-error [control]="form.get('phone')" [submitted]="submitted" validation="pattern"
+								[message]="validatorMessages.pattern">
+							</at-error>
+						</div>
+
+						<div class="col-md-6 col-12 mb-5 form-group">
+							<label class="form-label required" translate>Loại tài khoản</label>
+							<ng-select [items]="types" bindLabel="name"
+								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'type_name')}"
+								bindValue="value" formControlName="type_name" placeholder="Chọn giá trị"
+								[searchable]="true"></ng-select>
+							<at-error [submitted]="submitted" [control]="form.get('type_name')"
+								validation="required" [message]="validatorMessages.required"></at-error>
+
+						</div>
+						<div class="col-md-6 col-12 mb-5 form-group">
+							<label class="form-label required" translate>Trạng thái</label>
+							<ng-select [items]="statuses" bindLabel="name"
+								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'status')}"
+								bindValue="value" formControlName="status" placeholder="Chọn giá trị"
+								[searchable]="true"></ng-select>
+							<at-error [submitted]="submitted" [control]="form.get('status')" validation="required"
+								[message]="validatorMessages.required"></at-error>
+
+						</div>
+						<div class="col-12 mb-5 form-group">
+							<label class="form-label" translate>Roles</label>
+							<ng-select [items]="listRoles" bindLabel="name" [multiple]="true" [clearable]="true"
+								[hideSelected]="true"
+								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'roles')}" bindValue="id"
+								formControlName="roles" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+							<at-error [submitted]="submitted" [control]="form.get('roles')" validation="required"
+								[message]="validatorMessages.required"></at-error>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
+			<button class="btn btn-sm btn-outline-base mx-3" translate>Cancel</button>
+			<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
+		</div>
+	</div>
+	<app-spinner [loading]="loading" [fullScreen]="true" [bdColor]="'rgba(0, 0, 0, 0.5)'"></app-spinner>
+</div>

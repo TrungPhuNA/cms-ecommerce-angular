@@ -1,7 +1,7 @@
-<div class="py-5">
+<div >
 	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
 
-	<div class="card">
+	<div class="card card-body">
 		<form [formGroup]="form">
 			<div class="row  mt-5">
 				<div class="col-md-5 col-12 mb-5">
@@ -30,7 +30,7 @@
 								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'category_id')}"
 								bindValue="id" formControlName="category_id" placeholder="Chọn giá trị"
 								[searchable]="true"></ng-select>
-							<at-error [submitted]="submitted" [control]="form.controls['status']" validation="required"
+							<at-error [submitted]="submitted" [control]="form.controls['category_id']" validation="required"
 								[message]="requiredForm"></at-error>
 
 						</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from "../../../environments/environment";
 import { catchError } from "rxjs/operators";
 import { ErrorService } from "./error.service";
@@ -19,7 +19,7 @@ export class FileUploadService {
         const formData: FormData = new FormData();
         formData.append('file', file);
         return this.http.post(this.baseUrl + 'api/v1/uploads', formData)
-            .pipe(catchError(error => error));
+            .pipe(catchError(error => of(error)));
     }
 
 }

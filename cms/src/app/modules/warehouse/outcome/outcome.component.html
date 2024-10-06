@@ -1,13 +1,13 @@
-<div class="py-5">
+<div >
 	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
-	<div class="card">
+	<div class="card card-body">
 		<div class="card-body p-0 mt-5">
 			<div style="border: 1px solid #EAECF0; border-radius: 16px">
 				<div class="p-5">
 					<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
 						<div class="form-group col-md-4 col-12">
-							<label class="form-label">Product Name:</label>
-							<input class="form-control search-input" placeholder="Product name" formControlName="name">
+							<label class="form-label">Tên sản phẩm:</label>
+							<input class="form-control search-input" placeholder="Tên sản phẩm" formControlName="name">
 						</div>
 
 					</form>
@@ -44,12 +44,12 @@
 								<tr class="fw-500 border-top">
 									<th class="text-nowrap text-center px-2" translate>#</th>
 									<th class="text-nowrap text-center" translate>Avatar</th>
-									<th class="text-nowrap" translate>Product Name</th>
+									<th class="text-nowrap" translate>Tên sản phẩm</th>
 									<th class="text-nowrap" translate>Quantity</th>
 									<th class="text-nowrap" translate>Price</th>
 									<th class="text-nowrap" translate>Income at</th>
 									<th class="text-nowrap" translate>User</th>
-									<th class="text-nowrap text-center" translate>Action</th>
+									<th class="text-nowrap text-center" translate>Operations</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -103,17 +103,9 @@
 						</ng-container>
 					</table>
 
-					<div class="d-flex justify-content-between align-items-center px-6"
-						*ngIf="!loading && paging.total > 0">
-						<div class="total-items col-md-4"><span translate>Total</span>: <strong>{{ paging.total | number
-								}}</strong></div>
-						<div class="paging">
-							<ngb-pagination [collectionSize]="paging.total" [(page)]="paging.page" [maxSize]="5"
-								[pageSize]="paging.page_size" [rotate]="true" [boundaryLinks]="true"
-								(pageChange)="changePage($event)"
-								class="pagination justify-content-end mb-5 mt-5"></ngb-pagination>
-						</div>
-					</div>
+					
+					<app-pagination [paging]="paging"
+					(changePaged)="changePage($event)"></app-pagination>
 				</div>
 			</div>
 		</div>

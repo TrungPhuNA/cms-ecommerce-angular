@@ -20,6 +20,7 @@ export class AccountService {
 
 	createOrUpdateUser(data: any, id: any) {
 		if (id) {
+			delete data?.password
 			return this.apiService.putData(`/account/${id}`, data)
 		}
 		return this.apiService.postData(`/account`, data);
@@ -32,22 +33,22 @@ export class AccountService {
 
 	// Role
 	getListRole(filters: any) {
-		return this.apiService.getData('/account', filters);
+		return this.apiService.getData('/roles', filters);
 	}
 
 	showRole(id: any) {
-		return this.apiService.getData(`/account/${id}`);
+		return this.apiService.getData(`/roles/${id}`);
 	}
 
 	createOrUpdateRole(data: any, id: any) {
 		if (id) {
-			return this.apiService.putData(`/account/${id}`, data)
+			return this.apiService.putData(`/roles/${id}`, data)
 		}
-		return this.apiService.postData(`/account`, data);
+		return this.apiService.postData(`/roles`, data);
 	}
 
 	deleteRole(id: any) {
-		return this.apiService.deleteData(`/account/${id}`);
+		return this.apiService.deleteData(`/roles/${id}`);
 	}
 
 
@@ -55,21 +56,21 @@ export class AccountService {
 
 
 	getListPermission(filters: any) {
-		return this.apiService.getData('/account', filters);
+		return this.apiService.getData('/permissions', filters);
 	}
 
 	showPermission(id: any) {
-		return this.apiService.getData(`/account/${id}`);
+		return this.apiService.getData(`/permissions/${id}`);
 	}
 
 	createOrUpdatePermission(data: any, id: any) {
 		if (id) {
-			return this.apiService.putData(`/account/${id}`, data)
+			return this.apiService.putData(`/permissions/${id}`, data)
 		}
-		return this.apiService.postData(`/account`, data);
+		return this.apiService.postData(`/permissions`, data);
 	}
 
 	deletePermission(id: any) {
-		return this.apiService.deleteData(`/account/${id}`);
+		return this.apiService.deleteData(`/permissions/${id}`);
 	}
 }
