@@ -16,7 +16,7 @@ class RoleQueryService extends ModelService
 {
     public static function getAll(Request $request, $items = null)
     {
-        $items = Role::query();
+        $items = Role::with("permissions");
         return parent::getAll($request, $items);
     }
 
@@ -53,12 +53,11 @@ class RoleQueryService extends ModelService
             $role->givePermissionTo($request->permissions);
         }
         DB::commit();
-        return $update;
-
+        return self::findById($request, $id);
     }
 
     public static function findById(Request $request, $id)
     {
-        return Role::find($id);
+        return Role::with("permissions")->find($id);
     }
 }
