@@ -34,4 +34,9 @@ export const STATUS_BY_NUMBER = [
 		name: 'Hoạt động',
 		class: 'badge badge-light-success'
 	}
-]
+];
+
+export const VALIDATOR_MESSAGES = {
+	required: 'Trường này không được để trống.',
+	pattern: 'Trường này không đúng định dạng.',
+}

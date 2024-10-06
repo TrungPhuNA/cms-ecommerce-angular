@@ -25,6 +25,12 @@ export class FormComponent implements OnInit {
 	loading = false;
 
 	statuses = STATUS_PRODUCTS;
+	types = [
+		{
+			value: "ADMIN",
+			
+		}
+	];
 
 	images = [new FileUploadModel(null, null, true, '')];
 
