@@ -20,6 +20,7 @@ export class AccountService {
 
 	createOrUpdateUser(data: any, id: any) {
 		if (id) {
+			delete data?.password
 			return this.apiService.putData(`/account/${id}`, data)
 		}
 		return this.apiService.postData(`/account`, data);
