@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -7,6 +7,7 @@ import { AccountService, AlertService, FileUploadService, HelperService, Product
 import { CategoryService } from 'src/app/services/category.service';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, FileUploadModel, HomeBreadcrumb } from 'src/app/shared';
 import { STATUS_PRODUCTS, VALIDATOR_MESSAGES } from 'src/app/shared/constants/common';
+import { PERMISSION_GROUPS } from 'src/app/shared/constants/permission';
 
 @Component({
 	selector: 'app-form',
@@ -20,7 +21,8 @@ export class FormComponent implements OnInit {
 	data: any;
 	id: any;
 	submitted = false;
-	listCategories = [];
+
+	listData = [];
 	loading = false;
 
 	statuses = STATUS_PRODUCTS;
@@ -29,12 +31,17 @@ export class FormComponent implements OnInit {
 
 	form = new FormGroup({
 		name: new FormControl(null, Validators.required),
-		permissions: new FormControl(null, Validators.required),
+		permissions: new FormArray([]),
+		full_permission: new FormControl(null),
 		guard_name: new FormControl('api'),
 	});
 
 
 	validatorMessages = VALIDATOR_MESSAGES;
+
+	get permissions() {
+		return this.form.get('permissions') as FormArray;
+	}
 
 	constructor(
 		public helperService: HelperService,
@@ -50,6 +57,7 @@ export class FormComponent implements OnInit {
 
 
 	}
+
 	ngOnInit(): void {
 		this.activeRoute.params.subscribe((res: any) => {
 			this.breadcrumbs = [
@@ -57,20 +65,29 @@ export class FormComponent implements OnInit {
 				new Breadcrumb('Role', '/account/setting/role/list'),
 				new Breadcrumb(res?.id ? 'Cập nhật' : 'Tạo mới', ''),
 			];
-			if (res?.id) {
-				this.getDetail(res?.id);
-			}
+			this.getListPermissions({ page: 1, page_size: 1000 }, res?.id);
 		});
+
+		this.form.get('full_permission')?.valueChanges.subscribe((res: any) => {
+			this.buildPermission(this.listData, {check_all: res})
+		})
 	}
 
-	getListCategory(filters: any) {
-		this.categoryService.getListData(filters)
-			.pipe(finalize(() => this.cdr.detectChanges()))
-			.subscribe((res: any) => {
+
+
+	getListPermissions(filters: any, id?: any) {
+		this.service.getListPermission(filters).subscribe((res: any) => {
+				console.log(res);
 				if (res?.status == 'success') {
-					this.listCategories = res?.data?.categories;
+					this.listData = res?.data?.permissions;
+					if (id) {
+						this.getDetail(id);
+					} else {
+						this.buildPermission(this.listData);
+						this.cdr.detectChanges()
+					}
 				}
-			})
+			});
 	}
 
 	getDetail(id: any) {
@@ -86,6 +103,7 @@ export class FormComponent implements OnInit {
 						this.form.patchValue({
 							...this.data
 						});
+						this.buildPermission(this.listData)
 					} else {
 						this.alertService.fireSmall("error", ALERT_ERROR.not_found);
 						this.form.disable();
@@ -105,8 +123,78 @@ export class FormComponent implements OnInit {
 
 	}
 
+	permissionsForm: any;
+	buildPermission(resData: any, params?: any) {
+		let dataGroup = resData?.reduce((groups: any, item: any) => {
+			if (item.group) {
+				const group = (groups[item.group] || []);
+				group.push(item);
+				groups[item.group] = group;
+			}
+			return groups;
+		}, {});
+		console.log("dataGroup-------------> ", dataGroup, params);
+		if (dataGroup) {
+			this.permissionsForm = Object.entries(dataGroup);
+		}
+		this.form.controls['permissions'] = new FormArray([]);
+		if (this.permissionsForm?.length > 0) {
+			this.permissionsForm?.forEach((element: any) => {
+				let arr_permission = element[1].reduce((per: any, item: any) => {
+					let index = -1;
+					if (this.data) {
+						index = this.data?.permissions?.findIndex((per: any) => per.id == item.id);
+					}
+					per.push(
+						new FormGroup({
+							name: new FormControl(item.name),
+							id: new FormControl(item.id),
+							check: new FormControl(params?.check_all ?true: (index > -1 ? true : false)),
+							item: new FormControl(item)
+						})
+					);
+					return per;
+				}, new FormArray([]));
+
+				console.log("arr_permission-------> ", arr_permission);
+				let groupName = PERMISSION_GROUPS?.find((e:any) => e?.value == element[0]);
+				console.log(groupName);
+				this.permissions.push(new FormGroup({
+					group: new FormControl(element[0]),
+					// show: new FormControl(show),
+					group_name: new FormControl(groupName?.en_name),
+					list_role: arr_permission,
+				}));
+			});
+			console.log(this.permissions);
+		}
+	}
+
+	getListRoleControls(item: any) {
+		return item.get('list_role')?.controls;
+	}
+
+	changeGroup($event: any) {
+		this.buildPermission(this.listData, $event?.value);
+	}
+
 	createOrUpdateProduct() {
-		this.service.createOrUpdateRole(this.form.value, this.data?.id)
+		if(this.form.invalid) {
+			return;
+		}
+		console.log(this.permissions?.value);
+		let dataPermissions = this.permissions.value?.reduce((newData: any, item: any) => {
+			let listDataCheck = item?.list_role?.filter((e: any) => e?.check)?.map((e: any) => e?.id);
+			newData = newData.concat(listDataCheck);
+			return newData;
+		}, []);
+		console.log("dataPermissions-------> ", dataPermissions);
+		let data = {
+			name: this.form?.value?.name,
+			permissions: dataPermissions
+		}
+		this.loading = true;
+		this.service.createOrUpdateRole(data, this.data?.id)
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				this.loading = false;
