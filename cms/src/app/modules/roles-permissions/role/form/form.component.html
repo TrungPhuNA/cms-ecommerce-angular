@@ -1,1 +1,25 @@
-<p>form works!</p>
+<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
+
+<div class="card">
+	<form [formGroup]="form">
+		<div class=" mb-5">
+			<div class="row">
+				<div class=" mb-5 form-group">
+					<label class="form-label required" translate>Role Name</label>
+					<input class="form-control" [ngClass]="{'is-invalid': 
+						(helperService.showStatusError(form, 'name', submitted))}"
+						(focusout)="helperService.onTrimFocusOutForm(form, 'name', $event)"
+						placeholder="{{ 'Nhập giá trị'}}" formControlName="name" maxlength="255" />
+					<at-error [submitted]="submitted" [control]="form.get('name')" validation="required"
+						[message]="validatorMessages.required">
+					</at-error>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
+		<button class="btn btn-sm btn-outline-base mx-3" translate>Cancel</button>
+		<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
+	</div>
+</div>
+<app-spinner [loading]="loading"></app-spinner>
