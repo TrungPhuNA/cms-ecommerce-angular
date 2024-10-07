@@ -162,11 +162,40 @@ return new class extends Migration {
                 "guard_name"  => "api",
                 "description" => "Toàn quyền",
                 "created_at"  => \Carbon\Carbon::now()
-            ]
+            ],
+            [
+                "name"        => "manage",
+                "permissions"       => [1],
+                "guard_name"  => "api",
+                "description" => "Quản lý",
+                "created_at"  => \Carbon\Carbon::now()
+            ],
+            [
+                "name"        => "general_director",
+                "permissions"       => [1],
+                "guard_name"  => "api",
+                "description" => "Tổng giám đốc",
+                "created_at"  => \Carbon\Carbon::now()
+            ],
+            [
+                "name"        => "staff",
+                "permissions"       => [1],
+                "guard_name"  => "api",
+                "description" => "Nhân viên",
+                "created_at"  => \Carbon\Carbon::now()
+            ],
         ];
 
         foreach ($roles as $item) {
             \Spatie\Permission\Models\Role::create($item);
+        }
+
+        $users = \App\Models\UserApi::all();
+        foreach ($users as $user) {
+            $role = \Spatie\Permission\Models\Role::where("name","administrator")->first();
+            if($role) {
+                $user->assignRole($role->id);
+            }
         }
     }
 
