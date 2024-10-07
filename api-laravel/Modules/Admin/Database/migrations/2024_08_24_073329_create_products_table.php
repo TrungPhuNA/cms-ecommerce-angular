@@ -128,7 +128,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        $categories = ["Quần áo nam", "Quần áo nữ"];
+        $categories = ["Quần áo nam", "Quần áo nữ", "Đồ trẻ em", "Đồ thể thao", "Phụ kiện", "Đồng phục"];
         foreach ($categories as $category) {
             \Illuminate\Support\Facades\DB::table("categories")->insert([
                 "name"       => $category,
@@ -138,12 +138,24 @@ return new class extends Migration {
         }
         $products = [
             [
-                "name"  => "Sản phẩm 1",
-                "price" => 200000
+                "name"   => "Đồ Bộ Nam Phối Dây Dệt",
+                "price"  => 200000,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-nau-2.jpg"
             ],
             [
-                "name"  => "Sản phẩm 2",
-                "price" => 250000
+                "name"  => "Áo Thu Đông Nữ Giữ Nhiệt Cổ Tròn",
+                "price" => 199000,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/ao-giu-nhiet-nu-ATN7019-CAM%20%20(1).jpg"
+            ],
+            [
+                "name"  => "Áo Len Nữ Xẻ Tà Dáng Rộng Dệt Kẻ",
+                "price" => 599000,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/aln5010-tkd.jpg"
+            ],
+            [
+                "name"  => "Đồ Bộ Nam Phối Dây Dệt",
+                "price" => 699000,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-den-2.jpg"
             ],
         ];
         foreach ($products as $product) {
@@ -151,6 +163,7 @@ return new class extends Migration {
                 "name"        => $product["name"],
                 "slug"        => \Illuminate\Support\Str::slug($product['name']),
                 "price"       => $product["price"],
+                "avatar"      => $product["avatar"],
                 "category_id" => \Illuminate\Support\Facades\DB::table("categories")->inRandomOrder()->first()->id,
                 "created_at"  => Carbon\Carbon::now()
             ]);
