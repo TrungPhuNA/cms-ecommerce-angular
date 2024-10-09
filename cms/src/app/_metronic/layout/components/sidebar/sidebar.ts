@@ -60,12 +60,12 @@ export const SideBarItem: ISideBarItem[] = [
 		module_prefix: ['warehouse'],
 		sub_menu: [
 			{
-				path: 'warehouse/income',
+				path: 'warehouse/stock-in',
 				title: 'Nhập kho',
 				icon: null,
 			},
 			{
-				path: 'warehouse/outcome',
+				path: 'warehouse/stock-out',
 				title: 'Xuất kho',
 				icon: null,
 			}

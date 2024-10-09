@@ -15,7 +15,7 @@ class StockOutQueryService extends ModelService
 {
     public static function getAll(Request $request, $items = null)
     {
-        $items = StockOut::query();
+        $items = StockOut::with(['user:id,name,email', 'product:id,avatar,name']);
         return parent::getAll($request, $items);
     }
 
@@ -33,6 +33,6 @@ class StockOutQueryService extends ModelService
 
     public static function findById(Request $request, $id)
     {
-        return StockOut::find($id);
+        return StockOut::with(['user:id,name,email', 'product:id,avatar,name'])->find($id);
     }
 }

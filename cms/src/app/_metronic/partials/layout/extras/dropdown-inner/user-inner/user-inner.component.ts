@@ -3,6 +3,8 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthService, UserType } from "../../../../../../services/auth.service";
 import { TranslateService } from "@ngx-translate/core";
 import { NavigationEnd, Router } from '@angular/router';
+import { Helpers } from 'src/app/shared';
+import { HelperService } from 'src/app/services';
 
 @Component({
     selector: 'app-user-inner',
@@ -18,10 +20,12 @@ export class UserInnerComponent implements OnInit, OnDestroy {
     langs = languages;
     private unsubscribe: Subscription[] = [];
 
+
     constructor(
         private authService: AuthService,
         private translateService: TranslateService,
         private cdr: ChangeDetectorRef,
+		public helperService: HelperService,
         private router: Router,
     ) {
         let data: any = localStorage.getItem('user');
@@ -32,23 +36,10 @@ export class UserInnerComponent implements OnInit, OnDestroy {
                     this.userInfo = res?.data;
                     localStorage.setItem('user', JSON.stringify(this.userInfo));
                 }
+				this.cdr.detectChanges();
             });
         } else this.userInfo = JSON.parse(data);
 		console.log(this.userInfo);
-
-        // this.router.events.subscribe((event) => {
-		// 	if (event instanceof NavigationEnd) {
-        //         data = localStorage.getItem('user');
-        //         if (!data) {
-        //             this.authService.getMe().subscribe(res => {
-        //                 if (res?.status) {
-        //                     this.userInfo = res?.data;
-        //                     localStorage.setItem('user', JSON.stringify(this.userInfo));
-        //                 }
-        //             });
-        //         } else this.userInfo = JSON.parse(data);
-		// 	}
-		// });
     }
 
     ngOnInit(): void {
@@ -59,6 +50,8 @@ export class UserInnerComponent implements OnInit, OnDestroy {
             this.setLanguage('vi');
         }
     }
+
+	
 
     logout() {
         this.authService.logout();

@@ -27,6 +27,8 @@ export class FormComponent implements OnInit {
 
 	statuses = STATUS_PRODUCTS;
 
+	showPassword = false;
+
 	types = [
 		{
 			value: "ADMIN",
@@ -82,10 +84,11 @@ export class FormComponent implements OnInit {
 
 	}
 	ngOnInit(): void {
+		this.showPassword = window.location.pathname?.includes('store')
 		this.activeRoute.params.subscribe((res: any) => {
 			this.breadcrumbs = [
 				new HomeBreadcrumb(),
-				new Breadcrumb('Sản phẩm', '/product'),
+				new Breadcrumb('Người dùng', '/account/user'),
 				new Breadcrumb(res?.id ? 'Cập nhật' : 'Tạo mới', ''),
 			];
 			this.getListRoles({ page: 1, page_size: 1000 }, res?.id)
@@ -94,25 +97,28 @@ export class FormComponent implements OnInit {
 	}
 
 	getListRoles(filters: any, id?: any) {
+		this.loading = true;
 		this.service.getListRole(filters)
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				if (res?.status == 'success') {
 					this.listRoles = res?.data?.roles;
-
 				}
 				if (id) {
 					this.getDetail(id)
+				} else {
+					this.loading = false;
 				}
+				
 			})
 	}
 
 	getDetail(id: any) {
-		this.loading = true;
 		this.service.showUser(id)
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				this.loading = false;
+				this.showPassword = false;
 				if (res?.status == 'success') {
 					this.data = res?.data?.user;
 					this.id = this.data?.id;
@@ -121,10 +127,9 @@ export class FormComponent implements OnInit {
 						this.form.enable();
 						this.form.patchValue({
 							...this.data,
-							roles: this.data?.roles?.map((item: any) => item?.id),
+							roles: this.data?.roles_account?.map((item: any) => item?.id),
 							type_name: this.data?.types?.find((item: any) => item != null)?.name
 						});
-						console.log(this.form);
 						this.submitted = false;
 						this.helperService.clearValidator(this.form, 'password')
 						let avatar = this.helperService.buildImage(this.data?.avatar);
@@ -156,6 +161,7 @@ export class FormComponent implements OnInit {
 						this.form.patchValue({
 							avatar: res?.data?.file_name
 						});
+
 						this.createOrUpdate();
 					} else {
 						this.alertService.fireSmall('error', res?.message);

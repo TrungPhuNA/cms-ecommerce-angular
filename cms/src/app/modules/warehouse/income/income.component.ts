@@ -1,10 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
-import { AlertService, HelperService, ProductService } from 'src/app/services';
+import { AlertService, HelperService, ProductService, WarehouseService } from 'src/app/services';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/shared';
 import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
+import { FormComponent } from '../form/form.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -34,24 +36,32 @@ export class IncomeComponent implements OnInit {
 
 	breadcrumbs: any;
 	title = 'Danh sách';
+	type: any;
 
 	constructor(
 		public helperService: HelperService,
 		private alertService: AlertService,
-		private service: ProductService,
+		private service: WarehouseService,
 		private cdr: ChangeDetectorRef,
+		private activatedRoute: ActivatedRoute,
 		private dialog: MatDialog,
 
 	) {
-		this.breadcrumbs = [
-			new HomeBreadcrumb(),
-			new Breadcrumb('Sản phẩm', '/product'),
-			new Breadcrumb('Danh sách', ''),
-		];
+
 	}
 
 	ngOnInit(): void {
-		this.search()
+		this.activatedRoute.params.subscribe((res => {
+			console.log(res);
+			this.type = res?.type || 'stock-in';
+			this.breadcrumbs = [
+				new HomeBreadcrumb(),
+				new Breadcrumb(this.type == 'stock-out' ? 'Xuất kho' : 'Nhập kho', '/warehouse/' + this.type),
+				new Breadcrumb('Danh sách', ''),
+			];
+			this.search()
+
+		}))
 	}
 
 	search() {
@@ -70,15 +80,16 @@ export class IncomeComponent implements OnInit {
 			...this.paging,
 			...this.helperService.buildSearchValueByKeyFilter(this.searchForm.value)
 		}
-		this.service.getListData(params)
+		this.service.getListData(params, this.type)
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				this.loading = false;
 				if (res?.status == 'success') {
-					this.listData = res?.data?.products?.map((item: any) => {
-						let status = this.statuses.find((e: any) => e?.value == item?.status);
-						item.status_name = status?.name;
-						item.status_class = status?.class;
+					let data = res?.data?.stockIns || [];
+					if (this.type == 'stock-out') {
+						data = res?.data?.stockOuts || []
+					}
+					this.listData = data?.map((item: any) => {
 						return item;
 					}) || [];
 					this.paging = this.helperService.buildPaging(res?.data?.meta);
@@ -110,5 +121,30 @@ export class IncomeComponent implements OnInit {
 			})
 	}
 
+	openModal(item?: any) {
+		const dialogConfig = new MatDialogConfig();
+
+		dialogConfig.width = '500px';
+		dialogConfig.maxHeight = '95vh';
+		dialogConfig.maxWidth = '95vw';
+		dialogConfig.disableClose = true;
+		dialogConfig.data = {
+			item: item,
+			type: this.type,
+			title: item ? 'Cập nhật' : 'Tạo mới'
+		};
+
+
+		let dialogRef = this.dialog.open(FormComponent, dialogConfig);
+
+		// action sau khi đóng modal
+		dialogRef.afterClosed().subscribe((event: any) => {
+			if (event?.success) {
+				this.type = event?.type
+				this.getListData();
+			}
+		});
+
+	}
 }
 

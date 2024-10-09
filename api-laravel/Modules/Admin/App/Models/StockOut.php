@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Admin\Database\factories\StockOutFactory;
@@ -9,13 +10,23 @@ use Modules\Admin\Database\factories\StockOutFactory;
 class StockOut extends Model
 {
     use HasFactory;
-    protected $table = 'stock_outs';
+    protected $table = 'ec_stock_outs';
     protected $guarded = [''];
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [];
+
+	public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+	public function product()
+    {
+        return $this->belongsTo(Product::class,'product_id');
+    }
     
     protected static function newFactory(): StockOutFactory
     {

@@ -76,16 +76,19 @@ export class FormComponent implements OnInit {
 
 
 	getListPermissions(filters: any, id?: any) {
+		this.loading = true;
 		this.service.getListPermission(filters).subscribe((res: any) => {
-				console.log(res);
 				if (res?.status == 'success') {
 					this.listData = res?.data?.permissions;
 					if (id) {
 						this.getDetail(id);
 					} else {
 						this.buildPermission(this.listData);
+						this.loading = false;
 						this.cdr.detectChanges()
 					}
+				} else {
+					this.loading = false;
 				}
 			});
 	}

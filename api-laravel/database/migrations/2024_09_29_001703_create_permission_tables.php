@@ -111,7 +111,7 @@ return new class extends Migration {
                 }
             });
 
-        Schema::create($tableNames['role_has_permissions'],
+        Schema::create($tableNames['acl_role_has_permissions'],
             function (Blueprint $table) use ($tableNames, $pivotRole, $pivotPermission) {
                 $table->unsignedBigInteger($pivotPermission);
                 $table->unsignedBigInteger($pivotRole);
@@ -126,7 +126,7 @@ return new class extends Migration {
                     ->on($tableNames['roles'])
                     ->onDelete('cascade');
 
-                $table->primary([$pivotPermission, $pivotRole], 'role_has_permissions_permission_id_role_id_primary');
+                $table->primary([$pivotPermission, $pivotRole], 'acl_role_has_permissions');
             });
 
         app('cache')

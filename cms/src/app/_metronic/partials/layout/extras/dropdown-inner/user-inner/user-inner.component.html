@@ -1,7 +1,7 @@
 <div class="menu-item px-3">
     <div class="menu-content d-flex align-items-center px-3">
         <div class="symbol symbol-50px me-5">
-            <img alt="Logo" [src]="userInfo?.avatar || './assets/media/auth/tim_80x80.png'" class="object-fit-cover"/>
+            <img alt="Logo" src="{{helperService.buildImage(userInfo?.avatar, true)}}" class="object-fit-cover"/>
         </div>
 
         <div class="d-flex flex-column">

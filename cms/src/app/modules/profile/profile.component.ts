@@ -80,7 +80,7 @@ export class ProfileComponent implements OnInit {
 				this.form.patchValue({
 					...res?.data?.user
 				});
-				this.base64Image = this.userInfo?.avatar || AVATAR_DEFAULT;
+				this.base64Image =this.helperService.buildImage(this.userInfo?.avatar);
 			}
 			this.cdr.detectChanges();
 		}, error => {
@@ -130,6 +130,7 @@ export class ProfileComponent implements OnInit {
 						if (response?.status == 'success') {
 							this.submitted = false;
 							this.alertService.fireSmall('success', 'Cập nhật thành công!');
+							
 						} else this.alertService.fireSmall('error', response?.message || 'Có lỗi xảy ra!');
 						this.cdr.detectChanges();
 					});

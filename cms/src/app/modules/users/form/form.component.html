@@ -37,9 +37,9 @@
 								[message]="validatorMessages.pattern">
 							</at-error>
 						</div>
-						<div class="col-12 mb-5 form-group" *ngIf="!data?.id">
+						<div class="col-12 mb-5 form-group" *ngIf="showPassword">
 							<label class="form-label required" translate>Password</label>
-							<input class="form-control" [ngClass]="{'is-invalid': 
+							<input class="form-control" type="password" [ngClass]="{'is-invalid': 
 								(helperService.showStatusError(form, 'password', submitted))}"
 								(focusout)="helperService.onTrimFocusOutForm(form, 'password', $event)"
 								placeholder="{{ 'Nhập giá trị'}}" formControlName="password" maxlength="255" />

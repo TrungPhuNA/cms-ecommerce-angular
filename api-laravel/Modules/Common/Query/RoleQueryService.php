@@ -40,7 +40,7 @@ class RoleQueryService extends ModelService
         if ($update && !empty($request->permissions))
         {
             $role = Role::find($id);
-            $permissionActive = DB::table('role_has_permissions')
+            $permissionActive = DB::table('acl_role_has_permissions')
                 ->where('role_id', $id)
                 ->pluck('permission_id')
                 ->toArray();
