@@ -15,7 +15,7 @@ class StockInQueryService extends ModelService
 {
     public static function getAll(Request $request, $items = null)
     {
-        $items = StockIn::query();
+        $items = StockIn::with(['user:id,name,email', 'product:id,avatar,name']);
         return parent::getAll($request, $items);
     }
 
@@ -33,6 +33,6 @@ class StockInQueryService extends ModelService
 
     public static function findById(Request $request, $id)
     {
-        return StockIn::find($id);
+        return StockIn::with(['user:id,name,email', 'product:id,avatar,name'])->find($id);
     }
 }

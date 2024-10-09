@@ -1,0 +1,49 @@
+<div class="card card-body">
+	<h2 class="fs16 fw-600 mb-5">{{title}}</h2>
+	<div class="position-absolute right-0 px-2 cursor-pointer" (click)="onClose()">
+		<i class="fa fa-xmark" style="font-size: 1.25rem;"></i>
+	</div>
+	<form [formGroup]="form" class="overflow-scroll pb-4" style="max-height: 70vh;">
+		
+		<div class="row mt-5">
+			<div class="col-12 form-group ">
+				<label class="form-label required" translate>Sản phẩm</label>
+				<ng-select [items]="listData" bindLabel="name" bindValue="id" placeholder="Chọn giá trị"
+					[searchable]="true" class="" [ngClass]="{'is-invalid': 
+					(helperService.showStatusError(form, 'product_id', submitted))}" placeholder="{{ 'Chọn giá trị'}}"
+					formControlName="product_id">
+				</ng-select>
+				<at-error [submitted]="submitted" [control]="form.get('product_id')" validation="required"
+					message="Trường này không được để trống.">
+				</at-error>
+			</div>
+			<div class="col-12 form-group mt-5" [ngClass]="{'expand-card': clickSelect}">
+				<label class="form-label required" translate>Số lượng</label>
+				<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'quantity', submitted))}"
+					onkeypress="return (event.charCode == 8 || event.charCode == 0 ) ? null : event.charCode >= 48 && event.charCode <= 57"
+					(focusout)="helperService.onTrimFocusOutForm(form, 'quantity', $event)"
+					placeholder="{{ 'Nhập giá trị'}}" formControlName="quantity" maxlength="255" />
+				<at-error [submitted]="submitted" [control]="form.get('quantity')" validation="required"
+					[message]="validatorMessages.required">
+				</at-error>
+			</div>
+			<div class="col-12 form-group mt-5" [ngClass]="{'expand-card': clickSelect}">
+				<label class="form-label required" translate>Giá tiền</label>
+				<input class="form-control" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'price', submitted))}"
+					onkeypress="return (event.charCode == 8 || event.charCode == 0 ) ? null : event.charCode >= 48 && event.charCode <= 57"
+					(focusout)="helperService.onTrimFocusOutForm(form, 'price', $event)"
+					placeholder="{{ 'Nhập giá trị'}}" formControlName="price"/>
+				<at-error [submitted]="submitted" [control]="form.get('price')" validation="required"
+					[message]="validatorMessages.required">
+				</at-error>
+			</div>
+		</div>
+	</form>
+	<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
+		<button class="btn btn-sm btn-outline-base mx-3" (click)="onClose()" translate>Cancel</button>
+		<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
+	</div>
+</div>
+<app-spinner [loading]="loading"></app-spinner>

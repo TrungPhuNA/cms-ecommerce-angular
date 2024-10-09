@@ -26,7 +26,7 @@
 							</a>
 						</div>
 						<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
-							routerLink="/warehouse/income/store">
+							(click)="openModal()">
 							<i class="fa fa-plus m-0" style="color: #ffffff"></i>
 							<span>Tạo mới</span>
 						</a>
@@ -47,7 +47,7 @@
 									<th class="text-nowrap" translate>Tên sản phẩm</th>
 									<th class="text-nowrap" translate>Quantity</th>
 									<th class="text-nowrap" translate>Price</th>
-									<th class="text-nowrap" translate>Income at</th>
+									<th class="text-nowrap" translate>{{type == 'stock-out' ? 'Outcome' : 'Income'}} at</th>
 									<th class="text-nowrap" translate>User</th>
 									<th class="text-nowrap text-center" translate>Operations</th>
 								</tr>
@@ -60,19 +60,20 @@
 												+ 1
 												}}</td>
 											<td class="text-nowrap ">
-												<img class="mx-auto" [src]="helperService.buildImage(item.avatar)"
+												<img class="mx-auto" [src]="helperService.buildImage(item?.product?.avatar)"
 													alt="{{item?.id}}" style="width: 80px; height: 80px;">
 											</td>
 											<td style="min-width: 200px;">
 												{{ item.product?.name }}
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.quantity }}
+												{{ item.quantity | thousandsSeparator: '' }}
 											</td>
 											<td class="text-nowrap">
 												{{item.price | thousandsSeparator:'đ'}}
 											</td>
 											<td class="text-nowrap">{{ item.date | date: 'dd/MM/YYYY' }}</td>
+											<td class="text-nowrap">{{ item.user?.name }}</td>
 
 											<td class="text-nowrap text-center px-4">
 												<button mat-icon-button [matMenuTriggerFor]="menu"
@@ -81,13 +82,13 @@
 												</button>
 												<mat-menu #menu="matMenu">
 													<a mat-menu-item class="d-flex align-items-center"
-														[routerLink]="'/warehouse/income/edit/'+item.id">
+														(click)="openModal(item)">
 														<span>Cập nhật</span>
 													</a>
-													<button mat-menu-item class="d-flex align-items-center"
+													<!-- <button mat-menu-item class="d-flex align-items-center"
 														(click)="deleteData(item)">
 														<span>Xóa</span>
-													</button>
+													</button> -->
 												</mat-menu>
 											</td>
 										</tr>
@@ -95,7 +96,7 @@
 								</ng-container>
 								<ng-template #noData>
 									<tr class="border-bottom-0">
-										<td class="text-nowrap text-center" colspan="6" translate>Empty data</td>
+										<td class="text-nowrap text-center" colspan="8" translate>Empty data</td>
 									</tr>
 								</ng-template>
 

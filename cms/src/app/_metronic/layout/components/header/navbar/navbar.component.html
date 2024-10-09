@@ -14,7 +14,7 @@
     <!--begin::Menu wrapper-->
     <div class="cursor-pointer symbol" [ngClass]="userAvatarClass" data-kt-menu-trigger="{default: 'click'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" 
         style="border-radius: 50px !important;">
-            <img src="{{ avatar || './assets/media/auth/tim_80x80.png' }}" alt="avatar" class="object-fit-cover"/>
+            <img src="{{ avatar ? helperService.buildImage(avatar, true) : './assets/media/auth/tim_80x80.png' }}" alt="avatar" class="object-fit-cover"/>
     </div>
     <app-user-inner data-kt-menu='true'></app-user-inner>
     <!--end::Menu wrapper-->

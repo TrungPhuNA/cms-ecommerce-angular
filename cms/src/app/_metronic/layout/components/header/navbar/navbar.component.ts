@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { HelperService } from 'src/app/services';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -20,7 +21,9 @@ export class NavbarComponent implements OnInit {
     user_info: any;
     avatar: any;
 
-    constructor(private router: Router, private authService: AuthService,) {
+    constructor(private router: Router, private authService: AuthService,
+		public helperService: HelperService
+	) {
         let data: any = localStorage.getItem('user');
         if (!data) {
             this.authService.getMe().subscribe(res => {

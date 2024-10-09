@@ -26,6 +26,7 @@ class UserApi extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'avatar',
         'password',
         'phone'
     ];
