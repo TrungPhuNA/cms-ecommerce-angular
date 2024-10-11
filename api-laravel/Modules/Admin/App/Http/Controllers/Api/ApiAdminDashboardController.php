@@ -22,7 +22,7 @@ class ApiAdminDashboardController extends Controller
             $totalUser = User::select('id')->count();
             $totalProduct = Product::select('id')->count();
             $totalOrder = Order::select('id')->count();
-            $totalRevenue = Order::sum('total_price');
+            $totalRevenue = Order::sum('sub_total');
 
             $orderDayInMonth = $this->getDailyRevenue();
             $orderMonthInYear = $this->getMonthlyRevenue();
@@ -50,8 +50,8 @@ class ApiAdminDashboardController extends Controller
 
         // Lấy tổng doanh thu theo từng ngày trong tháng hiện tại
         $revenues = DB::table('ec_orders')
-            ->select(DB::raw('DAY(created_at) as day'), DB::raw('SUM(total_price) as total'))
-            ->where('status_payment', 'completed')
+            ->select(DB::raw('DAY(created_at) as day'), DB::raw('SUM(sub_total) as total'))
+            ->where('payment_status', 'completed')
             ->whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $currentMonth)
             ->groupBy(DB::raw('DAY(created_at)'))
@@ -74,8 +74,8 @@ class ApiAdminDashboardController extends Controller
 
         // Lấy tổng doanh thu theo từng tháng trong năm hiện tại
         $revenues = DB::table('ec_orders')
-            ->select(DB::raw('MONTH(created_at) as month'), DB::raw('SUM(total_price) as total'))
-            ->where('status_payment', 'completed')
+            ->select(DB::raw('MONTH(created_at) as month'), DB::raw('SUM(sub_total) as total'))
+            ->where('payment_status', 'completed')
             ->whereYear('created_at', $currentYear)
             ->groupBy(DB::raw('MONTH(created_at)'))
             ->pluck('total', 'month');
