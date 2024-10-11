@@ -16,3 +16,8 @@ php artisan db:drop --force
 - user_types : Các type của tài khoản
 - user_has_types : Liên kết nhiều nhiều , 1 user nhiều user_type
 ![img.png](img.png)
+
+
+`
+php artisan dusk:make CrawlerMsTTest
+`

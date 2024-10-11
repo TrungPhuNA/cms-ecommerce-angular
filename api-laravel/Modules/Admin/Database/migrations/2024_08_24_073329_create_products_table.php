@@ -10,13 +10,24 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        Schema::create('payment_methods', function (Blueprint $table) {
+            $table->id();
+            $table->string('currency')->default("VND");
+            $table->string("name")->nullable();
+            $table->string("avatar")->nullable();
+            $table->text("description")->nullable();
+            $table->boolean("is_default")->default(false);
+            $table->enum("status",["active","inactive"])->default("active");
+            $table->jsonb("config")->nullable();
+            $table->timestamps();
+        });
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->string('avatar')->nullable();
             $table->string('icon')->nullable();
-            $table->string('status')->nullable();
+            $table->enum("status",["published","draft","pending"])->default("pending");
             $table->string('description')->nullable();
             $table->integer('parent_id')->default(0)->index();
             $table->string('title_seo')->nullable();
@@ -30,6 +41,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->string('avatar')->nullable();
+            $table->enum("status",["published","draft","pending"])->default("pending");
             $table->integer('number')->default(0);
             $table->integer('price')->default(0);
             $table->float("length")->nullable();
@@ -45,7 +57,7 @@ return new class extends Migration {
             $table->tinyInteger('order')->default(0);
             $table->tinyInteger('is_use_in_product_listing')->default(0);
             $table->tinyInteger('use_image_from_product_variation')->default(0);
-            $table->string('status')->default("active");
+            $table->enum("status",["published","draft","pending"])->default("pending");
             $table->timestamps();
         });
         Schema::create('ec_attribute_values', function (Blueprint $table) {
@@ -63,7 +75,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->tinyInteger('order')->default(0);
-            $table->string('status')->default("active");
+            $table->enum("status",["published","draft","pending"])->default("pending");
             $table->timestamps();
         });
         Schema::create('ec_product_options_values', function (Blueprint $table) {
@@ -91,15 +103,23 @@ return new class extends Migration {
         Schema::create('ec_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->bigInteger("total_price")->default(0);
+            $table->foreignId('payment_method_id')->constrained('payment_methods');
+            $table->string('code')->index()->unique();
             $table->bigInteger("total_shipping_fee")->default(0);
-            $table->string('status_payment')->nullable()->default("pending");
-            $table->string("status")->nullable()->default("pending");
+            $table->enum('payment_status',['pending','completed','refunding','refunded','fraud','failed'])->default("pending");
+            $table->enum("status",["pending","processing","completed","canceled","returned"])->default("pending");
+            $table->string("coupon_code")->nullable();
+            $table->decimal("amount",total: 16, places: 2)->comment("Tổng tiền hàng");
+            $table->decimal("shipping_amount",total: 16, places: 2)->comment("Tiền ship");
+            $table->decimal("tax_amount",total: 16, places: 2)->comment("tiền thuế");
+            $table->decimal("discount_amount",total: 16, places: 2)->comment("Tiền giảm giá");
+            $table->decimal("sub_total",total: 16, places: 2)->comment("Tổng tiền");
+            $table->dateTime('completed_at')->nullable();
+            $table->text("notes")->nullable();
             $table->timestamps();
         });
         Schema::create('ec_transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('notes')->nullable();
             $table->foreignId('order_id')->constrained('ec_orders');
             $table->foreignId('product_id')->constrained('ec_products');
             $table->integer('qty')->default(1);
@@ -127,6 +147,21 @@ return new class extends Migration {
             $table->date('date');
             $table->timestamps();
         });
+
+        $paymentsMethod = [
+            [
+                "currency" => "VND",
+                "name" => "COD",
+                "description" => "Nhận hàng thanh toán",
+                "is_default" => true,
+                "status" => "active",
+                "created_at" => Carbon\Carbon::now()
+            ]
+        ];
+
+        foreach ($paymentsMethod as $item) {
+            \Illuminate\Support\Facades\DB::table("payment_methods")->insert($item);
+        }
 
         $categories = ["Quần áo nam", "Quần áo nữ", "Đồ trẻ em", "Đồ thể thao", "Phụ kiện", "Đồng phục"];
         foreach ($categories as $category) {
@@ -186,6 +221,7 @@ return new class extends Migration {
         Schema::dropIfExists('ec_transactions');
         Schema::dropIfExists('ec_orders');
         Schema::dropIfExists('ec_products');
+        Schema::dropIfExists('payment_methods');
         Schema::dropIfExists('categories');
     }
 };

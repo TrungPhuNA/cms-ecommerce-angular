@@ -12,8 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Modules\Admin\App\Models\Category;
 use Modules\Admin\App\Models\Order;
+use Modules\Admin\App\Models\PaymentMethod;
 use Modules\Admin\App\Models\Transaction;
 use Modules\Common\Base\ModelService;
+use Modules\Common\Helpers\HelpersClass;
 
 class OrderQueryService extends ModelService
 {
@@ -35,6 +37,10 @@ class OrderQueryService extends ModelService
     {
         $dataInput = $request->all();
         $dataInput["created_at"] = Carbon::now();
+        $dataInput["code"] = HelpersClass::generateOrderCode();
+        if(!$request->payment_method_id) {
+            $dataInput["payment_method_id"] = PaymentMethod::where("is_default", true)->first()->id ?? 1;
+        }
         $order = Order::create($dataInput);
         if ($order) {
             if (!empty($request->products)) {
