@@ -51,7 +51,7 @@ import { CurrencyPipe } from "@angular/common";
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
 		{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-		
+
 		ErrorInterceptor,
 	],
 	bootstrap: [AppComponent],
