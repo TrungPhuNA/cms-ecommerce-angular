@@ -85,5 +85,18 @@ export const SideBarItem: ISideBarItem[] = [
 			}
 		]
 	},
+    {
+        path: '',
+        title: 'Thanh toán',
+        icon: 'fa fa-credit-card',
+        module_prefix: ['payments'],
+        sub_menu: [
+            {
+                path: 'payments',
+                title: 'Cấu hình thanh toán',
+                icon: null,
+            }
+        ]
+    },
 
 ];

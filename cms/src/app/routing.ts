@@ -23,6 +23,10 @@ const Routing: Routes = [
         path: 'warehouse',
         loadChildren: () => import('./modules/warehouse/warehouse.module').then((m) => m.WarehouseModule),
     },
+    {
+        path: 'payments',
+        loadChildren: () => import('./modules/payments/payments.module').then((m) => m.PaymentsModule),
+    },
 	{
         path: 'order',
         loadChildren: () => import('./modules/orders/orders.module').then((m) => m.OrdersModule),
