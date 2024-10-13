@@ -18,6 +18,7 @@ use Modules\Admin\App\Http\Controllers\Api\ApiAdminProductOptionController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminOrderController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminDashboardController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminPaymentMethodController;
+use Modules\Admin\App\Http\Controllers\Api\ApiAdminBrandController;
 /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -66,6 +67,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::resource('roles',ApiAdminRoleController::class);
         Route::get('dashboard',[ApiAdminDashboardController::class,'getDashboard']);
         Route::resource('payments-method',ApiAdminPaymentMethodController::class);
+
+        Route::resource('brands',ApiAdminBrandController::class);
     });
 });
 
