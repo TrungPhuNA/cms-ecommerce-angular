@@ -5,20 +5,20 @@ namespace Modules\Admin\App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Admin\App\Http\Requests\Api\RequestApiStoreCategory;
-use Modules\Common\Query\CategoryQueryService;
+use Modules\Common\Query\BrandQueryService;
 use Modules\Common\Service\ErrorLogService;
 use Modules\Common\Service\ResponseService;
 
-class ApiAdminCategoryController extends Controller
+class ApiAdminBrandController extends Controller
 {
     /**
-     * AdmGetListCategory
+     * AdmGetListBrand
      */
     public function index(Request $request)
     {
         try {
-            $paginator = CategoryQueryService::getAll($request);
-            $categories = $paginator->getCollection();
+            $paginator = BrandQueryService::getAll($request);
+            $brands = $paginator->getCollection();
 
             $meta = [
                 "total"        => $paginator->total(),
@@ -29,7 +29,7 @@ class ApiAdminCategoryController extends Controller
 
             $data = [
                 'meta'  => $meta,
-                'categories' => $categories
+                'brands' => $brands
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -39,14 +39,14 @@ class ApiAdminCategoryController extends Controller
     }
 
     /**
-     * AdmCreateCategory
+     * AdmCreateBrand
      */
-    public function store(RequestApiStoreCategory $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $category = CategoryQueryService::create($request);
+            $brand = BrandQueryService::create($request);
             $data = [
-                'category' => $category
+                'brand' => $brand
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -56,14 +56,14 @@ class ApiAdminCategoryController extends Controller
     }
 
     /**
-     * AdmShowCategory
+     * AdmShowBrand
      */
     public function show(Request $request, $id)
     {
         try {
-            $category = CategoryQueryService::findById($request, $id);
+            $brand = BrandQueryService::findById($request, $id);
             $data = [
-                'category' => $category
+                'brand' => $brand
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -73,14 +73,14 @@ class ApiAdminCategoryController extends Controller
     }
 
     /**
-     * AdmUpdateCategory
+     * AdmUpdateBrand
      */
     public function update(RequestApiStoreCategory $request, $id)
     {
         try {
-            CategoryQueryService::update($request, $id);
+            BrandQueryService::update($request, $id);
             $data = [
-                'category' => CategoryQueryService::findById($request, $id)
+                'brand' => BrandQueryService::findById($request, $id)
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {

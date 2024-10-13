@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string("avatar")->nullable();
             $table->text("description")->nullable();
             $table->boolean("is_default")->default(false);
-            $table->enum("status",["active","inactive"])->default("active");
+            $table->enum("status", ["active", "inactive"])->default("active");
             $table->jsonb("config")->nullable();
             $table->timestamps();
         });
@@ -27,9 +27,22 @@ return new class extends Migration {
             $table->string('slug')->nullable();
             $table->string('avatar')->nullable();
             $table->string('icon')->nullable();
-            $table->enum("status",["published","draft","pending"])->default("pending");
+            $table->enum("status", ["published", "draft", "pending"])->default("pending");
             $table->string('description')->nullable();
             $table->integer('parent_id')->default(0)->index();
+            $table->string('title_seo')->nullable();
+            $table->string('description_seo')->nullable();
+            $table->string('keywords_seo')->nullable();
+            $table->tinyInteger('index_seo')->default(1);
+            $table->timestamps();
+        });
+        Schema::create('ec_brands', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->string('avatar')->nullable();
+            $table->enum("status", ["published", "draft", "pending"])->default("pending");
+            $table->string('description')->nullable();
             $table->string('title_seo')->nullable();
             $table->string('description_seo')->nullable();
             $table->string('keywords_seo')->nullable();
@@ -41,13 +54,14 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->string('avatar')->nullable();
-            $table->enum("status",["published","draft","pending"])->default("pending");
+            $table->enum("status", ["published", "draft", "pending"])->default("pending");
             $table->integer('number')->default(0);
             $table->integer('price')->default(0);
             $table->float("length")->nullable();
             $table->float("width")->nullable();
             $table->float("height")->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->foreignId('brand_id')->nullable()->constrained('ec_brands');
             $table->timestamps();
         });
         Schema::create('ec_attributes', function (Blueprint $table) {
@@ -57,7 +71,7 @@ return new class extends Migration {
             $table->tinyInteger('order')->default(0);
             $table->tinyInteger('is_use_in_product_listing')->default(0);
             $table->tinyInteger('use_image_from_product_variation')->default(0);
-            $table->enum("status",["published","draft","pending"])->default("pending");
+            $table->enum("status", ["published", "draft", "pending"])->default("pending");
             $table->timestamps();
         });
         Schema::create('ec_attribute_values', function (Blueprint $table) {
@@ -75,7 +89,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->tinyInteger('order')->default(0);
-            $table->enum("status",["published","draft","pending"])->default("pending");
+            $table->enum("status", ["published", "draft", "pending"])->default("pending");
             $table->timestamps();
         });
         Schema::create('ec_product_options_values', function (Blueprint $table) {
@@ -106,14 +120,15 @@ return new class extends Migration {
             $table->foreignId('payment_method_id')->constrained('payment_methods');
             $table->string('code')->index()->unique();
             $table->bigInteger("total_shipping_fee")->default(0);
-            $table->enum('payment_status',['pending','completed','refunding','refunded','fraud','failed'])->default("pending");
-            $table->enum("status",["pending","processing","completed","canceled","returned"])->default("pending");
+            $table->enum('payment_status',
+                ['pending', 'completed', 'refunding', 'refunded', 'fraud', 'failed'])->default("pending");
+            $table->enum("status", ["pending", "processing", "completed", "canceled", "returned"])->default("pending");
             $table->string("coupon_code")->nullable();
-            $table->decimal("amount",total: 16, places: 2)->comment("Tổng tiền hàng");
-            $table->decimal("shipping_amount",total: 16, places: 2)->comment("Tiền ship");
-            $table->decimal("tax_amount",total: 16, places: 2)->comment("tiền thuế");
-            $table->decimal("discount_amount",total: 16, places: 2)->comment("Tiền giảm giá");
-            $table->decimal("sub_total",total: 16, places: 2)->comment("Tổng tiền");
+            $table->decimal("amount", total: 16, places: 2)->comment("Tổng tiền hàng");
+            $table->decimal("shipping_amount", total: 16, places: 2)->comment("Tiền ship");
+            $table->decimal("tax_amount", total: 16, places: 2)->comment("tiền thuế");
+            $table->decimal("discount_amount", total: 16, places: 2)->comment("Tiền giảm giá");
+            $table->decimal("sub_total", total: 16, places: 2)->comment("Tổng tiền");
             $table->dateTime('completed_at')->nullable();
             $table->text("notes")->nullable();
             $table->timestamps();
@@ -150,12 +165,12 @@ return new class extends Migration {
 
         $paymentsMethod = [
             [
-                "currency" => "VND",
-                "name" => "COD",
+                "currency"    => "VND",
+                "name"        => "COD",
                 "description" => "Nhận hàng thanh toán",
-                "is_default" => true,
-                "status" => "active",
-                "created_at" => Carbon\Carbon::now()
+                "is_default"  => true,
+                "status"      => "active",
+                "created_at"  => Carbon\Carbon::now()
             ]
         ];
 
@@ -171,6 +186,29 @@ return new class extends Migration {
                 "created_at" => Carbon\Carbon::now()
             ]);
         }
+        $brands = [
+            [
+                "name"   => "Chanel",
+                "status" => "published",
+                "avatar" => "https://cdn-copck.nitrocdn.com/WwybsgZzWtFojdWowVAajDJCKuMAXRVm/assets/images/optimized/rev-327d879/rubicmarketing.com/wp-content/uploads/2022/11/logo-chanel.jpg"
+            ],
+            [
+                "name"   => "Gucci",
+                "status" => "published",
+                "avatar" => "https://inkythuatso.com/uploads/thumbnails/800/2021/11/gucci-logo-inkythuatso-01-02-10-02-14.jpg"
+            ],
+        ];
+
+        foreach ($brands as $item) {
+            \Illuminate\Support\Facades\DB::table("ec_brands")->insert([
+                "name"       => $item["name"],
+                "slug"       => \Illuminate\Support\Str::slug($item['name']),
+                "avatar"     => $item["avatar"],
+                "status"     => $item["status"],
+                "created_at" => Carbon\Carbon::now()
+            ]);
+        }
+
         $products = [
             [
                 "name"   => "Đồ Bộ Nam Phối Dây Dệt",
@@ -178,18 +216,18 @@ return new class extends Migration {
                 "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-nau-2.jpg"
             ],
             [
-                "name"  => "Áo Thu Đông Nữ Giữ Nhiệt Cổ Tròn",
-                "price" => 199000,
+                "name"   => "Áo Thu Đông Nữ Giữ Nhiệt Cổ Tròn",
+                "price"  => 199000,
                 "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/ao-giu-nhiet-nu-ATN7019-CAM%20%20(1).jpg"
             ],
             [
-                "name"  => "Áo Len Nữ Xẻ Tà Dáng Rộng Dệt Kẻ",
-                "price" => 599000,
+                "name"   => "Áo Len Nữ Xẻ Tà Dáng Rộng Dệt Kẻ",
+                "price"  => 599000,
                 "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/aln5010-tkd.jpg"
             ],
             [
-                "name"  => "Đồ Bộ Nam Phối Dây Dệt",
-                "price" => 699000,
+                "name"   => "Đồ Bộ Nam Phối Dây Dệt",
+                "price"  => 699000,
                 "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-den-2.jpg"
             ],
         ];
@@ -221,6 +259,7 @@ return new class extends Migration {
         Schema::dropIfExists('ec_transactions');
         Schema::dropIfExists('ec_orders');
         Schema::dropIfExists('ec_products');
+        Schema::dropIfExists('ec_brands');
         Schema::dropIfExists('payment_methods');
         Schema::dropIfExists('categories');
     }

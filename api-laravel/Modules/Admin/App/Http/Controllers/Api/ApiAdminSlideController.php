@@ -4,21 +4,20 @@ namespace Modules\Admin\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Admin\App\Http\Requests\Api\RequestApiStoreCategory;
-use Modules\Common\Query\CategoryQueryService;
+use Modules\Common\Query\SlideQueryService;
 use Modules\Common\Service\ErrorLogService;
 use Modules\Common\Service\ResponseService;
 
-class ApiAdminCategoryController extends Controller
+class ApiAdminSlideController extends Controller
 {
     /**
-     * AdmGetListCategory
+     * AdmGetListSlide
      */
     public function index(Request $request)
     {
         try {
-            $paginator = CategoryQueryService::getAll($request);
-            $categories = $paginator->getCollection();
+            $paginator = SlideQueryService::getAll($request);
+            $slides = $paginator->getCollection();
 
             $meta = [
                 "total"        => $paginator->total(),
@@ -29,7 +28,7 @@ class ApiAdminCategoryController extends Controller
 
             $data = [
                 'meta'  => $meta,
-                'categories' => $categories
+                'slides' => $slides
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -39,14 +38,14 @@ class ApiAdminCategoryController extends Controller
     }
 
     /**
-     * AdmCreateCategory
+     * AdmCreateBrand
      */
-    public function store(RequestApiStoreCategory $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $category = CategoryQueryService::create($request);
+            $slide = SlideQueryService::create($request);
             $data = [
-                'category' => $category
+                'slide' => $slide
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -56,14 +55,14 @@ class ApiAdminCategoryController extends Controller
     }
 
     /**
-     * AdmShowCategory
+     * AdmShowBrand
      */
     public function show(Request $request, $id)
     {
         try {
-            $category = CategoryQueryService::findById($request, $id);
+            $slide = SlideQueryService::findById($request, $id);
             $data = [
-                'category' => $category
+                'slide' => $slide
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -73,14 +72,14 @@ class ApiAdminCategoryController extends Controller
     }
 
     /**
-     * AdmUpdateCategory
+     * AdmUpdateBrand
      */
-    public function update(RequestApiStoreCategory $request, $id)
+    public function update(Request $request, $id)
     {
         try {
-            CategoryQueryService::update($request, $id);
+            SlideQueryService::update($request, $id);
             $data = [
-                'category' => CategoryQueryService::findById($request, $id)
+                'slide' => SlideQueryService::findById($request, $id)
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
