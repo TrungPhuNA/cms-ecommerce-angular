@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
-import { AlertService, HelperService, OrderService, ProductService } from 'src/app/services';
+import { AccountService, AlertService, HelperService, OrderService, ProductService } from 'src/app/services';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/shared';
-import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
+import { DEFAULT_IMG, ORDER_STATUSES, PAYMENT_STATUSES, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
 
 @Component({
 	selector: 'app-index',
@@ -24,11 +24,12 @@ export class IndexComponent implements OnInit {
 
 	defaultImg = DEFAULT_IMG;
 
-	statuses = STATUS_PRODUCTS;
+	statuses = ORDER_STATUSES;
+	statusPayments = PAYMENT_STATUSES;
 
 
 	searchForm: any = new FormGroup({
-		name: new FormControl(null)
+		user_id: new FormControl(null)
 	});
 
 	breadcrumbs: any;
@@ -36,6 +37,7 @@ export class IndexComponent implements OnInit {
 
 	constructor(
 		public helperService: HelperService,
+		public userService: AccountService,
 		private alertService: AlertService,
 		private service: OrderService,
 		private cdr: ChangeDetectorRef,
@@ -50,12 +52,24 @@ export class IndexComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.search()
+		this.search();
+		this.getListAccounts({page: 1, page_size: 1000})
 	}
 
 	search() {
 		this.paging.page = 1;
 		this.getListData();
+	}
+
+	listAccounts: any = [];
+	getListAccounts(filters: any) {
+		this.userService.getListUser(filters)
+			.pipe(finalize(() => this.cdr.detectChanges()))
+			.subscribe((res: any) => {
+				if (res?.status == 'success') {
+					this.listAccounts = res?.data?.users;
+				}
+			})
 	}
 
 	getListData() {
@@ -71,8 +85,11 @@ export class IndexComponent implements OnInit {
 				if (res?.status == 'success') {
 					this.listData = res?.data?.orders?.map((item: any) => {
 						let status = this.statuses.find((e: any) => e?.value == item?.status);
+						let payment_status = this.statusPayments.find((e: any) => e?.value == item?.payment_status);
 						item.status_name = status?.name;
-						item.status_class = status?.class;
+						item.status_class = status?.className;
+						item.payment_name = payment_status?.name;
+						item.payment_class = payment_status?.className;
 						return item;
 					}) || [];
 					this.paging = this.helperService.buildPaging(res?.data?.meta);
@@ -82,6 +99,12 @@ export class IndexComponent implements OnInit {
 
 	changePage(e: any) {
 		this.paging.page = e;
+		this.getListData();
+	}
+
+	reset() {
+		this.searchForm.reset();
+		this.paging.page = 1;
 		this.getListData();
 	}
 

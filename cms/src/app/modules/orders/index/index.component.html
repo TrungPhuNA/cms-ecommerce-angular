@@ -4,41 +4,56 @@
 		<div class="card-body p-0 mt-5">
 			<div style="border: 1px solid #EAECF0; border-radius: 16px">
 				<div class="p-5">
-					<div class="row">
-						<div class="col-12 d-md-flex justify-content-md-between">
-							<div class="d-md-flex justify-content-md-between flex-md-wrap align-items-center gap-3">
-								<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
-									<div class="d-flex align-items-center  mb-4">
-										<span [inlineSVG]="'./assets/media/icons/search01.svg'"
-											class="svg-icon svg-icon-1" (click)="search()"></span>
-										<input class="form-control search-input" placeholder="Tìm kiếm theo tên"
-											formControlName="name">
-									</div>
-								</form>
-								<a class="btn btn-orange mb-4 text-right h-40 d-flex align-items-center gap-2"
-									routerLink="/order/store">
+					<div class="p-5">
+						<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
+							<div class="form-group col-md-4 col-12">
+								<label class="form-label">Customer:</label>
+								<ng-select [items]="listAccounts" bindLabel="name"
+									[ngClass]="{'is-invalid': helperService.showStatusError(searchForm, 'user_id')}"
+									bindValue="id" formControlName="user_id" placeholder="Chọn giá trị"
+									[searchable]="true"></ng-select>
+							</div>
+
+						</form>
+
+						<div class=" d-flex justify-content-between align-items-end my-3">
+							<div class="d-flex gap-5">
+								<a class="btn btn-primary text-right h-40 d-flex align-items-center gap-2"
+									(click)="search()">
 									<i class="fa fa-plus m-0" style="color: #ffffff"></i>
-									<span>Tạo mới</span>
+									<span>Tìm kiếm</span>
+								</a>
+								<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2"
+									(click)="reset()">
+									<i class="fa fa-sync m-0"></i>
+
 								</a>
 							</div>
+							<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
+								routerLink="/account/user/store">
+								<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+								<span>Tạo mới</span>
+							</a>
 						</div>
+
 					</div>
 				</div>
 
 				<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
-					<table class="table table-row-bordered table-hover align-middle cursor-default">
-						<div class="position-relative h-400px" *ngIf="loading">
-							<app-spinner [loading]="loading"></app-spinner>
-						</div>
-						<ng-container *ngIf="!loading">
+					<table class="table px-3 table-row-bordered table-hover align-middle cursor-default">
+
+						<ng-container>
 							<thead style="background-color: #F9FAFB;">
 								<tr class="fw-500 border-top">
 									<th class="text-nowrap text-center px-2" translate>#</th>
-									<th class="text-nowrap text-center" translate>Avatar</th>
-									<th class="text-nowrap" translate>Name</th>
-									<th class="text-nowrap" translate>Slug</th>
+									<th class="text-nowrap text-center" translate>Customer Info</th>
+									<th class="text-nowrap text-right" translate>Amount</th>
+									<th class="text-nowrap" translate>Payment status</th>
 									<th class="text-nowrap" translate>Status</th>
-									<th class="text-nowrap" translate>Created at</th>
+									<th class="text-nowrap text-right" translate>Tax Amount</th>
+									<th class="text-nowrap text-right" translate>Shipping Amount</th>
+									<th class="text-nowrap text-right" translate>Discount</th>
+									<th class="text-nowrap text-right" translate>Total Price</th>
 									<th class="text-nowrap text-center" translate>Operations</th>
 								</tr>
 							</thead>
@@ -50,21 +65,34 @@
 												+ 1
 												}}</td>
 											<td class="text-nowrap ">
-												<img class="mx-auto" [src]="helperService.buildImage(item.avatar)"
-													alt="{{item?.id}}" style="width: 80px; height: 80px;">
+												<p>{{item?.user?.name}}</p>
+												<p class="text-primary">{{item?.user?.email}}</p>
+											</td>
+											<td class="text-right" style="min-width: 200px;">
+												{{ item.amount | thousandsSeparator: 'đ' }}
 											</td>
 											<td style="min-width: 200px;">
-												{{ item.name }}
-											</td>
-											<td style="min-width: 200px;">
-												{{ item.slug }}
+												<span class="badge badge-{{item.payment_class}}">
+													{{item.payment_name}}
+												</span>
 											</td>
 											<td class="text-nowrap">
-												<span class="{{item.status_class}}">
+												<span class="badge badge-{{item.status_class}}">
 													{{item.status_name}}
 												</span>
 											</td>
-											<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
+											<td class="text-right" style="min-width: 200px;">
+												{{ item.shipping_amount | thousandsSeparator: 'đ' }}
+											</td>
+											<td class="text-right" style="min-width: 200px;">
+												{{ item.tax_amount | thousandsSeparator: 'đ' }}
+											</td>
+											<td class="text-right" style="min-width: 200px;">
+												{{ item.discount_amount | thousandsSeparator: 'đ' }}
+											</td>
+											<td class="text-right" style="min-width: 200px;">
+												{{ item.sub_total | thousandsSeparator: 'đ' }}
+											</td>
 
 											<td class="text-nowrap text-center px-4">
 												<button mat-icon-button [matMenuTriggerFor]="menu"
@@ -94,9 +122,12 @@
 							</tbody>
 						</ng-container>
 					</table>
-					<app-pagination [paging]="paging" (changePaged)="changePage($event)"></app-pagination>
 				</div>
+				<app-pagination [paging]="paging" (changePaged)="changePage($event)"></app-pagination>
+
 			</div>
 		</div>
 	</div>
 </div>
+
+<app-spinner [loading]="loading"></app-spinner>

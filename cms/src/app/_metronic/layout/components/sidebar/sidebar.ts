@@ -60,13 +60,7 @@ export const SideBarItem: ISideBarItem[] = [
 		module_prefix: ['order'],
 		sub_menu: []
 	},
-	{
-		path: 'payment',
-		title: 'Thanh toán',
-		icon: 'fa-solid fa-credit-card',
-		module_prefix: ['payment'],
-		sub_menu: []
-	},
+	
 	{
 		path: '',
 		title: 'Kho',

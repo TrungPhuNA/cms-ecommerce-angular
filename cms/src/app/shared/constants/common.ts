@@ -23,20 +23,20 @@ export const STATUS_PRODUCTS = [
 ];
 
 export const PAYMENT_STATUSES = [
-	{ value: 'pending', name: 'Pending' },
-	{ value: 'completed', name: 'Completed' },
-	{ value: 'refunding', name: 'Refunding' },
-	{ value: 'refunded', name: 'Refunded' },
-	{ value: 'fraud', name: 'Fraud' },
-	{ value: 'failed', name: 'Failed' }
+	{ value: 'pending', className: "warning", name: 'Pending' },
+	{ value: 'completed', className: "success", name: 'Completed' },
+	{ value: 'refunding', className: "info", name: 'Refunding' },
+	{ value: 'refunded', className: "primary", name: 'Refunded' },
+	{ value: 'fraud', className: "secondary", name: 'Fraud' },
+	{ value: 'failed', className: "danger", name: 'Failed' }
 ];
 
 export const ORDER_STATUSES = [
-	{ value: 'pending', name: 'Pending' },
-	{ value: 'processing', name: 'Processing' },
-	{ value: 'completed', name: 'Completed' },
-	{ value: 'canceled', name: 'Canceled' },
-	{ value: 'returned', name: 'Returned' }
+	{ value: 'pending', className: "warning", name: 'Pending' },
+	{ value: 'processing', className: "primary", name: 'Processing' },
+	{ value: 'completed', className: "success", name: 'Completed' },
+	{ value: 'canceled', className: "danger", name: 'Canceled' },
+	{ value: 'returned', className: "info", name: 'Returned' }
 ];
 
 export const STATUS_BY_NUMBER = [
