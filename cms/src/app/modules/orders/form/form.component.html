@@ -4,19 +4,28 @@
 		<div class="row">
 			<div class="col-md-6 col-12 mb-5 form-group">
 				<label class="form-label required" translate>Customer</label>
-				<ng-select [items]="listProducts" bindLabel="name"
+				<ng-select [items]="listAccounts" bindLabel="name"
 					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'user_id')}" bindValue="id"
 					formControlName="user_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
 				<at-error [submitted]="submitted" [control]="form.get('user_id')" validation="required"
 					[message]="validatorMessages.required">
 				</at-error>
 			</div>
-			<div class="col-md-6 col-12 mb-5 form-group">
+			<div class="col-md-3 col-12 mb-5 form-group">
 				<label class="form-label required" translate>Trạng thái</label>
 				<ng-select [items]="statuses" bindLabel="name"
 					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'status')}" bindValue="value"
 					formControlName="status" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
 				<at-error [submitted]="submitted" [control]="form.controls['status']" validation="required"
+					[message]="validatorMessages.required"></at-error>
+			</div>
+
+			<div class="col-md-3 col-12 mb-5 form-group">
+				<label class="form-label " translate>Trạng thái thanh toán</label>
+				<ng-select [items]="paymentStatuses" bindLabel="name"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'payment_status')}" bindValue="value"
+					formControlName="payment_status" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+				<at-error [submitted]="submitted" [control]="form.controls['payment_status']" validation="required"
 					[message]="validatorMessages.required"></at-error>
 			</div>
 
@@ -42,8 +51,9 @@
 												<div class="form-group">
 													<ng-select [items]="listProducts" bindLabel="name"
 														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'id')}"
-														bindValue="value" formControlName="id"
-														placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+														bindValue="id" formControlName="id"
+														(change)="changeProduct($event, i)" placeholder="Chọn giá trị"
+														[searchable]="true"></ng-select>
 													<at-error [submitted]="submitted"
 														[control]="productControl.get('id')" validation="required"
 														[message]="validatorMessages.required"></at-error>
@@ -58,11 +68,12 @@
 											<td class="align-top" style="min-width: 200px;">
 												<div class="form-group">
 													<input [min]="0" appInputNumber [onlyNumber]="true"
-														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'quantity')}"
+														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'qty')}"
 														bindValue="value" class="form-control"
-														formControlName="quantity" placeholder="Nhập giá trị" />
+														(change)="changeProduct($event, i, 'quantity')"
+														formControlName="qty" placeholder="Nhập giá trị" />
 													<at-error [submitted]="submitted"
-														[control]="productControl.get('quantity')" validation="required"
+														[control]="productControl.get('qty')" validation="required"
 														[message]="validatorMessages.required"></at-error>
 												</div>
 											</td>
@@ -73,9 +84,11 @@
 													readonly placeholder="Nhập giá trị" />
 											</td>
 
-											<td class="text-nowrap px-4 align-{{helperService.showStatusError(productControl, 'id') ? 'top pt-7' : 'middle'}}">
+											<td
+												class="text-nowrap px-4 align-{{helperService.showStatusError(productControl, 'id') ? 'top pt-7' : 'middle'}}">
 												<div class="d-flex align-items-center align-content-center ">
-													<i class="fa-regular fa-trash-can cursor-pointer" (click)="deleteData( i)"></i>
+													<i class="fa-regular fa-trash-can cursor-pointer"
+														(click)="deleteData( i)"></i>
 												</div>
 											</td>
 										</tr>
@@ -94,42 +107,44 @@
 							</tr>
 
 							<tr>
-								<td colspan="4" class="text-center">
-									<p class="fs-18 fw-bold">Giá ship</p>
+								<td colspan="3" class="text-center">
+									<p class="fs18 fw-bold">Giá ship</p>
 								</td>
-								<td>
-									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
+								<td colspan="2">
+									<input [min]="0" appInputNumber (change)="countSubTotal()" [onlyNumber]="true" bindValue="value"
 										class="form-control" formControlName="shipping_amount"
 										placeholder="Nhập giá trị" />
 								</td>
 							</tr>
 							<tr>
-								<td colspan="4" class="text-center">
-									<p class="fs-18 fw-bold">Thuế</p>
+								<td colspan="3" class="text-center">
+									<p class="fs18 fw-bold">Thuế</p>
 								</td>
-								<td>
+								<td colspan="2">
 									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
-										class="form-control" formControlName="tax_amount" placeholder="Nhập giá trị" />
+										(change)="countSubTotal()" class="form-control" formControlName="tax_amount"
+										placeholder="Nhập giá trị" />
 								</td>
 							</tr>
 							<tr>
-								<td colspan="4" class="text-center">
-									<p class="fs-18 fw-bold">Discount</p>
+								<td colspan="3" class="text-center">
+									<p class="fs18 fw-bold">Discount</p>
 								</td>
-								<td>
-									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
-										class="form-control" formControlName="discount_amount"
+								<td colspan="2">
+									<input [min]="0" appInputNumber [onlyNumber]="true" (change)="countSubTotal()"
+										bindValue="value" class="form-control" formControlName="discount_amount"
 										placeholder="Nhập giá trị" />
 								</td>
 							</tr>
 
 							<tr>
-								<td colspan="4" class="text-center">
-									<p class="fs-18 fw-bold">Thành tiền</p>
+								<td colspan="3" class="text-center">
+									<p class="fs18 fw-bold">Thành tiền</p>
 								</td>
-								<td>
+								<td colspan="2">
 									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
-										formControlName="sub_total" readonly placeholder="Nhập giá trị" />
+										formControlName="sub_total" class="form-control" readonly
+										placeholder="Nhập giá trị" />
 								</td>
 							</tr>
 
@@ -137,40 +152,19 @@
 					</ng-container>
 				</table>
 			</div>
-			<!-- <div class="col-md-6 col-12 mb-5 form-group">
-				<label class="form-label required" translate>Sản phẩm</label>
-				<ng-select [items]="listProducts" bindLabel="name"
-					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'category_id')}" bindValue="id"
-					formControlName="category_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
-				<at-error [submitted]="submitted" [control]="form.controls['category_id']" validation="required"
+			<div class="col-12 mb-5 form-group">
+				<label class="form-label " translate>Ghi chú</label>
+				<textarea rows="3" [ngClass]="{'is-invalid': helperService.showStatusError(form, 'category_id')}" bindValue="id"
+				formControlName="notes" class="form-control" placeholder="Nhập giá trị"
+				></textarea>
+				<at-error [submitted]="submitted" [control]="form.controls['notes']" validation="required"
 					[message]="validatorMessages.required"></at-error>
 
-			</div> -->
-
-			<!-- <div class="col-md-6 col-12 mb-5 form-group">
-				<label class="form-label required" translate>Số lượng</label>
-				<input class="form-control" [ngClass]="{'is-invalid': 
-					(helperService.showStatusError(form, 'number', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
-					formControlName="number" />
-				<at-error [submitted]="submitted" [control]="form.get('number')" validation="required"
-					[message]="validatorMessages.required">
-				</at-error>
 			</div>
-			<div class="col-md-6 col-12 mb-5 form-group">
-				<label class="form-label required" translate>Giá</label>
-				<input class="form-control" [ngClass]="{'is-invalid': 
-					(helperService.showStatusError(form, 'price', submitted))}"
-					(focusout)="helperService.onTrimFocusOutForm(form, 'price', $event)"
-					placeholder="{{ 'Nhập giá trị'}}" formControlName="price" />
-				<at-error [submitted]="submitted" [control]="form.get('price')" validation="required"
-					[message]="validatorMessages.required">
-				</at-error>
-			</div> -->
-
 		</div>
 	</form>
 	<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
-		<button class="btn btn-sm btn-outline-base mx-3" translate>Cancel</button>
+		<a routerLink="/order" class="btn btn-sm btn-outline-base mx-3" translate>Cancel</a>
 		<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
 	</div>
 </div>

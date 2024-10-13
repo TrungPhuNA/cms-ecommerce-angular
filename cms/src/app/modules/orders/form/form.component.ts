@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSummernoteDirective } from 'ngx-summernote';
 import { finalize } from 'rxjs';
-import { AccountService, AlertService, FileUploadService, HelperService, ProductService } from 'src/app/services';
+import { AccountService, AlertService, FileUploadService, HelperService, OrderService, ProductService } from 'src/app/services';
 import { CategoryService } from 'src/app/services/category.service';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, FileUploadModel, HomeBreadcrumb } from 'src/app/shared';
 import { ORDER_STATUSES, PAYMENT_STATUSES, STATUS_PRODUCTS, VALIDATOR_MESSAGES } from 'src/app/shared/constants/common';
@@ -27,7 +27,7 @@ export class FormComponent implements OnInit {
 	paymentStatuses = PAYMENT_STATUSES;
 
 
-	form = new FormGroup({
+	form: any = new FormGroup({
 		user_id: new FormControl(null, Validators.required),
 		amount: new FormControl(null),
 		shipping_amount: new FormControl(null),
@@ -47,15 +47,16 @@ export class FormComponent implements OnInit {
 		return this.form.get('products') as FormArray;
 	}
 
-	
+
 	constructor(
 		public helperService: HelperService,
 		private alertService: AlertService,
-		private service: ProductService,
+		private service: OrderService,
 		private productService: ProductService,
 		private userService: AccountService,
 		private cdr: ChangeDetectorRef,
 		private activeRoute: ActivatedRoute,
+		private router: Router,
 		private uploadService: FileUploadService
 
 	) {
@@ -81,15 +82,13 @@ export class FormComponent implements OnInit {
 
 	initFormArray(item?: any) {
 		this.products.push(new FormGroup({
-			id: new FormControl(null, Validators.required),
-			price: new FormControl(null),
-			quantity: new FormControl(null),
-			total_price: new FormControl(null),
+			id: new FormControl(item?.product_id, Validators.required),
+			price: new FormControl(item?.price),
+			qty: new FormControl(item?.qty),
+			total_price: new FormControl(item?.total_price),
 		}));
 		this.cdr.detectChanges();
 	}
-
-
 
 	getListProducts(filters: any) {
 		this.productService.getListData(filters)
@@ -107,7 +106,7 @@ export class FormComponent implements OnInit {
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				if (res?.status == 'success') {
-					this.listProducts = res?.data?.products;
+					this.listAccounts = res?.data?.users;
 				}
 			})
 	}
@@ -119,11 +118,14 @@ export class FormComponent implements OnInit {
 			.subscribe((res: any) => {
 				this.loading = false;
 				if (res?.status == 'success') {
-					this.data = res?.data?.product;
+					this.data = res?.data?.order;
 					if (this.data) {
 						this.form.enable();
 						this.form.patchValue({
 							...this.data
+						});
+						this.data?.transactions?.forEach((e: any) => {
+							this.initFormArray(e);
 						});
 					} else {
 						this.alertService.fireSmall("error", ALERT_ERROR.not_found);
@@ -151,7 +153,8 @@ export class FormComponent implements OnInit {
 				this.loading = false;
 				if (res?.status == 'success') {
 					this.submitted = false;
-					this.alertService.fireSmall("success", ALERT_SUCCESS.create)
+					this.alertService.fireSmall("success", ALERT_SUCCESS.create);
+					this.router.navigate(['/order']);
 				} else {
 					this.alertService.fireSmall("error", res?.message || ALERT_ERROR.create)
 
@@ -160,7 +163,43 @@ export class FormComponent implements OnInit {
 	}
 
 	deleteData(index: any) {
+		this.products.removeAt(index);
+		this.countSubTotal();
+	}
 
+	changeProduct(event: any, i: number, type = 'product') {
+		if (this.products.at(i)) {
+			let quantity = 0;
+			let productItem = this.products.value[i];
+			let price = productItem?.price || 0;
+			if (type == 'quantity') {
+				quantity = Number(event?.target?.value || 0);
+			} else {
+				quantity = Number(productItem?.qty || 0);
+				price = event?.price;
+			}
+			this.products.at(i).patchValue({
+				price: price,
+				total_price: Number(price || 0) * quantity
+			});
+			this.countSubTotal();
+		}
+	}
+
+	countSubTotal() {
+		let total_price = this.products?.value?.reduce((newTotal: any, item: any) => {
+			newTotal += Number(item?.total_price || 0)
+			return newTotal;
+		}, 0);
+		let shipping_amount = Number(this.form.value?.shipping_amount || 0)
+		let discount_amount = Number(this.form.value?.discount_amount || 0)
+		let tax_amount = Number(this.form.value?.tax_amount || 0);
+
+
+		this.form.patchValue({
+			sub_total: total_price + shipping_amount + tax_amount - discount_amount,
+			amount: total_price
+		});
 	}
 
 	renderPrice(index: any) {
