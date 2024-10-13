@@ -1,0 +1,11 @@
+{
+    "name": "Tool",
+    "alias": "tool",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Tool\\App\\Providers\\ToolServiceProvider"
+    ],
+    "files": []
+}
