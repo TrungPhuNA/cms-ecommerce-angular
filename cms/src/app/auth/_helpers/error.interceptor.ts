@@ -16,8 +16,10 @@ export class ErrorInterceptor implements HttpInterceptor {
 		Observable<HttpEvent<any>> {
 
 		return next.handle(req).pipe(catchError(err => {
+			console.log("err---------> ", err);
 			let dataError = err?.error?.error_code || null;
-			if (err?.status === 401 || dataError == 'code002' || dataError == 'code001') {
+			if (err?.status === 401) {
+				window.location.href = '/auth/login'
 			}
 			const error = err.error
 			return throwError(error);

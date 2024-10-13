@@ -77,7 +77,7 @@ export class HelperService {
 		}
 	}
 
-	showStatusError(formGroup: FormGroup, name: string, submitted = false) {
+	showStatusError(formGroup: any, name: string, submitted = false) {
 		let check = formGroup?.controls[`${name}`]?.invalid && (this.checkTouchOrDirty(formGroup, name) || submitted);
 		return check
 	}

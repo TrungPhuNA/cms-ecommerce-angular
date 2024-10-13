@@ -1,0 +1,177 @@
+<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
+<div class="card card-body">
+	<form [formGroup]="form">
+		<div class="row">
+			<div class="col-md-6 col-12 mb-5 form-group">
+				<label class="form-label required" translate>Customer</label>
+				<ng-select [items]="listProducts" bindLabel="name"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'user_id')}" bindValue="id"
+					formControlName="user_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+				<at-error [submitted]="submitted" [control]="form.get('user_id')" validation="required"
+					[message]="validatorMessages.required">
+				</at-error>
+			</div>
+			<div class="col-md-6 col-12 mb-5 form-group">
+				<label class="form-label required" translate>Trạng thái</label>
+				<ng-select [items]="statuses" bindLabel="name"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'status')}" bindValue="value"
+					formControlName="status" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+				<at-error [submitted]="submitted" [control]="form.controls['status']" validation="required"
+					[message]="validatorMessages.required"></at-error>
+			</div>
+
+			<div class="table-responsive col-12" style="overflow-y: auto; max-height:2000px">
+				<table class="table table-row-bordered table-hover align-middle cursor-default">
+					<ng-container *ngIf="!loading">
+						<thead style="background-color: #F9FAFB;">
+							<tr class="fw-500 border-top">
+								<th class="text-nowrap text-center px-2" translate>#</th>
+								<th class="text-nowrap" translate>Sản phẩm</th>
+								<th class="text-nowrap" translate>Giá tiền</th>
+								<th class="text-nowrap" translate>Số lượng</th>
+								<th class="text-nowrap" translate>Tổng tiền</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ng-container formArrayName="products">
+								<ng-container *ngFor="let productControl of products.controls; index as i">
+									<ng-container [formGroupName]="i">
+										<tr class="border-bottom">
+											<td class="text-center px-2">{{i + 1}}</td>
+											<td class="align-top" style="min-width: 200px;">
+												<div class="form-group">
+													<ng-select [items]="listProducts" bindLabel="name"
+														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'id')}"
+														bindValue="value" formControlName="id"
+														placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+													<at-error [submitted]="submitted"
+														[control]="productControl.get('id')" validation="required"
+														[message]="validatorMessages.required"></at-error>
+												</div>
+											</td>
+											<td class="align-top" style="min-width: 200px;">
+												<input [min]="0" appInputNumber [onlyNumber]="true"
+													[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'price')}"
+													bindValue="value" class="form-control" formControlName="price"
+													readonly placeholder="Nhập giá trị" />
+											</td>
+											<td class="align-top" style="min-width: 200px;">
+												<div class="form-group">
+													<input [min]="0" appInputNumber [onlyNumber]="true"
+														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'quantity')}"
+														bindValue="value" class="form-control"
+														formControlName="quantity" placeholder="Nhập giá trị" />
+													<at-error [submitted]="submitted"
+														[control]="productControl.get('quantity')" validation="required"
+														[message]="validatorMessages.required"></at-error>
+												</div>
+											</td>
+											<td class="align-top">
+												<input [min]="0" appInputNumber [onlyNumber]="true"
+													[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'total_price')}"
+													bindValue="value" class="form-control" formControlName="total_price"
+													readonly placeholder="Nhập giá trị" />
+											</td>
+
+											<td class="text-nowrap px-4 align-{{helperService.showStatusError(productControl, 'id') ? 'top pt-7' : 'middle'}}">
+												<div class="d-flex align-items-center align-content-center ">
+													<i class="fa-regular fa-trash-can cursor-pointer" (click)="deleteData( i)"></i>
+												</div>
+											</td>
+										</tr>
+									</ng-container>
+
+								</ng-container>
+							</ng-container>
+							<tr>
+								<td colspan="5">
+									<button class="btn btn-success mb-4 text-right h-40 d-flex align-items-center gap-2"
+										(click)="initFormArray()">
+										<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+										<span>Thêm sản phẩm</span>
+									</button>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="4" class="text-center">
+									<p class="fs-18 fw-bold">Giá ship</p>
+								</td>
+								<td>
+									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
+										class="form-control" formControlName="shipping_amount"
+										placeholder="Nhập giá trị" />
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" class="text-center">
+									<p class="fs-18 fw-bold">Thuế</p>
+								</td>
+								<td>
+									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
+										class="form-control" formControlName="tax_amount" placeholder="Nhập giá trị" />
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" class="text-center">
+									<p class="fs-18 fw-bold">Discount</p>
+								</td>
+								<td>
+									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
+										class="form-control" formControlName="discount_amount"
+										placeholder="Nhập giá trị" />
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="4" class="text-center">
+									<p class="fs-18 fw-bold">Thành tiền</p>
+								</td>
+								<td>
+									<input [min]="0" appInputNumber [onlyNumber]="true" bindValue="value"
+										formControlName="sub_total" readonly placeholder="Nhập giá trị" />
+								</td>
+							</tr>
+
+						</tbody>
+					</ng-container>
+				</table>
+			</div>
+			<!-- <div class="col-md-6 col-12 mb-5 form-group">
+				<label class="form-label required" translate>Sản phẩm</label>
+				<ng-select [items]="listProducts" bindLabel="name"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'category_id')}" bindValue="id"
+					formControlName="category_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+				<at-error [submitted]="submitted" [control]="form.controls['category_id']" validation="required"
+					[message]="validatorMessages.required"></at-error>
+
+			</div> -->
+
+			<!-- <div class="col-md-6 col-12 mb-5 form-group">
+				<label class="form-label required" translate>Số lượng</label>
+				<input class="form-control" [ngClass]="{'is-invalid': 
+					(helperService.showStatusError(form, 'number', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
+					formControlName="number" />
+				<at-error [submitted]="submitted" [control]="form.get('number')" validation="required"
+					[message]="validatorMessages.required">
+				</at-error>
+			</div>
+			<div class="col-md-6 col-12 mb-5 form-group">
+				<label class="form-label required" translate>Giá</label>
+				<input class="form-control" [ngClass]="{'is-invalid': 
+					(helperService.showStatusError(form, 'price', submitted))}"
+					(focusout)="helperService.onTrimFocusOutForm(form, 'price', $event)"
+					placeholder="{{ 'Nhập giá trị'}}" formControlName="price" />
+				<at-error [submitted]="submitted" [control]="form.get('price')" validation="required"
+					[message]="validatorMessages.required">
+				</at-error>
+			</div> -->
+
+		</div>
+	</form>
+	<div class="d-flex justify-content-center mt-5 gap-3 mb-5">
+		<button class="btn btn-sm btn-outline-base mx-3" translate>Cancel</button>
+		<button class="btn btn-sm btn-orange mx-3" (click)="submit()">{{data?.id ? 'Cập nhật' : 'Tạo mới'}}</button>
+	</div>
+</div>
+<app-spinner [loading]="loading" [fullScreen]="true" [bdColor]="'rgba(0, 0, 0, 0.5)'"></app-spinner>

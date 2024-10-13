@@ -24,6 +24,10 @@ const Routing: Routes = [
         loadChildren: () => import('./modules/warehouse/warehouse.module').then((m) => m.WarehouseModule),
     },
 	{
+        path: 'order',
+        loadChildren: () => import('./modules/orders/orders.module').then((m) => m.OrdersModule),
+    },
+	{
         path: 'account',
 		children: [
 			{

@@ -22,8 +22,25 @@ export const STATUS_PRODUCTS = [
 	}
 ];
 
+export const PAYMENT_STATUSES = [
+	{ value: 'pending', name: 'Pending' },
+	{ value: 'completed', name: 'Completed' },
+	{ value: 'refunding', name: 'Refunding' },
+	{ value: 'refunded', name: 'Refunded' },
+	{ value: 'fraud', name: 'Fraud' },
+	{ value: 'failed', name: 'Failed' }
+];
+
+export const ORDER_STATUSES = [
+	{ value: 'pending', name: 'Pending' },
+	{ value: 'processing', name: 'Processing' },
+	{ value: 'completed', name: 'Completed' },
+	{ value: 'canceled', name: 'Canceled' },
+	{ value: 'returned', name: 'Returned' }
+];
+
 export const STATUS_BY_NUMBER = [
-	
+
 	{
 		value: -1,
 		name: 'Dừng hoạt động',
