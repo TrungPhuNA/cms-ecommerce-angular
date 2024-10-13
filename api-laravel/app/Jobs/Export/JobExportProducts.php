@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Export;
 
+use App\Exports\ProductsExport;
 use App\Mail\Export\SendEmailExportProducts;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
-use Modules\Admin\App\Models\Product;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JobExportProducts implements ShouldQueue
 {
@@ -32,30 +33,9 @@ class JobExportProducts implements ShouldQueue
      */
     public function handle(): void
     {
-        // Lấy dữ liệu từ bảng products với các cột đã được chọn
-        $products = Product::select($this->columns)->get();
-
-        // Tạo đường dẫn lưu file CSV
-        $fileName = 'exports/products_' . now()->timestamp . '.xlsx';
-        $filePath = storage_path('app/' . $fileName);
-
-        // Kiểm tra và tạo thư mục nếu chưa tồn tại
-        if (!\File::exists(storage_path('app/exports'))) {
-            \File::makeDirectory(storage_path('app/exports'), 0755, true);
-        }
-
-        // Tạo file CSV
-        $csvFile = fopen($filePath, 'w');
-
-        // Viết header
-        fputcsv($csvFile, $this->columns);
-
-        // Viết dữ liệu sản phẩm
-        foreach ($products as $product) {
-            fputcsv($csvFile, $product->toArray());
-        }
-
-        fclose($csvFile);
+        $fileName = 'products_export_' . now()->timestamp . '.xlsx';
+        // Export dữ liệu
+        Excel::store(new ProductsExport($this->columns), $fileName, 'local');
 
         // Gửi email với file export
         Mail::to($this->email)->send(new SendEmailExportProducts($fileName));
