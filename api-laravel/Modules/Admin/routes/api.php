@@ -19,6 +19,7 @@ use Modules\Admin\App\Http\Controllers\Api\ApiAdminOrderController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminDashboardController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminPaymentMethodController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminBrandController;
+use Modules\Admin\App\Http\Controllers\Api\ApiAdminSlideController;
 /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -69,6 +70,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::resource('payments-method',ApiAdminPaymentMethodController::class);
 
         Route::resource('brands',ApiAdminBrandController::class);
+        Route::resource('slides',ApiAdminSlideController::class);
     });
 });
 
