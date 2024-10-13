@@ -4,21 +4,20 @@ namespace Modules\Admin\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Admin\App\Http\Requests\Api\RequestApiStoreCategory;
-use Modules\Common\Query\BrandQueryService;
+use Modules\Common\Query\SlideQueryService;
 use Modules\Common\Service\ErrorLogService;
 use Modules\Common\Service\ResponseService;
 
-class ApiAdminBrandController extends Controller
+class ApiAdminSlideController extends Controller
 {
     /**
-     * AdmGetListBrand
+     * AdmGetListSlide
      */
     public function index(Request $request)
     {
         try {
-            $paginator = BrandQueryService::getAll($request);
-            $brands = $paginator->getCollection();
+            $paginator = SlideQueryService::getAll($request);
+            $slides = $paginator->getCollection();
 
             $meta = [
                 "total"        => $paginator->total(),
@@ -29,7 +28,7 @@ class ApiAdminBrandController extends Controller
 
             $data = [
                 'meta'  => $meta,
-                'brands' => $brands
+                'slides' => $slides
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -44,9 +43,9 @@ class ApiAdminBrandController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $brand = BrandQueryService::create($request);
+            $slide = SlideQueryService::create($request);
             $data = [
-                'brand' => $brand
+                'slide' => $slide
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -61,9 +60,9 @@ class ApiAdminBrandController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $brand = BrandQueryService::findById($request, $id);
+            $slide = SlideQueryService::findById($request, $id);
             $data = [
-                'brand' => $brand
+                'slide' => $slide
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -75,12 +74,12 @@ class ApiAdminBrandController extends Controller
     /**
      * AdmUpdateBrand
      */
-    public function update(RequestApiStoreCategory $request, $id)
+    public function update(Request $request, $id)
     {
         try {
-            BrandQueryService::update($request, $id);
+            SlideQueryService::update($request, $id);
             $data = [
-                'brand' => BrandQueryService::findById($request, $id)
+                'slide' => SlideQueryService::findById($request, $id)
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
