@@ -19,7 +19,7 @@
 						<at-error [control]="loginForm.get('email')" validation="minlength"
 							[message]="'Tên đăng nhập có độ dài không hợp lệ (tối thiểu 5 ký tự).'">
 						</at-error>
-						<at-error [control]="loginForm.get('email')" validation="invalidemailOrEmail"
+						<at-error [control]="loginForm.get('email')" validation="invalidUsernameOrEmail"
 							[message]="'Tên đăng nhập không đúng định dạng.'">
 						</at-error>
 						<ng-container *ngIf="fails && fails['email']">

@@ -107,12 +107,15 @@ export class ProfileComponent implements OnInit {
 		}
 	}
 
+	
 	readFile(inputValue: any): void {
+		this.loading = true;
 		const file: File = inputValue.files[0];
 		const myReader: FileReader = new FileReader();
 
 		myReader.onloadend = (e) => {
 			this.base64Image = myReader.result;
+			this.loading = false;
 			this.cdr.detectChanges();
 		};
 		myReader.readAsDataURL(file);

@@ -54,6 +54,20 @@ export const SideBarItem: ISideBarItem[] = [
 		sub_menu: []
 	},
 	{
+		path: 'order',
+		title: 'Đơn hàng',
+		icon: 'fa-solid fa-cart-plus',
+		module_prefix: ['order'],
+		sub_menu: []
+	},
+	{
+		path: 'payment',
+		title: 'Thanh toán',
+		icon: 'fa-solid fa-credit-card',
+		module_prefix: ['payment'],
+		sub_menu: []
+	},
+	{
 		path: '',
 		title: 'Kho',
 		icon: 'fa-sharp-duotone fa-solid fa-house',
