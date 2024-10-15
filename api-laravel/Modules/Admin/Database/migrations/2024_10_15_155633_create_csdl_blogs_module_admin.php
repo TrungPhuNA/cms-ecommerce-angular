@@ -47,6 +47,62 @@ return new class extends Migration
             $table->foreignId('article_id')->constrained('bl_articles');
             $table->foreignId('tag_id')->constrained('bl_tags');
         });
+
+        $menus = [
+            [
+                "name" => "Tin khuyến mãi",
+                "description" => "Tin khuyến mãi",
+                "status" => "published",
+                "is_featured" => 1,
+                "created_at" => \Carbon\Carbon::now()
+            ],
+            [
+                "name" => "Thời trang thế giới",
+                "description" => "Thời trang thế giới",
+                "status" => "published",
+                "is_featured" => 1,
+                "created_at" => \Carbon\Carbon::now()
+            ],
+            [
+                "name" => "Đồng phục",
+                "description" => "Đồng phục",
+                "status" => "published",
+                "is_featured" => 1,
+                "created_at" => \Carbon\Carbon::now()
+            ],
+        ];
+
+        foreach ($menus as $item) {
+            \Illuminate\Support\Facades\DB::table("bl_menus")->insert($item);
+        }
+
+        $tags = [
+            [
+                "name" => "thời trang nổi bật",
+                "description" => "thời trang nổi bật",
+                "status" => "published",
+                "is_featured" => 1,
+                "created_at" => \Carbon\Carbon::now()
+            ],
+            [
+                "name" => "xu thế mới",
+                "description" => "xu thế mới",
+                "status" => "published",
+                "is_featured" => 1,
+                "created_at" => \Carbon\Carbon::now()
+            ],
+            [
+                "name" => "Đồng phục",
+                "description" => "Đồng phục",
+                "status" => "published",
+                "is_featured" => 1,
+                "created_at" => \Carbon\Carbon::now()
+            ],
+        ];
+
+        foreach ($tags as $item) {
+            \Illuminate\Support\Facades\DB::table("bl_tags")->insert($item);
+        }
     }
 
     /**
