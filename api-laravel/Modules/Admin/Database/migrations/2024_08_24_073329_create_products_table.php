@@ -49,6 +49,15 @@ return new class extends Migration {
             $table->tinyInteger('index_seo')->default(1);
             $table->timestamps();
         });
+        Schema::create('ec_product_labels', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
+            $table->string('slug')->nullable();
+            $table->tinyInteger('order')->default(0);
+            $table->enum("status", ["published", "draft", "pending"])->default("pending");
+            $table->timestamps();
+        });
         Schema::create('ec_products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
@@ -111,6 +120,13 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('variant_id')->constrained('product_variants')->onDelete('cascade');
             $table->foreignId('attribute_value_id')->constrained('ec_attribute_values')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('ec_products_labels', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('ec_products')->onDelete('cascade');
+            $table->foreignId('product_label_id')->constrained('ec_product_labels')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -231,8 +247,30 @@ return new class extends Migration {
                 "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-den-2.jpg"
             ],
         ];
+        $labels = [
+            [
+                "name"        => "New",
+                "description" => "Sản phẩm mới",
+                "slug"        => "new",
+                "order"       => 0,
+                "status"      => "published",
+                "created_at"  => Carbon\Carbon::now()
+            ],
+            [
+                "name"        => "Hot",
+                "description" => "Sản phẩm nổi bật",
+                "slug"        => "hot",
+                "order"       => 0,
+                "status"      => "published",
+                "created_at"  => Carbon\Carbon::now()
+            ],
+        ];
+
+        foreach ($labels as $item) {
+            \Illuminate\Support\Facades\DB::table("ec_product_labels")->insert($item);
+        }
         foreach ($products as $product) {
-            \Illuminate\Support\Facades\DB::table("ec_products")->insert([
+            $productInsert = \Illuminate\Support\Facades\DB::table("ec_products")->insertGetId([
                 "name"        => $product["name"],
                 "slug"        => \Illuminate\Support\Str::slug($product['name']),
                 "price"       => $product["price"],
@@ -240,6 +278,14 @@ return new class extends Migration {
                 "category_id" => \Illuminate\Support\Facades\DB::table("categories")->inRandomOrder()->first()->id,
                 "created_at"  => Carbon\Carbon::now()
             ]);
+
+            if ($productInsert) {
+                \Illuminate\Support\Facades\DB::table("ec_products_labels")->insert([
+                    "product_id"       => $productInsert,
+                    "product_label_id" => \Illuminate\Support\Facades\DB::table("ec_product_labels")->inRandomOrder()->first()->id,
+                    "created_at"       => Carbon\Carbon::now()
+                ]);
+            }
         }
     }
 
@@ -258,6 +304,8 @@ return new class extends Migration {
         Schema::dropIfExists('ec_stock_outs');
         Schema::dropIfExists('ec_transactions');
         Schema::dropIfExists('ec_orders');
+        Schema::dropIfExists('ec_products_labels');
+        Schema::dropIfExists('ec_product_labels');
         Schema::dropIfExists('ec_products');
         Schema::dropIfExists('ec_brands');
         Schema::dropIfExists('payment_methods');
