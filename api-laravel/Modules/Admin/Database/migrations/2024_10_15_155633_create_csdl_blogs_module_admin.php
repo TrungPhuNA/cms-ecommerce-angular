@@ -103,6 +103,61 @@ return new class extends Migration
         foreach ($tags as $item) {
             \Illuminate\Support\Facades\DB::table("bl_tags")->insert($item);
         }
+        
+        $articles = [
+            [
+                "name" => "Tặng ngay Voucher 25K cho khách hàng Follow Zalo YODY trong tháng 10",
+                "slug" => "tang-ngay-voucher-cho-khach-hang-follow-zalo",
+                "status" => "pending",
+                "description" => "Ưu đãi cực Hot trong tháng 10, chỉ cần quý khách thao tác theo dõi kênh Zalo OA của YODY sẽ được nhận ngay Voucher giảm giá",
+                "is_featured" => 1,
+                "views" => 0,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/media/articles/2.%20ZALO%20YODY%2050K.jpg",
+                "content" => "Nội dung",
+                "menu_id" => \Illuminate\Support\Facades\DB::table("bl_menus")->inRandomOrder()->first()->id,
+                "created_at" => Carbon\Carbon::now()
+            ],
+            [
+                "name" => "Ưu đãi lớn nhất năm 2024 - SALE CUỐI MÙA LÊN ĐẾN 50%",
+                "slug" => "uu-dai-lon-nhat-nam-2024-sale-cuoi-mua",
+                "status" => "pending",
+                "description" => "Quý khách có thể thực hiện mua sắm trực tiếp tại hệ thống Online Yody bao gồm Website, Fanpge, Zalo OA hoặc trực tiếp tại hơn 270 cửa hàng YODY trên toàn quốc.",
+                "is_featured" => 1,
+                "views" => 0,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/media/articles/yody-sale-cuoi-mua.png",
+                "content" => "Nội dung",
+                "menu_id" => \Illuminate\Support\Facades\DB::table("bl_menus")->inRandomOrder()->first()->id,
+                "created_at" => Carbon\Carbon::now()
+            ],
+            [
+                "name" => "MUA CÀNG NHIỀU GIẢM CÀNG SÂU - LÊN ĐẾN 15%",
+                "slug" => "mua-nhieu-giam-nhieu",
+                "status" => "pending",
+                "description" => "Tri ân 10 năm hoạt động, YODY tung khuyến mãi cực kỳ lớn. Khách hàng mua càng nhiều sẽ được giảm giá giảm càng sâu, phù hợp với các khách hàng mua chung theo nhóm hoặc mua cho cả gia đình.",
+                "is_featured" => 1,
+                "views" => 0,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/media/articles/1.%20MUA%20C%C3%80NG%20NHI%E1%BB%80U%20-%20GI%E1%BA%A2M%20C%C3%80NG%20S%C3%82U.jpg",
+                "content" => "Nội dung",
+                "menu_id" => \Illuminate\Support\Facades\DB::table("bl_menus")->inRandomOrder()->first()->id,
+                "created_at" => Carbon\Carbon::now()
+            ],
+            [
+                "name" => "ĐỘC QUYỀN WEBSITE - VOUCHER 100K CHO KHÁCH HÀNG ĐĂNG KÍ EMAIL",
+                "slug" => "voucher-100k-cho-khach-hang-dang-ki-email",
+                "status" => "pending",
+                "description" => "hời gian nhận và sử dụng mã khuyến mãi kéo dài từ ngày 01/10/2024 đến ngày 31/10/2024. Sau khi nhận mã, khách hàng sẽ sử dụng trực tiếp để mua hàng trên Website (không áp dụng tại cửa hàng).",
+                "is_featured" => 1,
+                "views" => 0,
+                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/media/articles/4.%20%C4%90%C4%82NG%20K%C3%8D%20TH%C3%94NG%20TIN.jpg",
+                "content" => "Nội dung",
+                "menu_id" => \Illuminate\Support\Facades\DB::table("bl_menus")->inRandomOrder()->first()->id,
+                "created_at" => Carbon\Carbon::now()
+            ],
+        ];
+
+        foreach ($articles as $item) {
+            \Illuminate\Support\Facades\DB::table("bl_articles")->insert($item);
+        }
     }
 
     /**
