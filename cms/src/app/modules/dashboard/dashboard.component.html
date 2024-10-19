@@ -1,1 +1,25 @@
-<p>dashboard works!</p>
+<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
+<div class="card">
+	<div class="card-body mt-5">
+		<div class="row">
+			<ng-container *ngFor="let item of listTotalData">
+				<div class="col-md-6 col-lg-3 col-12 mb-3">
+					<a [routerLink]="item.url" class="text-white {{item.bgClass}} d-block rounded position-relative overflow-hidden text-decoration-none"
+						>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="details px-4 py-3 d-flex flex-column justify-content-between">
+								<p class="fw-normal fs-16">{{item.title}}</p>
+								<p class="fw-bolder fs25 text-break">
+									{{item.total | thousandsSeparator: item.prefix }}
+								</p>
+							</div>
+							<div class="position-absolute right-10px">
+								<i class="{{item.icon}}"></i>
+							</div>
+						</div>
+					</a>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>
