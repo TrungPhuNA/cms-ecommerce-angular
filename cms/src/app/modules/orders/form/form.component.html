@@ -5,7 +5,7 @@
 			<div class="col-md-6 col-12 mb-5 form-group">
 				<label class="form-label required" translate>Customer</label>
 				<ng-select [items]="listAccounts" bindLabel="name"
-					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'user_id')}" bindValue="id"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'user_id', submitted)}" bindValue="id"
 					formControlName="user_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
 				<at-error [submitted]="submitted" [control]="form.get('user_id')" validation="required"
 					[message]="validatorMessages.required">
@@ -14,7 +14,7 @@
 			<div class="col-md-3 col-12 mb-5 form-group">
 				<label class="form-label required" translate>Trạng thái</label>
 				<ng-select [items]="statuses" bindLabel="name"
-					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'status')}" bindValue="value"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'status', submitted)}" bindValue="value"
 					formControlName="status" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
 				<at-error [submitted]="submitted" [control]="form.controls['status']" validation="required"
 					[message]="validatorMessages.required"></at-error>
@@ -23,7 +23,7 @@
 			<div class="col-md-3 col-12 mb-5 form-group">
 				<label class="form-label " translate>Trạng thái thanh toán</label>
 				<ng-select [items]="paymentStatuses" bindLabel="name"
-					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'payment_status')}" bindValue="value"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'payment_status', submitted)}" bindValue="value"
 					formControlName="payment_status" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
 				<at-error [submitted]="submitted" [control]="form.controls['payment_status']" validation="required"
 					[message]="validatorMessages.required"></at-error>
@@ -31,7 +31,7 @@
 
 			<div class="table-responsive col-12" style="overflow-y: auto; max-height:2000px">
 				<table class="table table-row-bordered table-hover align-middle cursor-default">
-					<ng-container *ngIf="!loading">
+					<ng-container *ngIf="!loadingInit">
 						<thead style="background-color: #F9FAFB;">
 							<tr class="fw-500 border-top">
 								<th class="text-nowrap text-center px-2" translate>#</th>
@@ -50,7 +50,7 @@
 											<td class="align-top" style="min-width: 200px;">
 												<div class="form-group">
 													<ng-select [items]="listProducts" bindLabel="name"
-														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'id')}"
+														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'id', submitted)}"
 														bindValue="id" formControlName="id"
 														(change)="changeProduct($event, i)" placeholder="Chọn giá trị"
 														[searchable]="true"></ng-select>
@@ -59,16 +59,16 @@
 														[message]="validatorMessages.required"></at-error>
 												</div>
 											</td>
-											<td class="align-top" style="min-width: 200px;">
+											<td class="align-top" style="min-width: 100px;">
 												<input [min]="0" appInputNumber [onlyNumber]="true"
-													[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'price')}"
+													[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'price', submitted)}"
 													bindValue="value" class="form-control" formControlName="price"
 													readonly placeholder="Nhập giá trị" />
 											</td>
-											<td class="align-top" style="min-width: 200px;">
+											<td class="align-top" style="min-width: 100px;">
 												<div class="form-group">
 													<input [min]="0" appInputNumber [onlyNumber]="true"
-														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'qty')}"
+														[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'qty', submitted)}"
 														bindValue="value" class="form-control"
 														(change)="changeProduct($event, i, 'quantity')"
 														formControlName="qty" placeholder="Nhập giá trị" />
@@ -77,15 +77,15 @@
 														[message]="validatorMessages.required"></at-error>
 												</div>
 											</td>
-											<td class="align-top">
+											<td class="align-top" style="min-width: 100px;">
 												<input [min]="0" appInputNumber [onlyNumber]="true"
-													[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'total_price')}"
+													[ngClass]="{'is-invalid': helperService.showStatusError(productControl, 'total_price', submitted)}"
 													bindValue="value" class="form-control" formControlName="total_price"
 													readonly placeholder="Nhập giá trị" />
 											</td>
 
 											<td
-												class="text-nowrap px-4 align-{{helperService.showStatusError(productControl, 'id') ? 'top pt-7' : 'middle'}}">
+												class="text-nowrap px-4 align-{{helperService.showStatusError(productControl, 'id', submitted) ? 'top pt-7' : 'middle'}}">
 												<div class="d-flex align-items-center align-content-center ">
 													<i class="fa-regular fa-trash-can cursor-pointer"
 														(click)="deleteData( i)"></i>

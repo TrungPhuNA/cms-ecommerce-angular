@@ -193,14 +193,6 @@ export class FormComponent implements OnInit {
 		this.images = e;
 	}
 
-	handleUpload(e: any) {
-
-	}
-
-	imageToRemove(e: any) {
-		console.log("imageToRemove--------> ", e);
-	}
-
 
 }
 

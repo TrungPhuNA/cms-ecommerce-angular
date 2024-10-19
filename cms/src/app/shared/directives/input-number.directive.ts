@@ -24,6 +24,7 @@ export class InputNumberDirective {
 	}
 
 	ngOnInit = () => {
+		console.log(this.elementRef?.nativeElement?.value);
 		setTimeout(() => {
 			if (this.elementRef.nativeElement.value) {
 				this.oldVal = this.elementRef.nativeElement.value;
@@ -35,7 +36,7 @@ export class InputNumberDirective {
 
 	@HostListener('focusin', ['$event'])
 	onFocusin(event: any) {
-
+		console.log("focus in-------> ", event?.target?.value);
 		let value = event.target.value;
 		if (value.length >= 4) {
 			this.countCharacter = 0;
