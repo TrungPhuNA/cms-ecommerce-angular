@@ -49,7 +49,7 @@ export const SideBarItem: ISideBarItem[] = [
 	{
 		path: 'product',
 		title: 'Sản phẩm',
-		icon: 'fa-sharp-duotone fa-solid fa-list',
+		icon: 'fa-sharp-duotone fa-solid fa-database',
 		module_prefix: ['product'],
 		sub_menu: []
 	},
@@ -60,7 +60,7 @@ export const SideBarItem: ISideBarItem[] = [
 		module_prefix: ['order'],
 		sub_menu: []
 	},
-	
+
 	{
 		path: '',
 		title: 'Kho',

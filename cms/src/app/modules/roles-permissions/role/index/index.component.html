@@ -22,7 +22,7 @@
 							<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2"
 								(click)="reset()">
 								<i class="fa fa-sync m-0"></i>
-								
+
 							</a>
 						</div>
 						<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
@@ -44,6 +44,7 @@
 								<tr class="fw-500 border-top">
 									<th class="text-nowrap text-center px-2" translate>#</th>
 									<th class="text-nowrap" translate>Name</th>
+									<th class="text-nowrap" translate>Description</th>
 									<th class="text-nowrap" translate>Guard Name</th>
 									<th class="text-nowrap" translate>Created at</th>
 									<th class="text-nowrap text-center" translate>Operations</th>
@@ -59,10 +60,13 @@
 											<td style="min-width: 200px;">
 												{{ item?.name }}
 											</td>
+                                            <td style="min-width: 200px;">
+												{{ item?.description }}
+											</td>
 											<td style="min-width: 200px;">
 												{{ item?.guard_name }}
 											</td>
-											
+
 											<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
 
 											<td class="text-nowrap text-center px-4">
@@ -94,7 +98,7 @@
 						</ng-container>
 					</table>
 
-					
+
 					<app-pagination [paging]="paging"
 					(changePaged)="changePage($event)"></app-pagination>
 				</div>
