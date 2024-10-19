@@ -1,0 +1,11 @@
+@for $i from 1 through 1000 {
+	.fs-px-#{$i} {
+		font-size: #{$i}px !important;
+	}
+}
+
+@for $i from 1 through 100 {
+	.fs-rem-#{$i} {
+		font-size: #{$i}rem !important;
+	}
+}

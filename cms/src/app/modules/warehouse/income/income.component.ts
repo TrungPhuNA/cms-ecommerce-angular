@@ -93,6 +93,8 @@ export class IncomeComponent implements OnInit {
 						return item;
 					}) || [];
 					this.paging = this.helperService.buildPaging(res?.data?.meta);
+				} else {
+					this.alertService.fireSmall('error', res?.message)
 				}
 			});
 	}

@@ -77,6 +77,8 @@ export class IndexComponent implements OnInit {
 				if (res?.status == 'success') {
 					this.listData = res?.data?.roles || [];
 					this.paging = this.helperService.buildPaging(res?.data?.meta);
+				} else {
+					this.alertService.fireSmall('error', res?.message)
 				}
 			});
 	}

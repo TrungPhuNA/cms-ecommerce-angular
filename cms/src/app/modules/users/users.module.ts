@@ -40,35 +40,35 @@ const routes: Route[] = [
 				path: 'edit/:id',
 				component: FormComponent
 			}
-			
+
 		]
 	}
 ];
 
 @NgModule({
-  declarations: [
-    IndexComponent,
-    FormComponent
-  ],
-  imports: [
-	CommonModule,
-	OatPageTitleModule,
-	SharedModule,
-	PaginationModule,
-	RouterModule.forChild(routes),
-	ReactiveFormsModule,
-	NgSelectModule,
-	NgbPaginationModule,
-	MatDialogModule,
-	FormMgsModule,
-	MatMenuModule,
-	TranslateModule,
-	InlineSVGModule,
-	SpinnerModule,
-	UploadModule,
-	PipesModule,
-	FileSizeNoteModule,
-	NgxSummernoteModule
-]
+	declarations: [
+		IndexComponent,
+		FormComponent
+	],
+	imports: [
+		CommonModule,
+		OatPageTitleModule,
+		SharedModule,
+		PaginationModule,
+		RouterModule.forChild(routes),
+		ReactiveFormsModule,
+		NgSelectModule,
+		NgbPaginationModule,
+		MatDialogModule,
+		FormMgsModule,
+		MatMenuModule,
+		TranslateModule,
+		InlineSVGModule,
+		SpinnerModule,
+		UploadModule,
+		PipesModule,
+		FileSizeNoteModule,
+		NgxSummernoteModule
+	]
 })
 export class UsersModule { }
