@@ -18,7 +18,9 @@ export class ThousandsSeparatorPipe implements PipeTransform {
 					return '0 đ';
 			}
 		}
-		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency;
+		let value = num.toString()
+		if(value?.endsWith('.00')) value = value.slice(0,-3);
+		return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency;
 	}
 }
 

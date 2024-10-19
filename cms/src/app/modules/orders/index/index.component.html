@@ -2,7 +2,7 @@
 	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
 	<div class="card card-body">
 		<div class="card-body p-0 mt-5">
-			<div style="border: 1px solid #EAECF0; border-radius: 16px">
+			<div style="border: 1px solid #EAECF0; border-radius: 16px" class="p-3">
 				<div class="p-5">
 					<div class="p-5">
 						<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
@@ -30,7 +30,7 @@
 								</a>
 							</div>
 							<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
-								routerLink="/account/user/store">
+								routerLink="/order/store">
 								<i class="fa fa-plus m-0" style="color: #ffffff"></i>
 								<span>Tạo mới</span>
 							</a>
@@ -69,7 +69,7 @@
 												<p class="text-primary">{{item?.user?.email}}</p>
 											</td>
 											<td class="text-right" style="min-width: 200px;">
-												{{ item.amount | thousandsSeparator: 'đ' }}
+												{{ item.amount | thousandsSeparator: ' đ' }}
 											</td>
 											<td style="min-width: 200px;">
 												<span class="badge badge-{{item.payment_class}}">
@@ -82,16 +82,16 @@
 												</span>
 											</td>
 											<td class="text-right" style="min-width: 200px;">
-												{{ item.shipping_amount | thousandsSeparator: 'đ' }}
+												{{ item.shipping_amount | thousandsSeparator: ' đ' }}
 											</td>
 											<td class="text-right" style="min-width: 200px;">
-												{{ item.tax_amount | thousandsSeparator: 'đ' }}
+												{{ item.tax_amount | thousandsSeparator: ' đ' }}
 											</td>
 											<td class="text-right" style="min-width: 200px;">
-												{{ item.discount_amount | thousandsSeparator: 'đ' }}
+												{{ item.discount_amount | thousandsSeparator: ' đ' }}
 											</td>
 											<td class="text-right" style="min-width: 200px;">
-												{{ item.sub_total | thousandsSeparator: 'đ' }}
+												{{ item.sub_total | thousandsSeparator: ' đ' }}
 											</td>
 
 											<td class="text-nowrap text-center px-4">
@@ -115,7 +115,7 @@
 								</ng-container>
 								<ng-template #noData>
 									<tr class="border-bottom-0">
-										<td class="text-nowrap text-center" colspan="6" translate>Empty data</td>
+										<td class="text-nowrap text-center" colspan="10" translate>Empty data</td>
 									</tr>
 								</ng-template>
 

@@ -7,8 +7,7 @@
 				<div class="col-md-5 col-12 mb-5">
 					<app-upload-image imageWidth="300px" imageHeight="200px" [imageFiles]="images"
 						requiredMessage="Hình ảnh là bắt buộc!" [maxItem]="1" [isRequired]="true"
-						(imagesToUpload)="getImages($event)" (imagesInvalid)="handleUpload($event)"
-						(itemsToRemove)="imageToRemove($event)"></app-upload-image>
+						(imagesToUpload)="getImages($event)"></app-upload-image>
 					<app-file-size-note [imgSize]="images[0].imgSize" [maxSize]="0.5"></app-file-size-note>
 					<small>Vui lòng chọn ảnh tối đa 500KB</small>
 				</div>

@@ -9,6 +9,7 @@ namespace Modules\Common\Query;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Modules\Admin\App\Models\Category;
 use Modules\Admin\App\Models\Order;
@@ -79,7 +80,7 @@ class OrderQueryService extends ModelService
                     "status"      => $order->status,
                     "created_at"  => Carbon::now()
                 ];
-                if(isset($item['transaction_id'])) {
+                if(Arr::get($item, 'transaction_id')) {
                     Transaction::find($item['transaction_id'])->update($data);
                 }else {
                     Transaction::create($data);

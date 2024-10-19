@@ -298,5 +298,23 @@ export class HelperService {
 		return is_user? DEFAULT_IMG : DEFAULT_IMG;
 	}
 
+	insertComma(str: string, floatLength?: any) {
+		str = str ? str?.toString() : '';
+		if(str?.endsWith('.00')) str =  str.slice(0, -3);
+		const parts = str.split(',');
+		let int = parts[0]?.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+		let decimal = parts[1]?.length > 0 ? `,${parts[1].slice(0, floatLength)}` : '';
+		return `${int}${decimal}`;
+	}
+
+	deleteComma(str: string) {
+		str = str?.toString();
+		if(str) {
+			return str?.replace(/[,.]/g, '');
+		}
+		return ''
+	}
+
+
 	
 }
