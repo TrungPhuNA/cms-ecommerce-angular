@@ -25,6 +25,7 @@
               "object-path",
               "clipboard.js",
               "highlight.js",
+			  "apexcharts",
               "sweetalert2",
               "moment",
               "lodash"
@@ -125,6 +126,7 @@
   "defaultProject": "cms-ecommerce-angular",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics",
+	
     "analytics": "c0b08a31-d312-47d1-91cf-60cf7becc150"
   }
 }
