@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use Modules\Tool\App\Http\Controllers\Api\ApiToolExportProductController;
 use Modules\Tool\App\Http\Controllers\Api\ApiToolImportProductController;
+use Modules\Tool\App\Http\Controllers\Api\ApiToolSheetDataController;
 
 /*
     |--------------------------------------------------------------------------
@@ -25,5 +26,6 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::prefix('import')->group(function (){
             Route::post('products',[ApiToolImportProductController::class,'importProduct']);
         });
+        Route::post('sheet',[ApiToolSheetDataController::class,'crawlerDataGoogleSheet']);
     });
 });

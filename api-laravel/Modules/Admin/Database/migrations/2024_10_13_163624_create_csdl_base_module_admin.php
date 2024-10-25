@@ -22,29 +22,6 @@ return new class extends Migration
             $table->enum("status", ["published", "draft", "pending"])->default("pending");
             $table->timestamps();
         });
-        $slides = [
-            [
-                "name" => "Sản phẩm thông minh",
-                "description" => "Bộ sưu tập ưu đãi mùa đông 2024",
-                "position" => 1,
-                "page" => "home",
-                "link" => "https://123code.net",
-                "avatar" => "https://flone.jamstacktemplates.dev/assets/img/slider/single-slide-hm1-2.png",
-                "created_at" => \Carbon\Carbon::now()
-            ],
-            [
-                "name" => "Sản phẩm thông minh",
-                "description" => "Bộ sưu tập ưu đãi mùa đông 2024",
-                "position" => 1,
-                "page" => "home",
-                "link" => "https://123code.net",
-                "avatar" => "https://flone.jamstacktemplates.dev/assets/img/slider/single-slide-hm1-2.png",
-                "created_at" => \Carbon\Carbon::now()
-            ],
-        ];
-        foreach ($slides as $item) {
-            \Illuminate\Support\Facades\DB::table("slides")->insert($item);
-        }
     }
 
     /**
