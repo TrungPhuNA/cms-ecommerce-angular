@@ -4,8 +4,8 @@
 		<div class="row">
 			<ng-container *ngFor="let item of listTotalData">
 				<div class="col-md-6 col-lg-3 col-12 mb-3">
-					<a [routerLink]="item.url" class="text-white {{item.bgClass}} d-block rounded position-relative overflow-hidden text-decoration-none"
-						>
+					<a [routerLink]="item.url"
+						class="text-white {{item.bgClass}} d-block rounded position-relative overflow-hidden text-decoration-none">
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="details px-4 py-3 d-flex flex-column justify-content-between">
 								<p class="fw-normal fs-16">{{item.title}}</p>
@@ -21,6 +21,23 @@
 				</div>
 			</ng-container>
 		</div>
+	</div>
+</div>
+
+<div class="card  my-10">
+	<div class="card-body">
+		<h3 class="fs16 text-widget-dark fw-bold mb-5">
+			Doanh số tháng {{months}}
+		</h3>
+		<app-chart-line [data]="dataMonths"></app-chart-line>
+	</div>
+</div>
+<div class="card  my-10">
+	<div class="card-body">
+		<h3 class="fs16 text-widget-dark fw-bold mb-5">
+			Doanh số theo tháng trong năm {{year}}
+		</h3>
+		<app-chart-line [data]="dataYears" [color]="{lightColor: '#ffc700',baseColor: '#ffc107'}"></app-chart-line>
 	</div>
 </div>
 <app-spinner [loading]="loading"></app-spinner>

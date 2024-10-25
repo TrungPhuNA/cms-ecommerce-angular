@@ -17,6 +17,7 @@ import { SpinnerModule } from "../../shared/components/spinner/spinner.module";
 import { UploadModule } from 'src/app/shared/components/upload/upload.module';
 import { FileSizeNoteModule } from 'src/app/shared/components/file-size-note/file-size-note.module';
 import { NgxSummernoteModule } from 'ngx-summernote';
+import { ChartModule } from 'src/app/shared/components/chart/chart.module';
 
 const routes: Routes = [
 	{
@@ -37,17 +38,13 @@ const routes: Routes = [
 		PaginationModule,
 		ReactiveFormsModule,
 		NgSelectModule,
-		NgbPaginationModule,
 		MatDialogModule,
-		FormMgsModule,
 		MatMenuModule,
 		TranslateModule,
 		InlineSVGModule,
 		SpinnerModule,
-		UploadModule,
 		PipesModule,
-		FileSizeNoteModule,
-		NgxSummernoteModule
+		ChartModule,
 	]
 })
 export class DashboardModule { }

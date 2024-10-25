@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import moment from 'moment';
 import { finalize } from 'rxjs';
 import { AccountService, AlertService, DashboardService, HelperService, ProductService } from 'src/app/services';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/shared';
@@ -21,15 +22,22 @@ export class DashboardComponent implements OnInit {
 		page_size: 20,
 		total: 0
 	};
+
+	dataMonths = [];
+	dataYears = [];
 	listData: any;
 
 	defaultImg = DEFAULT_IMG;
 
 	statuses = STATUS_PRODUCTS;
 
+	months = moment().locale('vi').format('MM');
+	year = moment().locale('vi').format('yyyy');
+
 
 	searchForm: any = new FormGroup({
-		name: new FormControl(null)
+		from: new FormControl(moment().format('yyyy-MM-DD')),
+		to: new FormControl(moment().format('yyyy-MM-DD')),
 	});
 
 	breadcrumbs: any;
@@ -105,7 +113,6 @@ export class DashboardComponent implements OnInit {
 	getListData() {
 		this.loading = true;
 		let params = {
-			...this.paging,
 			...this.helperService.buildSearchValueByKeyFilter(this.searchForm.value)
 		}
 		this.service.getListData(params)
@@ -114,11 +121,36 @@ export class DashboardComponent implements OnInit {
 				this.loading = false;
 				if (res?.status == 'success') {
 					this.listData = res?.data;
+					console.log(this.listData);
 					if(this.listData) {
 						this.listTotalData = this.listTotalData.map((item: any) => {
 							item.total = Number(this.listData[`${item.key}`])
 							return item;
-						})
+						});
+						let year = moment().year();
+						let month = moment().month() + 1;
+
+						this.dataYears = Object.entries(this.listData?.order_month_in_year)?.reduce((newData: any, item: any) => {
+							if(item?.length > 0) {
+								let obj = {
+									date: moment(`${year}-${item[0]}-01`).format('MMM'),
+									value: item[1]
+								}
+								newData.push(obj);
+							}
+							return newData;
+						}, []);
+						this.dataMonths = Object.entries(this.listData?.order_day_in_month)?.reduce((newData: any, item: any) => {
+							if(item?.length > 0) {
+								let obj = {
+									date: moment(`${year}-${month}-${item[0]}`).format('yyyy-MM-DD'),
+									value: item[1]
+								}
+								newData.push(obj);
+							}
+							return newData;
+						}, []);
+						console.log(this.dataMonths, this.dataYears);
 					}
 				} else {
 					this.alertService.fireSmall('error', res?.message)

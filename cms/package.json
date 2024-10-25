@@ -45,6 +45,8 @@
     "ngx-summernote": "^1.0.0",
     "object-path": "0.11.8",
     "rxjs": "7.5.5",
+    "ng-apexcharts": "1.7.1",
+    "apexcharts": "3.35.3",
     "rxjs-compat": "^6.6.7",
     "sweetalert2": "^11.6.15",
     "tslib": "2.4.0",
