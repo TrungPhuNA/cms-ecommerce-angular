@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserType } from "../auth.service";
 import { environment } from 'src/environments/environment';
-import { DEFAULT_IMG } from 'src/app/shared/constants/common';
+import { AVATAR_DEFAULT, DEFAULT_IMG, ERROR_IMG } from 'src/app/shared/constants/common';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,6 +11,8 @@ import { DEFAULT_IMG } from 'src/app/shared/constants/common';
 export class HelperService {
 
 	constructor() { }
+
+	
 	
 	formatNumber(num: number , currency: string = '', type?: number): string {
 		if (num === null || num === undefined) {
@@ -310,7 +312,15 @@ export class HelperService {
 		if(image) {
 			return `${environment.apiUrl}api/v1/${image}`
 		}
-		return is_user? DEFAULT_IMG : DEFAULT_IMG;
+		return is_user? AVATAR_DEFAULT : DEFAULT_IMG;
+	}
+
+	onErrorImage(event: any, type?: any) {
+		let avatar = ERROR_IMG;
+		if(type == 'user') {
+			avatar = AVATAR_DEFAULT;
+		}
+		(event.target as HTMLImageElement).src = avatar;
 	}
 
 	insertComma(str: string, floatLength?: any) {

@@ -11,7 +11,8 @@ import { PERMISSION_GROUPS } from 'src/app/shared/constants/permission';
 @Component({
 	selector: 'app-form',
 	templateUrl: './form.component.html',
-	styleUrls: ['./form.component.scss']
+	styleUrls: ['./form.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
 })
 export class FormComponent implements OnInit {
 

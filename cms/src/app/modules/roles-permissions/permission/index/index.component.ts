@@ -12,7 +12,8 @@ import { PERMISSION_GROUPS } from 'src/app/shared/constants/permission';
 @Component({
 	selector: 'app-index',
 	templateUrl: './index.component.html',
-	styleUrls: ['./index.component.scss']
+	styleUrls: ['./index.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
 })
 export class IndexComponent implements OnInit {
 

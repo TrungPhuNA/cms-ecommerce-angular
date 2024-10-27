@@ -1,132 +1,119 @@
-<div>
-	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
-	<div class="card card-body">
-		<div class="card-body p-0 mt-5">
-			<div  class="p-3">
-				<div class="p-5">
-					<div class="p-5">
-						<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
-							<div class="form-group col-md-4 col-12">
-								<label class="form-label">Customer:</label>
-								<ng-select [items]="listAccounts" bindLabel="name"
-									[ngClass]="{'is-invalid': helperService.showStatusError(searchForm, 'user_id')}"
-									bindValue="id" formControlName="user_id" placeholder="Chọn giá trị"
-									[searchable]="true"></ng-select>
-							</div>
-
-						</form>
-
-						<div class=" d-flex justify-content-between align-items-end my-3">
-							<div class="d-flex gap-5">
-								<a class="btn btn-primary text-right h-40 d-flex align-items-center gap-2"
-									(click)="search()">
-									<i class="fa fa-plus m-0" style="color: #ffffff"></i>
-									<span>Tìm kiếm</span>
-								</a>
-								<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2"
-									(click)="reset()">
-									<i class="fa fa-sync m-0"></i>
-
-								</a>
-							</div>
-							<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2"
-								routerLink="/order/store">
-								<i class="fa fa-plus m-0" style="color: #ffffff"></i>
-								<span>Tạo mới</span>
-							</a>
-						</div>
-
-					</div>
+<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
+<div class="card">
+	<div class="card-body pt-0">
+		<div class="py-5">
+			<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
+				<div class="form-group col-md-4 col-12">
+					<label class="form-label">Customer:</label>
+					<ng-select [items]="listAccounts" bindLabel="name"
+						[ngClass]="{'is-invalid': helperService.showStatusError(searchForm, 'user_id')}" bindValue="id"
+						formControlName="user_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
 				</div>
+			</form>
 
-				<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
-					<table class="table px-3 table-row-bordered table-hover align-middle cursor-default">
+			<div class=" d-flex justify-content-between align-items-end my-3">
+				<div class="d-flex gap-5">
+					<a class="btn btn-primary text-right h-40 d-flex align-items-center gap-2" (click)="search()">
+						<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+						<span>Tìm kiếm</span>
+					</a>
+					<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2" (click)="reset()">
+						<i class="fa fa-sync m-0"></i>
 
-						<ng-container>
-							<thead style="background-color: #F9FAFB;">
-								<tr class="fw-500 border-top">
-									<th class="text-nowrap text-center px-2" translate>#</th>
-									<th class="text-nowrap text-center" translate>Customer Info</th>
-									<th class="text-nowrap text-right" translate>Amount</th>
-									<th class="text-nowrap" translate>Payment status</th>
-									<th class="text-nowrap" translate>Status</th>
-									<th class="text-nowrap text-right" translate>Tax Amount</th>
-									<th class="text-nowrap text-right" translate>Shipping Amount</th>
-									<th class="text-nowrap text-right" translate>Discount</th>
-									<th class="text-nowrap text-right" translate>Total Price</th>
-									<th class="text-nowrap text-center" translate>Operations</th>
-								</tr>
-							</thead>
-							<tbody>
-								<ng-container *ngIf="listData?.length > 0, else noData">
-									<ng-container *ngFor="let item of listData; index as i">
-										<tr class="border-bottom">
-											<td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i
-												+ 1
-												}}</td>
-											<td class="text-nowrap ">
-												<p>{{item?.user?.name}}</p>
-												<p class="text-primary">{{item?.user?.email}}</p>
-											</td>
-											<td class="text-right" style="min-width: 200px;">
-												{{ item.amount | thousandsSeparator: ' đ' }}
-											</td>
-											<td style="min-width: 200px;">
-												<span class="badge badge-{{item.payment_class}}">
-													{{item.payment_name}}
-												</span>
-											</td>
-											<td class="text-nowrap">
-												<span class="badge badge-{{item.status_class}}">
-													{{item.status_name}}
-												</span>
-											</td>
-											<td class="text-right" style="min-width: 200px;">
-												{{ item.shipping_amount | thousandsSeparator: ' đ' }}
-											</td>
-											<td class="text-right" style="min-width: 200px;">
-												{{ item.tax_amount | thousandsSeparator: ' đ' }}
-											</td>
-											<td class="text-right" style="min-width: 200px;">
-												{{ item.discount_amount | thousandsSeparator: ' đ' }}
-											</td>
-											<td class="text-right" style="min-width: 200px;">
-												{{ item.sub_total | thousandsSeparator: ' đ' }}
-											</td>
-
-											<td class="text-nowrap text-center px-4">
-												<button mat-icon-button [matMenuTriggerFor]="menu"
-													class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
-													<i class="bi bi-three-dots"></i>
-												</button>
-												<mat-menu #menu="matMenu">
-													<a mat-menu-item class="d-flex align-items-center"
-														[routerLink]="'/order/edit/'+item.id">
-														<span>Cập nhật</span>
-													</a>
-													<!-- <button mat-menu-item class="d-flex align-items-center"
-														(click)="deleteData(item)">
-														<span>Xóa</span>
-													</button> -->
-												</mat-menu>
-											</td>
-										</tr>
-									</ng-container>
-								</ng-container>
-								<ng-template #noData>
-									<tr class="border-bottom-0">
-										<td class="text-nowrap text-center" colspan="10" translate>Empty data</td>
-									</tr>
-								</ng-template>
-
-							</tbody>
-						</ng-container>
-					</table>
+					</a>
 				</div>
-				<app-pagination [paging]="paging" (changePaged)="changePage($event)"></app-pagination>
-
+				<a class="btn btn-orange text-right h-40 d-flex align-items-center gap-2" routerLink="/order/store">
+					<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+					<span>Tạo mới</span>
+				</a>
 			</div>
 		</div>
+
+		<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
+			<table class="table px-3 table-row-bordered table-hover align-middle cursor-default">
+
+				<ng-container>
+					<thead style="background-color: #F9FAFB;">
+						<tr class="fw-500 border-top">
+							<th class="text-nowrap fw-bold fs-px-14 text-center px-2" translate>#</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Customer Info</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Amount</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Payment status</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Status</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Tax Amount</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Shipping Amount</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Discount</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Total Price</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Operations</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngIf="listData?.length > 0, else noData">
+							<ng-container *ngFor="let item of listData; index as i">
+								<tr class="border-bottom">
+									<td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i
+										+ 1
+										}}</td>
+									<td class="text-nowrap ">
+										<p>{{item?.user?.name}}</p>
+										<p class="text-primary">{{item?.user?.email}}</p>
+									</td>
+									<td class="text-right" style="min-width: 200px;">
+										{{ item.amount | thousandsSeparator: ' đ' }}
+									</td>
+									<td style="min-width: 200px;">
+										<span class="badge badge-{{item.payment_class}}">
+											{{item.payment_name}}
+										</span>
+									</td>
+									<td class="text-nowrap">
+										<span class="badge badge-{{item.status_class}}">
+											{{item.status_name}}
+										</span>
+									</td>
+									<td class="text-right" style="min-width: 200px;">
+										{{ item.shipping_amount | thousandsSeparator: ' đ' }}
+									</td>
+									<td class="text-right" style="min-width: 200px;">
+										{{ item.tax_amount | thousandsSeparator: ' đ' }}
+									</td>
+									<td class="text-right" style="min-width: 200px;">
+										{{ item.discount_amount | thousandsSeparator: ' đ' }}
+									</td>
+									<td class="text-right" style="min-width: 200px;">
+										{{ item.sub_total | thousandsSeparator: ' đ' }}
+									</td>
+
+									<td class="text-nowrap text-center px-4">
+										<button mat-icon-button [matMenuTriggerFor]="menu"
+											class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
+											<i class="bi bi-three-dots"></i>
+										</button>
+										<mat-menu #menu="matMenu">
+											<a mat-menu-item class="d-flex align-items-center"
+												[routerLink]="'/order/edit/'+item.id">
+												<span>Cập nhật</span>
+											</a>
+											<!-- <button mat-menu-item class="d-flex align-items-center"
+											(click)="deleteData(item)">
+											<span>Xóa</span>
+										</button> -->
+										</mat-menu>
+									</td>
+								</tr>
+							</ng-container>
+						</ng-container>
+						<ng-template #noData>
+							<tr class="border-bottom-0">
+								<td class="text-nowrap text-center" colspan="10" translate>Empty data</td>
+							</tr>
+						</ng-template>
+
+					</tbody>
+				</ng-container>
+			</table>
+		</div>
+		<app-pagination [paging]="paging" (changePaged)="changePage($event)"></app-pagination>
 	</div>
 </div>
 

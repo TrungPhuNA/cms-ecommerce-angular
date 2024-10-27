@@ -134,20 +134,16 @@ export class InputNumberDirective {
 				}
 			}
 
-			// // 47 --> dấu  '.'
-			// // 44: ','
-			// console.log("charCode---------> ",this.floatLength, charCode);
-			// if (this.floatLength && charCode > 31 && ((charCode < 44 && (charCode > 44 && charCode < 47)) || charCode > 57)) {
-			// 	console.log("float----> ", charCode);
-			// 	return false;
-
-			// } else if (!this.floatLength && charCode > 31 && (charCode < 48 || charCode > 57)) {
-			// 	return false;
-			// }
+			
 			// Cho phép chữ số, dấu ',' và dấu '.'
+			let range = charCode >= 48 && charCode <= 57;
+			if(this.floatLength > 0) {
+				range = (charCode >= 48 && charCode <= 57) || charCode === 44;
+			}
 			if (this.onlyNumber && 
-				!((charCode >= 48 && charCode <= 57))) {
-				event.preventDefault();
+				!range) {
+					console.log(charCode);
+					event.preventDefault();
 			}
 			
 			this.elementRef.nativeElement.value = this.elementRef.nativeElement.value.replace(/^0+/, '');

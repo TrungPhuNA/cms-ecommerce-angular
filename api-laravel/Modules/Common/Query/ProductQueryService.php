@@ -16,7 +16,7 @@ class ProductQueryService extends ModelService
 {
     public static function getAll(Request $request, $items = null)
     {
-        $items = Product::query();
+        $items = Product::query()->with(['category']);
         return parent::getAll($request, $items);
     }
 
@@ -36,6 +36,6 @@ class ProductQueryService extends ModelService
 
     public static function findById(Request $request, $id)
     {
-        return Product::find($id);
+        return Product::with(['category'])->find($id);
     }
 }

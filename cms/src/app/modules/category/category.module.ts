@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IndexComponent } from './index/index.component';
 import { FormComponent } from './form/form.component';
-import { OatPageTitleModule, SharedModule } from 'src/app/shared';
+import { FilterModule, OatPageTitleModule, SharedModule } from 'src/app/shared';
 import { PaginationModule } from 'src/app/shared/components/pagination/pagination.module';
 import { RouterModule, Routes } from '@angular/router';
 import { InlineSVGModule } from 'ng-inline-svg-2';
@@ -48,6 +48,7 @@ const routes: Routes = [
 		TranslateModule,
 		InlineSVGModule,
 		SpinnerModule,
+		FilterModule,
 		OatPageTitleModule
 	]
 })

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSummernoteDirective } from 'ngx-summernote';
 import { finalize } from 'rxjs';
 import { AlertService, FileUploadService, HelperService, ProductService } from 'src/app/services';
@@ -11,7 +11,8 @@ import { STATUS_PRODUCTS } from 'src/app/shared/constants/common';
 @Component({
 	selector: 'app-form',
 	templateUrl: './form.component.html',
-	styleUrls: ['./form.component.scss']
+	styleUrls: ['./form.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
 })
 export class FormComponent implements OnInit {
 
@@ -20,6 +21,7 @@ export class FormComponent implements OnInit {
 	data: any;
 	id: any;
 	submitted = false;
+	maxData = 1000000000;
 	listCategories = [];
 	loading = false;
 
@@ -31,6 +33,9 @@ export class FormComponent implements OnInit {
 		name: new FormControl(null, Validators.required),
 		number: new FormControl(null, Validators.required),
 		price: new FormControl(null, Validators.required),
+		width: new FormControl(null, Validators.required),
+		length: new FormControl(null, Validators.required),
+		height: new FormControl(null, Validators.required),
 		category_id: new FormControl(null, Validators.required),
 		status: new FormControl(null, Validators.required),
 		description: new FormControl(null, Validators.required),
@@ -59,6 +64,7 @@ export class FormComponent implements OnInit {
 	constructor(
 		public helperService: HelperService,
 		private alertService: AlertService,
+		private router: Router,
 		private service: ProductService,
 		private categoryService: CategoryService,
 		private cdr: ChangeDetectorRef,
@@ -152,7 +158,8 @@ export class FormComponent implements OnInit {
 			this.loading = false;
 			if(res?.status == 'success') {
 				this.submitted = false;
-				this.alertService.fireSmall("success", ALERT_SUCCESS.create)
+				this.alertService.fireSmall("success", ALERT_SUCCESS.create);
+				this.router.navigate(['/product/list'])
 			} else {
 				this.alertService.fireSmall("error",res?.message ||  ALERT_ERROR.create)
 

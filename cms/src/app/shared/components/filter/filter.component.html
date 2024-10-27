@@ -1,0 +1,25 @@
+<div class="card  mb-3 {{show ? 'show' : 'out'}}">
+	<div class="card-body">
+		<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
+			<div class="form-group col-md-4 col-12">
+				<label class="form-label">Tên danh mục:</label>
+				<input class="form-control search-input" placeholder="Tìm kiếm theo tên" formControlName="name">
+			</div>
+		</form>
+		<div class="d-flex gap-5">
+			<button type="button" class="btn btn-outline mb-4 text-right h-40 d-flex align-items-center gap-2"
+				(click)="addConditionFilter()">
+				<i class="fa fa-plus m-0" ></i>
+				<span>Add conditions filter</span>
+			</button>
+			<a class="btn btn-primary text-right h-40 d-flex align-items-center gap-2" (click)="search()">
+				<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+				<span>Apply</span>
+			</a>
+
+			<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2" (click)="reset()">
+				<i class="fa fa-sync m-0"></i>
+			</a>
+		</div>
+	</div>
+</div>

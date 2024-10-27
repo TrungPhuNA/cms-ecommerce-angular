@@ -9,7 +9,8 @@ import { DEFAULT_IMG, ORDER_STATUSES, PAYMENT_STATUSES, STATUS_PRODUCTS } from '
 @Component({
 	selector: 'app-index',
 	templateUrl: './index.component.html',
-	styleUrls: ['./index.component.scss']
+	styleUrls: ['./index.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
 })
 export class IndexComponent implements OnInit {
 

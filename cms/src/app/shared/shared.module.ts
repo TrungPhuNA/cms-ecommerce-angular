@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
-    AdvanceDatePickerModule,
     BaseComponent,
-    SpinnerModule,
 } from "./components";
 import { FormMgsModule } from "./components/forms/form-Invalid-message.module";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -21,12 +19,10 @@ import { DirectivesModule } from './modules/directives.module';
     imports: [
         CommonModule,
         PipesModule,
-        SpinnerModule,
         FormMgsModule,
         ReactiveFormsModule,
         NgSelectModule,
         NgOptionHighlightModule,
-        AdvanceDatePickerModule,
         MonthPickerModule,
         DirectivesModule,
     ],

@@ -1,102 +1,97 @@
-<div >
-	<oat-page-title 
-	[title]="title" [breadcrumb]="breadcrumbs">
-
-	</oat-page-title>
-	<div class="card card-body">
-		<div class="card-body p-0 mt-5">
-			<div >
-				<div class="p-5">
-					<div class="row">
-						<div class="col-12 d-md-flex justify-content-md-between">
-							<!-- <h5 class="fw-600 fs18 mb-4 text-break" style="line-height: 3;" translate>Danh sách</h5> -->
-							<div class="d-md-flex justify-content-md-between flex-md-wrap align-items-center gap-3">
-								<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
-									<div class="d-flex align-items-center  mb-4">
-										<span [inlineSVG]="'./assets/media/icons/search01.svg'"
-											class="svg-icon svg-icon-1" (click)="search()"></span>
-										<input class="form-control search-input" placeholder="Tìm kiếm theo tên"
-											formControlName="name">
-									</div>
-								</form>
-								<button type="button"
-									class="btn btn-orange mb-4 text-right h-40 d-flex align-items-center gap-2"
-									(click)="openModal();">
-									<i class="fa fa-plus m-0" style="color: #ffffff"></i>
-									<span>Tạo mới</span>
-								</button>
-							</div>
-						</div>
-					</div>
+<oat-page-title [title]="title" [breadcrumb]="breadcrumbs">
+</oat-page-title>
+<!-- <app-filter [show]="showFilter"></app-filter> -->
+<div class="card card-data">
+	<div class="card-body pt-0">
+		<div class="py-5">
+			<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
+				<div class="form-group col-md-4 col-12">
+					<label class="form-label">Tên danh mục:</label>
+					<input class="form-control search-input" placeholder="Tìm kiếm theo tên" formControlName="name">
 				</div>
-				<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
-					<table class="table table-row-bordered table-hover align-middle cursor-default">
-						<div class="position-relative h-400px" *ngIf="loading">
-							<app-spinner [loading]="loading"></app-spinner>
-						</div>
-						<ng-container *ngIf="!loading">
-							<thead style="background-color: #F9FAFB;">
-								<tr class="fw-500 border-top">
-									<th class="text-nowrap text-center px-2" translate>#</th>
-									<!-- <th class="text-nowrap text-center" translate>Avatar</th> -->
-									<th class="text-nowrap" translate>Name</th>
-									<th class="text-nowrap" translate>Slug</th>
-									<th class="text-nowrap" translate>Created at</th>
-									<th class="text-nowrap text-center" translate>Operations</th>
-								</tr>
-							</thead>
-							<tbody>
-								<ng-container *ngIf="listData?.length > 0, else noData">
-									<ng-container *ngFor="let item of listData; index as i">
-										<tr class="border-bottom">
-											<td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i
-												+ 1
-												}}</td>
-											<!-- <td class="text-nowrap text-center">
-											<img [src]="item?.avatar || defaultImg" alt="{{item?.id}}" style="width: 80px; height: 80px;">
-										</td> -->
-											<td style="min-width: 200px;">
-												{{ item.name }}
-											</td>
-											<td style="min-width: 200px;">
-												{{ item.slug }}
-											</td>
-											<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
-
-											<td class="text-nowrap text-center px-4">
-												<button mat-icon-button [matMenuTriggerFor]="menu"
-													class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
-													<i class="bi bi-three-dots"></i>
-												</button>
-												<mat-menu #menu="matMenu">
-													<button mat-menu-item class="d-flex align-items-center"
-														(click)="openModal(item)">
-														<span>Cập nhật</span>
-													</button>
-													<!-- <button mat-menu-item class="d-flex align-items-center"
-														(click)="deleteData(item)">
-														<span>Xóa</span>
-													</button> -->
-												</mat-menu>
-											</td>
-										</tr>
-									</ng-container>
-								</ng-container>
-								<ng-template #noData>
-									<tr class="border-bottom-0">
-										<td class="text-nowrap text-center" colspan="6" translate>Empty data</td>
-									</tr>
-								</ng-template>
-
-							</tbody>
-						</ng-container>
-					</table>
-
-					
-					<app-pagination [paging]="paging"
-					(changePaged)="changePage($event)"></app-pagination>
+			</form>
+			<div class=" d-flex justify-content-between align-items-end my-3">
+				<div class="d-flex gap-5">
+					<a class="btn btn-primary text-right h-40 d-flex align-items-center gap-2" (click)="search()">
+						<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+						<span>Tìm kiếm</span>
+					</a>
+					<!-- <button class="btn btn-secondary mr-3" type="button" (click)="showFilter = !showFilter">
+						<i class="fa fa-filter"></i>
+					</button> -->
+					<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2" (click)="reset()">
+						<i class="fa fa-sync m-0"></i>
+	
+					</a>
 				</div>
+				<button type="button" class="btn btn-orange mb-4 text-right h-40 d-flex align-items-center gap-2"
+					(click)="openModal();">
+					<i class="fa fa-plus m-0" style="color: #ffffff"></i>
+					<span>Tạo mới</span>
+				</button>
 			</div>
 		</div>
+		<div class="table-responsive px-3" style="overflow-y: auto; max-height:2000px">
+			<table class="table table-row-bordered table-hover  align-middle cursor-default">
+				<thead style="background-color: #F9FAFB;">
+					<tr class="fw-500 border-top">
+						<th class="text-nowrap fw-bold fs-px-14 text-center px-2" translate>#</th>
+						<!-- <th class="text-nowrap fw-bold fs-px-14 text-center" translate>Avatar</th> -->
+						<th class="text-nowrap fw-bold fs-px-14" translate>Name</th>
+						<th class="text-nowrap fw-bold fs-px-14" translate>Slug</th>
+						<th class="text-nowrap fw-bold fs-px-14" translate>Created at</th>
+						<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Operations</th>
+					</tr>
+				</thead>
+				<tbody>
+					<ng-container *ngIf="listData?.length > 0, else noData">
+						<ng-container *ngFor="let item of listData; index as i">
+							<tr class="border-bottom">
+								<td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i
+									+ 1
+									}}</td>
+								<!-- <td class="text-nowrap text-center">
+								<img [src]="item?.avatar || defaultImg" alt="{{item?.id}}" style="width: 80px; height: 80px;">
+							</td> -->
+								<td style="min-width: 200px;">
+									{{ item.name }}
+								</td>
+								<td style="min-width: 200px;">
+									{{ item.slug }}
+								</td>
+								<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
+
+								<td class="text-nowrap text-center px-4">
+									<button mat-icon-button [matMenuTriggerFor]="menu"
+										class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
+										<i class="bi bi-three-dots"></i>
+									</button>
+									<mat-menu #menu="matMenu">
+										<button mat-menu-item class="d-flex align-items-center"
+											(click)="openModal(item)">
+											<span>Cập nhật</span>
+										</button>
+										<!-- <button mat-menu-item class="d-flex align-items-center"
+											(click)="deleteData(item)">
+											<span>Xóa</span>
+										</button> -->
+									</mat-menu>
+								</td>
+							</tr>
+						</ng-container>
+					</ng-container>
+					<ng-template #noData>
+						<tr class="border-bottom-0">
+							<td class="text-nowrap text-center" colspan="6" translate>Empty data</td>
+						</tr>
+					</ng-template>
+
+				</tbody>
+			</table>
+		</div>
+		<app-pagination [paging]="paging" (changePaged)="changePage($event)"></app-pagination>
+
 	</div>
 </div>
+
+<app-spinner [loading]="loading"></app-spinner>
