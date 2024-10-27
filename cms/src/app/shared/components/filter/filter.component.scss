@@ -1,0 +1,44 @@
+.card {
+	transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Thiết lập hiệu ứng cho chiều cao và độ mờ */
+    max-height: 0; /* Chiều cao tối đa khi hiển thị */
+    opacity: 0; /* Độ mờ khi hiển thị */
+    overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+
+    &.out {
+        // max-height: 0; /* Đặt chiều cao về 0 khi ẩn */
+        // opacity: 0; /* Đặt độ mờ về 0 khi ẩn */
+		animation: slideFadeOut 0.5s ease forwards;
+    }
+	&.show {
+        // max-height: 1000px; /* Đặt chiều cao về 0 khi ẩn */
+        // opacity: 1; /* Đặt độ mờ về 0 khi ẩn */
+		animation: slideFadeIn 0.5s ease forwards;
+    }
+}
+@keyframes slideFadeIn {
+    0% {
+		max-height: 0; /* Đặt chiều cao về 0 khi ẩn */
+        opacity: 0;
+        transform: translateY(-50px); /* Slight upward movement for visual effect */
+    }
+    100% {
+		max-height: 1000px; /* Đặt chiều cao về 0 khi ẩn */
+        opacity: 1;
+		transform: translateY(0);
+    }
+}
+
+@keyframes slideFadeOut {
+    
+    0% {
+		max-height: 1000px; /* Đặt chiều cao về 0 khi ẩn */
+        opacity: 0;
+		transform: translateY(0);
+    }
+
+	100% {
+		max-height: 0; /* Đặt chiều cao về 0 khi ẩn */
+        opacity: 0; /* Slight upward movement for visual effect */
+		transform: translateY(-50px);	
+    }
+}

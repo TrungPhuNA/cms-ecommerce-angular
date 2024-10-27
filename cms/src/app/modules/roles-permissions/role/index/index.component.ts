@@ -10,7 +10,8 @@ import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
 @Component({
 	selector: 'app-index',
 	templateUrl: './index.component.html',
-	styleUrls: ['./index.component.scss']
+	styleUrls: ['./index.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
 })
 export class IndexComponent implements OnInit {
 

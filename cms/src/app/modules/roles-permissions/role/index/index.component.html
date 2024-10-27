@@ -1,7 +1,8 @@
 <div >
 	<oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
 	<div class="card card-body">
-		<div class="card-body p-0 mt-5">
+		<div class="card-body
+">
 			<div >
 				<div class="p-5">
 					<form class="row" [formGroup]="searchForm">
@@ -42,12 +43,12 @@
 						<ng-container *ngIf="!loading">
 							<thead style="background-color: #F9FAFB;">
 								<tr class="fw-500 border-top">
-									<th class="text-nowrap text-center px-2" translate>#</th>
-									<th class="text-nowrap" translate>Name</th>
-									<th class="text-nowrap" translate>Description</th>
-									<th class="text-nowrap" translate>Guard Name</th>
-									<th class="text-nowrap" translate>Created at</th>
-									<th class="text-nowrap text-center" translate>Operations</th>
+									<th class="text-nowrap fw-bold fs-px-14 text-center px-2" translate>#</th>
+									<th class="text-nowrap fw-bold fs-px-14" translate>Name</th>
+									<th class="text-nowrap fw-bold fs-px-14" translate>Description</th>
+									<th class="text-nowrap fw-bold fs-px-14" translate>Guard Name</th>
+									<th class="text-nowrap fw-bold fs-px-14" translate>Created at</th>
+									<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Operations</th>
 								</tr>
 							</thead>
 							<tbody>

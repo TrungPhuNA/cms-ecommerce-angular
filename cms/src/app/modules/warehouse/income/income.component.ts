@@ -12,7 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
 	selector: 'app-income',
 	templateUrl: './income.component.html',
-	styleUrls: ['./income.component.scss']
+	styleUrls: ['./income.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
 })
 export class IncomeComponent implements OnInit {
 

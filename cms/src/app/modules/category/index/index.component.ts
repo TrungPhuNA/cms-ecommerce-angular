@@ -11,13 +11,16 @@ import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/
 @Component({
 	selector: 'app-index',
 	templateUrl: './index.component.html',
-	styleUrls: ['./index.component.scss']
+	styleUrls: ['./index.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
+	
 })
 export class IndexComponent implements OnInit {
 
 	loading: boolean = false;
 	title  = 'Danh sách';
 	breadcrumbs: any;
+	showFilter = false;
 
 
 	paging: any = {
@@ -53,6 +56,11 @@ export class IndexComponent implements OnInit {
 	search() {
 		this.paging.page = 1;
 		this.getListData();
+	}
+
+	reset() {
+		this.searchForm.reset();
+		this.search();
 	}
 
 	getListData() {

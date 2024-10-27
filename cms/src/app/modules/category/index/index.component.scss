@@ -11,3 +11,7 @@
     position: absolute;
     margin-left: 10px;
 }
+
+.card-data {
+	transition: transform 0.5s ease-out, opacity 0.5s ease-out, box-shadow 0.5s ease-out;
+}

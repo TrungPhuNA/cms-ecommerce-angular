@@ -13,7 +13,8 @@ import { REGEX_EMAIL } from 'src/app/shared/constants/regex-data';
 @Component({
 	selector: 'app-form',
 	templateUrl: './form.component.html',
-	styleUrls: ['./form.component.scss']
+	styleUrls: ['./form.component.scss'],
+	host: { 'class': 'full-with-overflow-auto' }
 })
 export class FormComponent implements OnInit {
 

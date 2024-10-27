@@ -12,3 +12,4 @@ export * from './oat-page-title/oat-page-title.component';
 export * from './oat-page-title/oat-page-title.model';
 export * from './upload/upload.module';
 export * from './month-picker/month-picker.module';
+export * from './filter/filter.module';

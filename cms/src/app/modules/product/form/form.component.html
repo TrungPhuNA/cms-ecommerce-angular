@@ -3,16 +3,16 @@
 
 	<div class="card card-body">
 		<form [formGroup]="form">
-			<div class="row  mt-5">
-				<div class="col-md-5 col-12 mb-5">
-					<app-upload-image imageWidth="300px" imageHeight="200px" [imageFiles]="images"
+			<div class="row mt-5">
+				<div class="col-md-4 col-12 mb-5">
+					<app-upload-image imageWidth="300px" imageHeight="300px" [imageFiles]="images"
 						requiredMessage="Hình ảnh là bắt buộc!" [maxItem]="1" [isRequired]="true"
 						(imagesToUpload)="getImages($event)" (imagesInvalid)="handleUpload($event)"
 						(itemsToRemove)="imageToRemove($event)"></app-upload-image>
 					<app-file-size-note [imgSize]="images[0].imgSize" [maxSize]="0.5"></app-file-size-note>
 					<small>Vui lòng chọn ảnh tối đa 500KB</small>
 				</div>
-				<div class="col-md-7 col-12 mb-5">
+				<div class="col-md-8 col-12 mb-5">
 					<div class="row">
 						<div class="col-12 mb-5 form-group">
 							<label class="form-label required" translate>Tên</label>
@@ -34,7 +34,7 @@
 								[message]="requiredForm"></at-error>
 
 						</div>
-						<div class="col-12 mb-5 form-group">
+						<div class="col-md-6 col-12 mb-5 form-group">
 							<label class="form-label required" translate>Trạng thái</label>
 							<ng-select [items]="statuses" bindLabel="name"
 								[ngClass]="{'is-invalid': helperService.showStatusError(form, 'status')}"
@@ -45,8 +45,35 @@
 
 						</div>
 						<div class="col-md-6 col-12 mb-5 form-group">
+							<label class="form-label required" translate>Length</label>
+							<input class="form-control" appInputNumber [floatLength]="2" [max]="1000000"  [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'length', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
+								formControlName="length" />
+							<at-error [submitted]="submitted" [control]="form.get('length')" validation="required"
+								[message]="requiredForm">
+							</at-error>
+						</div>
+						<div class="col-md-6 col-12 mb-5 form-group">
+							<label class="form-label required" translate>Width</label>
+							<input class="form-control" appInputNumber [floatLength]="2" [max]="maxData" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'width', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
+								formControlName="width" />
+							<at-error [submitted]="submitted" [control]="form.get('width')" validation="required"
+								[message]="requiredForm">
+							</at-error>
+						</div>
+						<div class="col-md-6 col-12 mb-5 form-group">
+							<label class="form-label required" translate>Height</label>
+							<input class="form-control" appInputNumber [floatLength]="2" [max]="maxData" [ngClass]="{'is-invalid': 
+							(helperService.showStatusError(form, 'height', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
+								formControlName="height" />
+							<at-error [submitted]="submitted" [control]="form.get('height')" validation="required"
+								[message]="requiredForm">
+							</at-error>
+						</div>
+						<div class="col-md-6 col-12 mb-5 form-group">
 							<label class="form-label required" translate>Số lượng</label>
-							<input class="form-control" [ngClass]="{'is-invalid': 
+							<input class="form-control" appInputNumber [max]="maxData" [ngClass]="{'is-invalid': 
 							(helperService.showStatusError(form, 'number', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
 								formControlName="number" />
 							<at-error [submitted]="submitted" [control]="form.get('number')" validation="required"
@@ -55,7 +82,7 @@
 						</div>
 						<div class="col-md-6 col-12 mb-5 form-group">
 							<label class="form-label required" translate>Giá</label>
-							<input class="form-control" [ngClass]="{'is-invalid': 
+							<input class="form-control" appInputNumber [floatLength]="2" [max]="maxData" [ngClass]="{'is-invalid': 
 							(helperService.showStatusError(form, 'price', submitted))}"
 								(focusout)="helperService.onTrimFocusOutForm(form, 'price', $event)"
 								placeholder="{{ 'Nhập giá trị'}}" formControlName="price" />
