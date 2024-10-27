@@ -15,8 +15,9 @@ use Revolution\Google\Sheets\Facades\Sheets;
 class ApiToolSheetDataController extends Controller
 {
     protected $tableConfig = [
-        "categories","ec_brands","ec_product_labels","slides","bl_menus","bl_tags"
+        "categories", "ec_brands", "ec_product_labels", "slides", "bl_menus", "bl_tags", "bl_articles","ec_products"
     ];
+
     public function crawlerDataGoogleSheet(Request $request)
     {
         try {
@@ -30,6 +31,9 @@ class ApiToolSheetDataController extends Controller
                 case "categories":
                     $this->insertCategory($data);
                     break;
+                case "ec_products":
+                    $this->insertECM($data,$request->table);
+                    break;
                 case "ec_brands":
                     $this->insertBrands($data);
                     break;
@@ -41,6 +45,7 @@ class ApiToolSheetDataController extends Controller
                     break;
                 case "bl_tags":
                 case "bl_menus":
+                case "bl_articles":
                     $this->insertMenus($data, $request->table);
                     break;
             }
@@ -87,6 +92,7 @@ class ApiToolSheetDataController extends Controller
             }
         }
     }
+
     protected function insertLabel($values)
     {
         foreach ($values as $item) {
@@ -105,11 +111,12 @@ class ApiToolSheetDataController extends Controller
             }
         }
     }
+
     protected function insertSlides($values)
     {
         foreach ($values as $item) {
             unset($item["STT"]);
-            if($item["name"]) {
+            if ($item["name"]) {
                 CliEcho::errornl("================ insertSlides: Name: ".(json_encode($item)));
                 $item["created_at"] = Carbon::now();
                 $item["position"] = $item["position"] ?? 1;
@@ -117,28 +124,80 @@ class ApiToolSheetDataController extends Controller
             }
         }
     }
+
     protected function insertMenus($values, $table)
     {
         foreach ($values as $item) {
-            try{
+            try {
                 unset($item["STT"]);
-                if($item["name"]) {
+                if ($item["name"]) {
                     $slug = \Illuminate\Support\Str::slug($item['name']);
                     $check = DB::table($table)->where("slug", $slug)->first();
-                    if(!$check) {
+                    if (!$check) {
                         $item["created_at"] = Carbon::now();
+                        $item["slug"] = $slug;
                         $item["is_featured"] = isset($item["is_featured"]) ? $item["is_featured"] : 0;
                         $item["status"] = isset($item["status"]) ? $item["status"] : 'published';
-                        DB::table($table)->insert($item);
+
+                        if ($table == "bl_articles")
+                            $item["menu_id"] = \Illuminate\Support\Facades\DB::table("bl_menus")->inRandomOrder()->first()->id;
+
+                        $id = DB::table($table)->insertGetId($item);
                         CliEcho::successnl("================ $table: Name: ".(json_encode($item)));
+                        if ($table == "bl_articles") {
+                            $tagID = \Illuminate\Support\Facades\DB::table("bl_tags")->inRandomOrder()->limit(1)->first()->id;
+                            \Illuminate\Support\Facades\DB::table("bl_articles_tags")->updateOrInsert([
+                                "article_id" => $id,
+                                "tag_id"     => $tagID
+                            ], [
+                                "article_id" => $id,
+                                "tag_id"     => $tagID
+                            ]);
+                        }
                     }
                 }
-            }catch (\Exception $exception) {
+            } catch (\Exception $exception) {
                 CliEcho::errornl("================ $table: Name: ".$exception->getMessage());
                 \Log::error("=======[@insertMenus] File: "
-                        . $exception->getFile()
-                        . " Line: " . $exception->getLine()
-                        . " Message: " . $exception->getMessage());
+                    .$exception->getFile()
+                    ." Line: ".$exception->getLine()
+                    ." Message: ".$exception->getMessage());
+            }
+        }
+    }
+    protected function insertECM($values, $table)
+    {
+        foreach ($values as $item) {
+            try {
+                unset($item["STT"]);
+                if ($item["name"]) {
+                    $slug = \Illuminate\Support\Str::slug($item['name']);
+                    $check = DB::table($table)->where("slug", $slug)->first();
+                    if (!$check) {
+                        $item["created_at"] = Carbon::now();
+                        $item["slug"] = $slug;
+                        $item["status"] = isset($item["status"]) ? $item["status"] : 'published';
+
+                        if ($table == "ec_products")
+                            $item["category_id"] = \Illuminate\Support\Facades\DB::table("categories")->inRandomOrder()->first()->id;
+
+                        $id = DB::table($table)->insertGetId($item);
+                        CliEcho::successnl("================ $table: Name: ".(json_encode($item)));
+                        if ($table == "ec_products") {
+                            \Illuminate\Support\Facades\DB::table("ec_products_labels")->insert([
+                                "product_id"       => $id,
+                                "product_label_id" => \Illuminate\Support\Facades\DB::table("ec_product_labels")->inRandomOrder()->first()->id,
+                                "created_at"       => Carbon::now()
+                            ]);
+                        }
+                    }
+                }
+            } catch (\Exception $exception) {
+                CliEcho::errornl("================ $table: Name: ".$exception->getMessage());
+                \Log::error("=======[@insertMenus] File: "
+                    .$exception->getFile()
+                    ." Line: ".$exception->getLine()
+                    ." Message: ".$exception->getMessage());
             }
         }
     }

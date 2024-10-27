@@ -36,6 +36,15 @@ return new class extends Migration {
             $table->tinyInteger('index_seo')->default(1);
             $table->timestamps();
         });
+        Schema::create('ec_warehouses', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('avatar')->nullable();
+            $table->enum("status", ["published", "draft", "pending"])->default("pending");
+            $table->string('description')->nullable();
+            $table->string('address')->nullable();
+            $table->timestamps();
+        });
         Schema::create('ec_brands', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
