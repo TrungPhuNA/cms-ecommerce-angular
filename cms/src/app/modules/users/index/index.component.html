@@ -37,7 +37,6 @@
 					<ng-container *ngIf="!loading">
 						<thead style="background-color: #F9FAFB;">
 							<tr class="fw-500 border-top">
-<<<<<<< HEAD
 								<th class="text-nowrap fw-bold fs-px-14 text-center px-2" translate>#</th>
 								<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Avatar</th>
 								<th class="text-nowrap fw-bold fs-px-14" translate>Name</th>
@@ -46,16 +45,6 @@
 								<th class="text-nowrap fw-bold fs-px-14" translate>Status</th>
 								<th class="text-nowrap fw-bold fs-px-14" translate>Created at</th>
 								<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Operations</th>
-=======
-								<th class="text-nowrap text-center px-2" translate>#</th>
-								<th class="text-nowrap text-center" translate>Avatar</th>
-								<th class="text-nowrap" translate>Name</th>
-								<th class="text-nowrap" translate>Email</th>
-								<th class="text-nowrap" translate>Phone Number</th>
-								<th class="text-nowrap" translate>Status</th>
-								<th class="text-nowrap" translate>Created at</th>
-								<th class="text-nowrap text-center" translate>Operations</th>
->>>>>>> 7a8290aaee5a5d4ccc7d22458497e3da9364a241
 							</tr>
 						</thead>
 						<tbody>
@@ -66,12 +55,8 @@
 											+ 1
 											}}</td>
 										<td class="text-nowrap ">
-<<<<<<< HEAD
 											<img class="mx-auto" [src]="helperService.buildImage(item.avatar, true)"
 											(error)="helperService.onErrorImage($event, 'user')"
-=======
-											<img class="mx-auto" [src]="helperService.buildImage(item.avatar)"
->>>>>>> 7a8290aaee5a5d4ccc7d22458497e3da9364a241
 												alt="{{item?.id}}" style="width: 80px; height: 80px;">
 										</td>
 										<td style="min-width: 200px;">
