@@ -5,3 +5,4 @@ node_modules
 .phpunit.cache
 composer.lock
 .idea
+public/api-drive-check-dc2bf29acdd6.json

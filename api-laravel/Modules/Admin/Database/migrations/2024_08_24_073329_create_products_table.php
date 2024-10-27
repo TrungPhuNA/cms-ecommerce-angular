@@ -62,10 +62,13 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
+            $table->string("description")->nullable();
             $table->string('avatar')->nullable();
             $table->enum("status", ["published", "draft", "pending"])->default("pending");
             $table->integer('number')->default(0);
             $table->integer('price')->default(0);
+            $table->integer('sale')->default(0);
+            $table->text("contents")->nullable();
             $table->float("length")->nullable();
             $table->float("width")->nullable();
             $table->float("height")->nullable();
@@ -194,87 +197,51 @@ return new class extends Migration {
             \Illuminate\Support\Facades\DB::table("payment_methods")->insert($item);
         }
 
-        $categories = ["Quần áo nam", "Quần áo nữ", "Đồ trẻ em", "Đồ thể thao", "Phụ kiện", "Đồng phục"];
-        foreach ($categories as $category) {
-            \Illuminate\Support\Facades\DB::table("categories")->insert([
-                "name"       => $category,
-                "slug"       => \Illuminate\Support\Str::slug($category),
-                "created_at" => Carbon\Carbon::now()
-            ]);
-        }
-        $brands = [
-            [
-                "name"   => "Chanel",
-                "status" => "published",
-                "avatar" => "https://cdn-copck.nitrocdn.com/WwybsgZzWtFojdWowVAajDJCKuMAXRVm/assets/images/optimized/rev-327d879/rubicmarketing.com/wp-content/uploads/2022/11/logo-chanel.jpg"
-            ],
-            [
-                "name"   => "Gucci",
-                "status" => "published",
-                "avatar" => "https://inkythuatso.com/uploads/thumbnails/800/2021/11/gucci-logo-inkythuatso-01-02-10-02-14.jpg"
-            ],
-        ];
-
-        foreach ($brands as $item) {
-            \Illuminate\Support\Facades\DB::table("ec_brands")->insert([
-                "name"       => $item["name"],
-                "slug"       => \Illuminate\Support\Str::slug($item['name']),
-                "avatar"     => $item["avatar"],
-                "status"     => $item["status"],
-                "created_at" => Carbon\Carbon::now()
-            ]);
-        }
 
         $products = [
             [
-                "name"   => "Đồ Bộ Nam Phối Dây Dệt",
-                "price"  => 200000,
-                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-nau-2.jpg"
+                "name"        => "Đồ Bộ Nam Phối Dây Dệt",
+                "price"       => 200000,
+                "sale"        => 0,
+                "avatar"      => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-nau-2.jpg",
+                "contents"    => "Nội dung",
+                "description" => "Mô tả sản phẩm"
             ],
             [
-                "name"   => "Áo Thu Đông Nữ Giữ Nhiệt Cổ Tròn",
-                "price"  => 199000,
-                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/ao-giu-nhiet-nu-ATN7019-CAM%20%20(1).jpg"
+                "name"        => "Áo Thu Đông Nữ Giữ Nhiệt Cổ Tròn",
+                "price"       => 199000,
+                "sale"        => 10,
+                "avatar"      => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/ao-giu-nhiet-nu-ATN7019-CAM%20%20(1).jpg",
+                "contents"    => "Nội dung",
+                "description" => "Mô tả sản phẩm"
             ],
             [
-                "name"   => "Áo Len Nữ Xẻ Tà Dáng Rộng Dệt Kẻ",
-                "price"  => 599000,
-                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/aln5010-tkd.jpg"
+                "name"        => "Áo Len Nữ Xẻ Tà Dáng Rộng Dệt Kẻ",
+                "price"       => 599000,
+                "sale"        => 5,
+                "avatar"      => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/aln5010-tkd.jpg",
+                "contents"    => "Nội dung",
+                "description" => "Mô tả sản phẩm"
             ],
             [
-                "name"   => "Đồ Bộ Nam Phối Dây Dệt",
-                "price"  => 699000,
-                "avatar" => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-den-2.jpg"
-            ],
-        ];
-        $labels = [
-            [
-                "name"        => "New",
-                "description" => "Sản phẩm mới",
-                "slug"        => "new",
-                "order"       => 0,
-                "status"      => "published",
-                "created_at"  => Carbon\Carbon::now()
-            ],
-            [
-                "name"        => "Hot",
-                "description" => "Sản phẩm nổi bật",
-                "slug"        => "hot",
-                "order"       => 0,
-                "status"      => "published",
-                "created_at"  => Carbon\Carbon::now()
+                "name"        => "Đồ Bộ Nam Phối Dây Dệt Năm nay",
+                "price"       => 699000,
+                "sale"        => 20,
+                "avatar"      => "https://m.yodycdn.com/fit-in/filters:format(webp)/products/bo-do-nam-phoi-day-det-yody-bdm7011-den-2.jpg",
+                "contents"    => "Nội dung",
+                "description" => "Mô tả sản phẩm"
             ],
         ];
 
-        foreach ($labels as $item) {
-            \Illuminate\Support\Facades\DB::table("ec_product_labels")->insert($item);
-        }
         foreach ($products as $product) {
             $productInsert = \Illuminate\Support\Facades\DB::table("ec_products")->insertGetId([
                 "name"        => $product["name"],
                 "slug"        => \Illuminate\Support\Str::slug($product['name']),
                 "price"       => $product["price"],
                 "avatar"      => $product["avatar"],
+                "sale"        => $product["sale"],
+                "description" => $product["description"],
+                "contents"    => $product["contents"],
                 "category_id" => \Illuminate\Support\Facades\DB::table("categories")->inRandomOrder()->first()->id,
                 "created_at"  => Carbon\Carbon::now()
             ]);
