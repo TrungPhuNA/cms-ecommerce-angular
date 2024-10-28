@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IndexComponent } from '../index/index.component';
 import { AlertService, HelperService } from 'src/app/services';
@@ -26,6 +26,7 @@ export class FormComponent implements OnInit {
 	loading = false;
 	submitted = false;
 
+	@ViewChild('filter') filterCpn: ElementRef
 	constructor(
 		private cdr: ChangeDetectorRef,
 		private dialogRef: MatDialogRef<IndexComponent>,
@@ -44,12 +45,22 @@ export class FormComponent implements OnInit {
 	ngOnInit(): void {
 
 	}
+	ngOnChanges(): void {
+		//Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+		//Add '${implements OnChanges}' to the class.
+		console.log(this.filterCpn.nativeElement);
+	}
 
 	onClose(status?: any) {
 		this.form.reset();
 		this.dialogRef.close({
 			success: status
 		});
+	}
+	ngAfterViewInit(): void {
+		//Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+		//Add 'implements AfterViewInit' to the class.
+		
 	}
 
 	submit() {
