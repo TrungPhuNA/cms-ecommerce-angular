@@ -6,6 +6,7 @@ import { NgxSummernoteDirective } from 'ngx-summernote';
 import { finalize } from 'rxjs';
 import { AccountService, AlertService, FileUploadService, HelperService, OrderService, ProductService } from 'src/app/services';
 import { CategoryService } from 'src/app/services/category.service';
+import { SupplierService } from 'src/app/services/supplier.service';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, FileUploadModel, HomeBreadcrumb } from 'src/app/shared';
 import { ORDER_STATUSES, PAYMENT_STATUSES, STATUS_PRODUCTS, VALIDATOR_MESSAGES } from 'src/app/shared/constants/common';
 @Component({
@@ -30,7 +31,8 @@ export class FormComponent implements OnInit {
 
 
 	form: any = new FormGroup({
-		user_id: new FormControl(null, Validators.required),
+		user_id: new FormControl(null),
+		supplier_id: new FormControl(null, Validators.required),
 		amount: new FormControl(null),
 		shipping_amount: new FormControl(null),
 		discount_amount: new FormControl(null),
@@ -41,6 +43,8 @@ export class FormComponent implements OnInit {
 		tax_amount: new FormControl(null),
 		notes: new FormControl(null)
 	});
+
+	listSuppliers = [];
 
 
 	validatorMessages = VALIDATOR_MESSAGES;
@@ -58,6 +62,7 @@ export class FormComponent implements OnInit {
 		private userService: AccountService,
 		private cdr: ChangeDetectorRef,
 		private activeRoute: ActivatedRoute,
+		private supplierService: SupplierService,
 		private router: Router,
 		private uploadService: FileUploadService
 
@@ -67,7 +72,7 @@ export class FormComponent implements OnInit {
 	}
 	ngOnInit(): void {
 		this.getListProducts({ page: 1, page_size: 1000 });
-		this.getListAccounts({ page: 1, page_size: 1000 });
+		this.getListSuppliers({ page: 1, page_size: 1000 });
 		this.activeRoute.params.subscribe((res: any) => {
 			this.breadcrumbs = [
 				new HomeBreadcrumb(),
@@ -104,12 +109,12 @@ export class FormComponent implements OnInit {
 	}
 
 	listAccounts: any = [];
-	getListAccounts(filters: any) {
-		this.userService.getListUser(filters)
+	getListSuppliers(filters: any) {
+		this.supplierService.getListData(filters)
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				if (res?.status == 'success') {
-					this.listAccounts = res?.data?.users;
+					this.listSuppliers = res?.data?.suppliers;
 				}
 			})
 	}

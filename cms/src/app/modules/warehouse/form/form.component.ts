@@ -23,9 +23,21 @@ export class FormComponent implements OnInit {
 	content: any;
 	clickSelect = false;
 
+	typeWareHouse = [
+		{
+			value: 'final',
+			name: 'Kho thành phẩm '
+		},
+		{
+			value: 'ingredient',
+			name: 'Kho nguyên liệu '
+		}
+	]
+
 	form = new FormGroup({
 		product_id: new FormControl(null, Validators.required),
 		quantity: new FormControl(null, Validators.required),
+		type: new FormControl(null, Validators.required),
 		user_id: new FormControl(null),
 		date: new FormControl(null),
 		price: new FormControl(null, Validators.required)

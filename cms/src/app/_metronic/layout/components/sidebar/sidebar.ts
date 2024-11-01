@@ -62,6 +62,14 @@ export const SideBarItem: ISideBarItem[] = [
 	},
 
 	{
+		path: 'supplier',
+		title: 'Nhà cung cấp',
+		icon: 'fa-solid fa-parachute-box',
+		module_prefix: ['supplier'],
+		sub_menu: []
+	},
+
+	{
 		path: '',
 		title: 'Kho',
 		icon: 'fa-sharp-duotone fa-solid fa-house',

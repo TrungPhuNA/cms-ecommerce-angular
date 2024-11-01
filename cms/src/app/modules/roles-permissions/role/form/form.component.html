@@ -4,7 +4,7 @@
 	<form [formGroup]="form">
 		<div class=" mb-5">
 			<div class=" mb-5 form-group">
-				<label class="form-label required" translate>Role Name</label>
+				<label class="form-label required" translate>Tên Role</label>
 				<input class="form-control" [ngClass]="{'is-invalid': 
 						(helperService.showStatusError(form, 'name', submitted))}"
 					(focusout)="helperService.onTrimFocusOutForm(form, 'name', $event)"
@@ -15,7 +15,7 @@
 			</div>
 			<hr class="line-gray mt-5 mb-5">
 			<div class="d-flex justify-content-between align-items-center my-4 gap-4">
-				<h3 class="fs16 fw-bold">Danh sách permissions</h3>
+				<h3 class="fs16 fw-bold">Danh sách quyền</h3>
 				<div class="form-group">
 					<div class="form-check form-check-inline mx-0 form-switch fv-row">
 						<input id="full_permission" type="checkbox" class="form-check-input w-40px"

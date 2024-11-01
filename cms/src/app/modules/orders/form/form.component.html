@@ -3,11 +3,11 @@
 	<form [formGroup]="form">
 		<div class="row">
 			<div class="col-md-6 col-12 mb-5 form-group">
-				<label class="form-label required" translate>Customer</label>
-				<ng-select [items]="listAccounts" bindLabel="name"
-					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'user_id', submitted)}" bindValue="id"
-					formControlName="user_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
-				<at-error [submitted]="submitted" [control]="form.get('user_id')" validation="required"
+				<label class="form-label required" translate>Nhà cung cấp</label>
+				<ng-select [items]="listSuppliers" bindLabel="name"
+					[ngClass]="{'is-invalid': helperService.showStatusError(form, 'supplier_id', submitted)}" bindValue="id"
+					formControlName="supplier_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
+				<at-error [submitted]="submitted" [control]="form.get('supplier_id')" validation="required"
 					[message]="validatorMessages.required">
 				</at-error>
 			</div>

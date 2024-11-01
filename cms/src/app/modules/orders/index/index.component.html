@@ -4,7 +4,7 @@
 		<div class="py-5">
 			<form class="row" [formGroup]="searchForm" (ngSubmit)="search()">
 				<div class="form-group col-md-4 col-12">
-					<label class="form-label">Customer:</label>
+					<label class="form-label">Nhà cung cấp:</label>
 					<ng-select [items]="listAccounts" bindLabel="name"
 						[ngClass]="{'is-invalid': helperService.showStatusError(searchForm, 'user_id')}" bindValue="id"
 						formControlName="user_id" placeholder="Chọn giá trị" [searchable]="true"></ng-select>
@@ -36,15 +36,15 @@
 					<thead style="background-color: #F9FAFB;">
 						<tr class="fw-500 border-top">
 							<th class="text-nowrap fw-bold fs-px-14 text-center px-2" translate>#</th>
-							<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Customer Info</th>
-							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Amount</th>
-							<th class="text-nowrap fw-bold fs-px-14" translate>Payment status</th>
-							<th class="text-nowrap fw-bold fs-px-14" translate>Status</th>
-							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Tax Amount</th>
-							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Shipping Amount</th>
-							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Discount</th>
-							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Total Price</th>
-							<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Operations</th>
+							<th class="text-nowrap fw-bold fs-px-14 " translate>Nhà cung cấp</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Tổng tiền</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Thanh toán</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Trạng thái</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Thuế</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Giá ship</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Giảm giá</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Thành tiền</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Thao tác</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -54,14 +54,14 @@
 									<td class="text-center px-2">{{ (paging.page > 1 ? paging.page * 10 : 0) + i
 										+ 1
 										}}</td>
-									<td class="text-nowrap ">
-										<p>{{item?.user?.name}}</p>
-										<p class="text-primary">{{item?.user?.email}}</p>
+									<td class="text-nowrap">
+										<p>{{item?.supplier?.name}}</p>
+
 									</td>
-									<td class="text-right" style="min-width: 200px;">
+									<td class="text-right">
 										{{ item.amount | thousandsSeparator: ' đ' }}
 									</td>
-									<td style="min-width: 200px;">
+									<td>
 										<span class="badge badge-{{item.payment_class}}">
 											{{item.payment_name}}
 										</span>
@@ -71,16 +71,16 @@
 											{{item.status_name}}
 										</span>
 									</td>
-									<td class="text-right" style="min-width: 200px;">
+									<td class="text-right text-nowrap" >
 										{{ item.shipping_amount | thousandsSeparator: ' đ' }}
 									</td>
-									<td class="text-right" style="min-width: 200px;">
+									<td class="text-right text-nowrap" >
 										{{ item.tax_amount | thousandsSeparator: ' đ' }}
 									</td>
-									<td class="text-right" style="min-width: 200px;">
+									<td class="text-right text-nowrap" >
 										{{ item.discount_amount | thousandsSeparator: ' đ' }}
 									</td>
-									<td class="text-right" style="min-width: 200px;">
+									<td class="text-righ text-nowrapt" >
 										{{ item.sub_total | thousandsSeparator: ' đ' }}
 									</td>
 

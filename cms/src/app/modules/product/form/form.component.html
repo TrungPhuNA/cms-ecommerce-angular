@@ -45,7 +45,7 @@
 
 						</div>
 						<div class="col-md-6 col-12 mb-5 form-group">
-							<label class="form-label required" translate>Length</label>
+							<label class="form-label required" translate>Chiều dài</label>
 							<input class="form-control" appInputNumber [floatLength]="2" [max]="1000000"  [ngClass]="{'is-invalid': 
 							(helperService.showStatusError(form, 'length', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
 								formControlName="length" />
@@ -54,7 +54,7 @@
 							</at-error>
 						</div>
 						<div class="col-md-6 col-12 mb-5 form-group">
-							<label class="form-label required" translate>Width</label>
+							<label class="form-label required" translate>Chiều rộng</label>
 							<input class="form-control" appInputNumber [floatLength]="2" [max]="maxData" [ngClass]="{'is-invalid': 
 							(helperService.showStatusError(form, 'width', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
 								formControlName="width" />
@@ -63,7 +63,7 @@
 							</at-error>
 						</div>
 						<div class="col-md-6 col-12 mb-5 form-group">
-							<label class="form-label required" translate>Height</label>
+							<label class="form-label required" translate>Chiều cao</label>
 							<input class="form-control" appInputNumber [floatLength]="2" [max]="maxData" [ngClass]="{'is-invalid': 
 							(helperService.showStatusError(form, 'height', submitted))}" placeholder="{{ 'Nhập giá trị'}}"
 								formControlName="height" />

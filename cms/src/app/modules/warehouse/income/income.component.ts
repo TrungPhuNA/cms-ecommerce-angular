@@ -19,6 +19,17 @@ export class IncomeComponent implements OnInit {
 
 	loading: boolean = false;
 
+	typeWareHouse = [
+		{
+			value: 'final',
+			name: 'Kho thành phẩm '
+		},
+		{
+			value: 'ingredient',
+			name: 'Kho nguyên liệu '
+		}
+	]
+
 	paging: any = {
 		page: 1,
 		page_size: 20,
@@ -90,7 +101,9 @@ export class IncomeComponent implements OnInit {
 					if (this.type == 'stock-out') {
 						data = res?.data?.stockOuts || []
 					}
+
 					this.listData = data?.map((item: any) => {
+						item.warehouse_type = this.typeWareHouse.find((e: any) => e?.value == item.type)
 						return item;
 					}) || [];
 					this.paging = this.helperService.buildPaging(res?.data?.meta);

@@ -7,36 +7,36 @@ export const AVATAR_DEFAULT = './assets/media/auth/tim_80x80.png';
 export const STATUS_PRODUCTS = [
 	{
 		value: 'pending',
-		name: 'Pending',
+		name: 'Chờ duyệt',
 		class: 'badge badge-light-warning'
 	},
 	{
 		value: 'draft',
-		name: 'Draft',
+		name: 'Nháp',
 		class: 'badge badge-light-danger'
 	},
 	{
 		value: 'published',
-		name: 'Published',
+		name: 'Hoạt động',
 		class: 'badge badge-light-success'
 	}
 ];
 
 export const PAYMENT_STATUSES = [
-	{ value: 'pending', className: "warning", name: 'Pending' },
-	{ value: 'completed', className: "success", name: 'Completed' },
-	{ value: 'refunding', className: "info", name: 'Refunding' },
-	{ value: 'refunded', className: "primary", name: 'Refunded' },
-	{ value: 'fraud', className: "secondary", name: 'Fraud' },
-	{ value: 'failed', className: "danger", name: 'Failed' }
+	{ value: 'pending', className: "warning", name: 'Chờ duyệt' },
+	{ value: 'completed', className: "success", name: 'Hoàn thành' },
+	{ value: 'refunding', className: "info", name: 'Đang chuyển' },
+	{ value: 'refunded', className: "primary", name: 'Đã chuyển' },
+	// { value: 'fraud', className: "secondary", name: 'Fraud' },
+	{ value: 'failed', className: "danger", name: 'Lỗi' }
 ];
 
 export const ORDER_STATUSES = [
-	{ value: 'pending', className: "warning", name: 'Pending' },
-	{ value: 'processing', className: "primary", name: 'Processing' },
-	{ value: 'completed', className: "success", name: 'Completed' },
-	{ value: 'canceled', className: "danger", name: 'Canceled' },
-	{ value: 'returned', className: "info", name: 'Returned' }
+	{ value: 'pending', className: "warning", name: 'Chờ duyệt' },
+	{ value: 'processing', className: "primary", name: 'Đang giao' },
+	{ value: 'completed', className: "success", name: 'Hoàn thành' },
+	{ value: 'canceled', className: "danger", name: 'Từ chối' },
+	{ value: 'returned', className: "info", name: 'Trả hàng' }
 ];
 
 export const STATUS_BY_NUMBER = [

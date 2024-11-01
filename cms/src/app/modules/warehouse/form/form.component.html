@@ -39,6 +39,17 @@
 					[message]="validatorMessages.required">
 				</at-error>
 			</div>
+			<div class="col-12 form-group mt-5">
+				<label class="form-label required" translate>Phân loại kho</label>
+				<ng-select [items]="typeWareHouse" bindLabel="name" bindValue="value" placeholder="Chọn giá trị"
+					[searchable]="true" class="" [ngClass]="{'is-invalid': 
+					(helperService.showStatusError(form, 'type', submitted))}" placeholder="{{ 'Chọn giá trị'}}"
+					formControlName="type">
+				</ng-select>
+				<at-error [submitted]="submitted" [control]="form.get('type')" validation="required"
+					message="Trường này không được để trống.">
+				</at-error>
+			</div>
 		</div>
 	</form>
 	<div class="d-flex justify-content-center mt-5 gap-3 mb-5">

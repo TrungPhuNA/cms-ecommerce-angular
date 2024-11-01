@@ -1,21 +1,28 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
-import { AccountService, AlertService, HelperService, OrderService, ProductService } from 'src/app/services';
-import { SupplierService } from 'src/app/services/supplier.service';
+import { AlertService, HelperService } from 'src/app/services';
+import { CategoryService } from 'src/app/services/category.service';
+import { DEFAULT_IMG } from 'src/app/shared/constants/common';
+import { FormComponent } from '../form/form.component';
 import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/shared';
-import { DEFAULT_IMG, ORDER_STATUSES, PAYMENT_STATUSES, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
+import { SupplierService } from 'src/app/services/supplier.service';
 
 @Component({
 	selector: 'app-index',
 	templateUrl: './index.component.html',
 	styleUrls: ['./index.component.scss'],
 	host: { 'class': 'full-with-overflow-auto' }
+	
 })
 export class IndexComponent implements OnInit {
 
 	loading: boolean = false;
+	title  = 'Danh sách';
+	breadcrumbs: any;
+	showFilter = false;
+
 
 	paging: any = {
 		page: 1,
@@ -26,37 +33,25 @@ export class IndexComponent implements OnInit {
 
 	defaultImg = DEFAULT_IMG;
 
-	statuses = ORDER_STATUSES;
-	statusPayments = PAYMENT_STATUSES;
-
-
 	searchForm: any = new FormGroup({
-		user_id: new FormControl(null)
-	});
-
-	breadcrumbs: any;
-	title = 'Danh sách';
-
+		name: new FormControl(null)
+	})
 	constructor(
-		public helperService: HelperService,
-		public userService: AccountService,
-		public supplierService: SupplierService,
+		private helperService: HelperService,
 		private alertService: AlertService,
-		private service: OrderService,
+		private service: SupplierService,
 		private cdr: ChangeDetectorRef,
 		private dialog: MatDialog,
 
-	) {
-		this.breadcrumbs = [
-			new HomeBreadcrumb(),
-			new Breadcrumb('Đơn hàng', '/order'),
-			new Breadcrumb('Danh sách', ''),
-		];
-	}
+	) { }
 
 	ngOnInit(): void {
+		this.breadcrumbs = [
+			new HomeBreadcrumb(),
+			new Breadcrumb('Nhà cung cấp', '/supplier'),
+			new Breadcrumb('Danh sách', ''),
+		];
 		this.search();
-		this.getListAccounts({page: 1, page_size: 1000})
 	}
 
 	search() {
@@ -64,15 +59,9 @@ export class IndexComponent implements OnInit {
 		this.getListData();
 	}
 
-	listAccounts: any = [];
-	getListAccounts(filters: any) {
-		this.supplierService.getListData(filters)
-			.pipe(finalize(() => this.cdr.detectChanges()))
-			.subscribe((res: any) => {
-				if (res?.status == 'success') {
-					this.listAccounts = res?.data?.suppliers;
-				}
-			})
+	reset() {
+		this.searchForm.reset();
+		this.search();
 	}
 
 	getListData() {
@@ -86,15 +75,7 @@ export class IndexComponent implements OnInit {
 			.subscribe((res: any) => {
 				this.loading = false;
 				if (res?.status == 'success') {
-					this.listData = res?.data?.orders?.map((item: any) => {
-						let status = this.statuses.find((e: any) => e?.value == item?.status);
-						let payment_status = this.statusPayments.find((e: any) => e?.value == item?.payment_status);
-						item.status_name = status?.name;
-						item.status_class = status?.className;
-						item.payment_name = payment_status?.name;
-						item.payment_class = payment_status?.className;
-						return item;
-					}) || [];
+					this.listData = res?.data?.suppliers || [];
 					this.paging = this.helperService.buildPaging(res?.data?.meta);
 				} else {
 					this.alertService.fireSmall('error', res?.message)
@@ -107,23 +88,41 @@ export class IndexComponent implements OnInit {
 		this.getListData();
 	}
 
-	reset() {
-		this.searchForm.reset();
-		this.paging.page = 1;
-		this.getListData();
+	openModal(item?: any) {
+		const dialogConfig = new MatDialogConfig();
+
+		dialogConfig.width = '500px';
+		dialogConfig.maxHeight = '95vh';
+		dialogConfig.maxWidth = '95vw';
+		dialogConfig.disableClose = true;
+		dialogConfig.data = {
+			item: item,
+			title: item ? 'Cập nhật' : 'Tạo mới'
+		};
+
+		dialogConfig.panelClass = 'create-category'
+
+		let dialogRef = this.dialog.open(FormComponent, dialogConfig);
+
+		// action sau khi đóng modal
+		dialogRef.afterClosed().subscribe((event: any) => {
+			if (event?.success) {
+				this.getListData();
+			}
+		});
 	}
 
 	deleteData(item: any) {
-		this.alertService.fireConfirm('Bạn chắc chắn muốn xóa sản phẩm này chứ ?', '', 'warning', 'Hủy', 'Xóa')
+		this.alertService.fireConfirm('Bạn chắc chắn muốn xóa nhà cùng cấp này chứ ?', '', 'warning', 'Hủy', 'Xóa')
 			.then((resAlert: any) => {
 				if (resAlert?.isConfirmed) {
 					this.loading = true;
 					this.service.deleteData(item.id)
 						.pipe((finalize(() => this.cdr.detectChanges())))
-						.subscribe((res: any) => {
+						.subscribe(res => {
 							this.loading = false;
 							if (res?.status == 'success') {
-								this.alertService.fireSmall('success', ALERT_SUCCESS.delete)
+								this.alertService.fireSmall('success', ALERT_SUCCESS.create)
 							} else {
 								this.alertService.fireSmall('error', res?.message || ALERT_ERROR.delete)
 							}

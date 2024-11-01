@@ -16,6 +16,10 @@ const Routing: Routes = [
         loadChildren: () => import('./modules/product/product.module').then((m) => m.ProductModule),
     },
 	{
+        path: 'supplier',
+        loadChildren: () => import('./modules/supplier/supplier.module').then((m) => m.SupplierModule),
+    },
+	{
         path: 'profile',
         loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule),
     },
