@@ -4,11 +4,11 @@ namespace Modules\Admin\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Common\Query\SlideQueryService;
+use Modules\Common\Query\SupplierQueryService;
 use Modules\Common\Service\ErrorLogService;
 use Modules\Common\Service\ResponseService;
 
-class ApiAdminSlideController extends Controller
+class ApiAdminSupplierController extends Controller
 {
     /**
      * AdmGetListSlide
@@ -16,8 +16,8 @@ class ApiAdminSlideController extends Controller
     public function index(Request $request)
     {
         try {
-            $paginator = SlideQueryService::getAll($request);
-            $slides = $paginator->getCollection();
+            $paginator = SupplierQueryService::getAll($request);
+            $suppliers = $paginator->getCollection();
 
             $meta = [
                 "total"        => $paginator->total(),
@@ -28,12 +28,12 @@ class ApiAdminSlideController extends Controller
 
             $data = [
                 'meta'  => $meta,
-                'slides' => $slides
+                'suppliers' => $suppliers
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
             $message = ErrorLogService::logException($request->route()->getName(), $exception);
-            return ResponseService::sendError($message);
+            return ResponseService::sendError($exception->getMessage());
         }
     }
 
@@ -43,14 +43,14 @@ class ApiAdminSlideController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $slide = SlideQueryService::create($request);
+            $supplier = SupplierQueryService::create($request);
             $data = [
-                'slide' => $slide
+                'supplier' => $supplier
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
             $message = ErrorLogService::logException($request->route()->getName(), $exception);
-            return ResponseService::sendError($message);
+            return ResponseService::sendError($exception->getMessage());
         }
     }
 
@@ -60,14 +60,14 @@ class ApiAdminSlideController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $slide = SlideQueryService::findById($request, $id);
+            $supplier= SupplierQueryService::findById($request, $id);
             $data = [
-                'slide' => $slide
+                'supplier' => $supplier
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
             $message = ErrorLogService::logException($request->route()->getName(), $exception);
-            return ResponseService::sendError($message);
+            return ResponseService::sendError($exception->getMessage());
         }
     }
 
@@ -77,14 +77,29 @@ class ApiAdminSlideController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            SlideQueryService::update($request, $id);
+            SupplierQueryService::update($request, $id);
             $data = [
-                'slide' => SlideQueryService::findById($request, $id)
+                'supplier' => SupplierQueryService::findById($request, $id)
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
             $message = ErrorLogService::logException($request->route()->getName(), $exception);
-            return ResponseService::sendError($message);
+            return ResponseService::sendError($exception->getMessage());
+        }
+    }
+
+
+    public function deleteById(Request $request, $id)
+    {
+        try {
+            SupplierQueryService::deleteById($request, $id);
+            $data = [
+                'supplier' => null
+            ];
+            return ResponseService::sendSuccess($data);
+        } catch (\Exception $exception) {
+            $message = ErrorLogService::logException($request->route()->getName(), $exception);
+            return ResponseService::sendError($exception->getMessage());
         }
     }
 }

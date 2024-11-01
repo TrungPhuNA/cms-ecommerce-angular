@@ -20,6 +20,7 @@ use Modules\Admin\App\Http\Controllers\Api\ApiAdminDashboardController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminPaymentMethodController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminBrandController;
 use Modules\Admin\App\Http\Controllers\Api\ApiAdminSlideController;
+use Modules\Admin\App\Http\Controllers\Api\ApiAdminSupplierController;
 /*
     |--------------------------------------------------------------------------
     | API Routes
@@ -54,6 +55,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::resource('attributes-value',ApiAdminAttributeValueController::class);
         Route::resource('product-options',ApiAdminProductOptionController::class);
         Route::resource('categories',ApiAdminCategoryController::class);
+        Route::resource('suppliers',ApiAdminSupplierController::class);
+        Route::delete('suppliers/{id}',[ApiAdminSupplierController::class, "deleteById"]);
         Route::post('products/store-v2',[ApiAdminProductController::class,'storeV2']);
         Route::get('products/show-v2/{id}',[ApiAdminProductController::class,'showV2']);
         Route::resource('products',ApiAdminProductController::class);

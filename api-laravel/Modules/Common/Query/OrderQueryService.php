@@ -24,13 +24,14 @@ class OrderQueryService extends ModelService
     const LIKE_FULL = ['name'];
     const EQUAL = [
         "user_id",
+        "supplier_id",
         "status_payment",
         "status"
     ];
 
     public static function getAll(Request $request, $items = null)
     {
-        $items = Order::with('user:id,name,email', 'transactions');
+        $items = Order::with('user:id,name,email', 'transactions', 'supplier:id,name');
         return parent::getAll($request, $items);
     }
 
@@ -39,6 +40,8 @@ class OrderQueryService extends ModelService
         $dataInput = $request->all();
         $dataInput["created_at"] = Carbon::now();
         $dataInput["code"] = HelpersClass::generateOrderCode();
+        $dataInput["user_id"] = Arr::get($dataInput, "user_id")  ?? $request->user()->id;
+
         if(!$request->payment_method_id) {
             $dataInput["payment_method_id"] = PaymentMethod::where("is_default", true)->first()->id ?? 1;
         }
@@ -68,6 +71,7 @@ class OrderQueryService extends ModelService
     {
         $dataInput = $request->all();
         $order = Order::find($id);
+        $dataInput["user_id"] = Arr::get($dataInput, "user_id")  ?? $request->user()->id;
         $update = Order::find($id)->update($dataInput);
         if (!empty($request->products)) {
             foreach ($request->products ?? [] as $item) {
@@ -94,12 +98,13 @@ class OrderQueryService extends ModelService
 
     public static function findById(Request $request, $id)
     {
-        return Order::with('user:id,name,email', 'transactions')->find($id);
+        return Order::with('user:id,name,email', 'transactions', 'supplier:id,name')->find($id);
     }
 
     public static function updateColumnOrder(Request $request, $id)
     {
         $order = Order::find($id);
+
         if($order) {
             $order->update([
                 $request->column => $request->value,
