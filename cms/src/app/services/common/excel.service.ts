@@ -20,12 +20,13 @@ export class ExcelService {
 		this.saveAsExcelFile(excelBuffer, excelFileName);
 	}
 
-	private saveAsExcelFile(buffer: any, fileName: string): void {
-		var FileSaver = require('file-saver');
-		const data: Blob = new Blob([buffer], {
-			type: EXCEL_TYPE
-		});
-		FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+	saveAsExcelFile = (buffer: any, fileName: string) => {
+		const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+		const url = window.URL.createObjectURL(data);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = `${fileName}.xlsx`;
+		link.click();
 	}
 
 	exportToExcel = (data: any[], fileName: string) => {
