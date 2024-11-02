@@ -1,0 +1,300 @@
+.form-group.required .control-label:before {
+    content: "*";
+    color: red;
+}
+
+::ng-deep .is-invalid > .ng-select-container {
+    border: 1px solid #dc3545;
+    border-radius: 4px;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.w-favicon {
+    position: absolute;
+    top: 25%;
+    width: 30%;
+    -ms-transform: translateX(25%);
+    transform: translateY(25%);
+
+}
+
+.popup-create {
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.popup-create .popup-create__form {
+    width: 700px;
+    margin: 100px auto;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.dropbtn {
+    color: #000;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    background: none;
+    outline:none;
+}
+
+.dropdown_btn {
+    position: relative;
+    display: inline-block;
+    left: -10px;
+    top: -4px;
+}
+
+.dropdown_btn .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 10;
+    left: 0;
+    margin-top: -10px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown_btn:hover .dropdown-content {
+    display: block;
+}
+.card ,.card .card-title {
+    position: unset;
+}
+.has-child-none-relative .dateRange, .has-child-none-relative .input-group, .has-child-none-relative{position: unset;}
+
+.code-bill{
+  cursor: pointer;
+  display: block;
+}
+
+::ng-deep .view-bill > .modal-dialog{
+  max-width: 100%;
+  height: 100%;
+  margin: unset;
+}
+
+::ng-deep .view-bill .modal-content{
+  height: 100%;
+}
+
+::ng-deep .view-bill .modal-body{
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.detail-bill{
+  width: 96%;
+  margin: auto;
+  color: black;
+}
+
+.bill-header, .bill-footer{
+  display: flex;
+  text-align: center;
+}
+
+.bill-header > div,
+.bill-footer > div{
+  width: 50%;
+}
+
+.bill-header > div > p,
+.bill-footer > div > p{
+  margin: 0;
+}
+
+.bill-content{
+  margin-top: 15px;
+}
+
+.bill-content > h3{
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.bill-label{
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.bill-info-adv{
+  margin-top:15px;
+}
+
+.bill-info-adv > .row p{
+  margin:0;
+}
+
+.bill-info-adv > .row p:first-child{
+  text-transform: uppercase;
+}
+
+.label-text{
+  font-weight: bold;
+}
+
+.list-bill-campaign{
+  margin-top: 10px;
+  text-align: center;
+}
+
+.list-bill-campaign > table{
+  color: black;
+}
+
+.list-bill-campaign td, .list-bill-campaign th {
+    padding: 3px !important;
+}
+
+.label-bold{
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.bill-total > td{
+  background: #BEBFBF;
+}
+
+.bill-total-item{
+  display: flex;
+  justify-content: space-between;
+}
+
+.bill-total-item > p:nth-child(2){
+  min-width: 250px;
+  text-align: left;
+}
+
+.bill-total-item > p{
+  margin: 0;
+  font-weight: bold;
+}
+
+.label-revenue{
+  text-transform: capitalize;
+}
+
+.bill-footer-right{
+  text-align: center;
+}
+.bill-footer-left > p > i > span{
+    margin-right: 20px;
+}
+.bill-footer-right > p > i > span{
+  margin-right: 20px;
+}
+
+.bill-footer-left > p{
+  font-weight: bold;
+}
+
+.bill-footer-right > p:nth-child(2) {
+  /*color: #ff0000;*/
+  font-weight: bold;
+}
+
+.box-signature{
+  display: flex;
+  text-align: center;
+}
+
+.box-signature > span{
+  width: 50%;
+  font-weight: bold;
+}
+
+::ng-deep.modal-footer  {
+  justify-content: center !important;
+}
+
+.recommend-payment{
+  color: black;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.recommend-payment > div {
+  width: 96%;
+  margin: auto;
+}
+
+.recommend-payment p{
+  margin-bottom: 10px;
+}
+
+.label-recom-pay{
+  color: #303692;
+  font-size: 20px;
+}
+
+.recom-pay-method{
+  display: flex;
+  align-items: center;
+}
+
+.recom-pay-method > input{
+  margin: 0 5px 0 10px;
+}
+
+.recom-pay-user{
+  margin-top: 30px !important;
+  text-align: center;
+}
+
+.text-red{
+  color: #ff0000;
+}
+
+.text-light-green{
+  background: #D6FDFE;
+}

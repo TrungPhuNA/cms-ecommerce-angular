@@ -29,7 +29,8 @@
 
 		</div>
 
-		<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
+		<div class="table-responsive" style="overflow-y: auto; max-height:2000px"
+			*ngIf="type == 'stock-in', else stockOut">
 			<table class="table table-row-bordered table-hover align-middle cursor-default">
 				<div class="position-relative h-400px" *ngIf="loading">
 					<app-spinner [loading]="loading"></app-spinner>
@@ -57,10 +58,10 @@
 										}}</td>
 									<td class="text-nowrap ">
 										<img class="mx-auto" [src]="helperService.buildImage(item?.product?.avatar)"
-										(error)="helperService.onErrorImage($event)"
-											alt="{{item?.id}}" style="width: 80px; height: 80px;">
+											(error)="helperService.onErrorImage($event)" alt="{{item?.id}}"
+											style="width: 80px; height: 80px;">
 									</td>
-									<td >
+									<td>
 										{{ item.product?.name }}
 									</td>
 									<td class="text-nowrap">
@@ -83,9 +84,9 @@
 												<span>Cập nhật</span>
 											</a>
 											<button mat-menu-item class="d-flex align-items-center"
-													(click)="export(item)">
-													<span>Xuất file</span>
-												</button>
+												(click)="export(item)">
+												<span>Xuất file</span>
+											</button>
 										</mat-menu>
 									</td>
 								</tr>
@@ -93,7 +94,7 @@
 						</ng-container>
 						<ng-template #noData>
 							<tr class="border-bottom-0">
-								<td class="text-nowrap text-center" colspan="8" translate>Empty data</td>
+								<td class="text-nowrap text-center" colspan="8" translate>Không có dữ liệu</td>
 							</tr>
 						</ng-template>
 
@@ -101,6 +102,93 @@
 				</ng-container>
 			</table>
 		</div>
+		<ng-template #stockOut>
+			<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
+				<table class="table table-row-bordered table-hover align-middle cursor-default">
+					<div class="position-relative h-400px" *ngIf="loading">
+						<app-spinner [loading]="loading"></app-spinner>
+					</div>
+					<thead style="background-color: #F9FAFB;">
+						<tr class="fw-500 border-top">
+							<th class="text-nowrap fw-bold fs-px-14 text-center px-2" translate>#</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Hình ảnh</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Tên sản phẩm</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Số lượng</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Giá tiền</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>Phân loại</th>
+							<th class="text-nowrap fw-bold fs-px-14" translate>{{type == 'stock-out' ? 'Ngày xuất' :
+								'Ngày nhập'}} </th>
+							<th class="text-nowrap fw-bold fs-px-14 text-center" translate>Thao tác</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngIf="listData?.length > 0, else noData">
+							<ng-container *ngFor="let item of listData; index as i">
+								<tr style="background-color: #70c2f233; color: #899296">
+									<td class="px-3" colspan="7">
+										<b>Mã đơn: <span style="cursor: pointer" class="text-dark">
+											{{ item.code }}
+											 <!-- (click)="copyOrderCode(item.order_code)">
+											{{ item.order_code }} <i class="fa fa-copy"></i> -->
+										</span>
+											- đặt lúc : {{ item.created_at | date: "HH:mm dd/MM/yyyy" }}</b>
+									</td>
+									<td class="text-nowrap text-center px-4">
+										<button mat-icon-button [matMenuTriggerFor]="menu"
+											class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
+											<i class="bi bi-three-dots"></i>
+										</button>
+										<mat-menu #menu="matMenu">
+											
+											<button mat-menu-item class="d-flex align-items-center"
+												(click)="export(item)">
+												<span>Xuất file</span>
+											</button>
+										</mat-menu>
+									</td>
+								</tr>
+								<ng-container *ngFor="let stock of item.stock_outs">
+									<tr class="border-bottom" *ngIf="stock.show">
+										<td class="text-center">
+											<!-- <input class="ng-valid ng-dirty ng-touched" type="checkbox"> -->
+										</td>
+										<td class="text-nowrap ">
+											<img class="mx-auto" [src]="helperService.buildImage(stock?.product?.avatar)"
+												(error)="helperService.onErrorImage($event)" alt="{{stock?.id}}"
+												style="width: 80px; height: 80px;">
+										</td>
+										<td>
+											{{ stock?.product?.name }}
+										</td>
+										<td class="text-nowrap">
+											{{ stock?.quantity | thousandsSeparator: '' }}
+										</td>
+										<td class="text-nowrap">
+											{{stock?.price | thousandsSeparator:'đ'}}
+										</td>
+										<td class="text-nowrap">{{ genWareHouseType(stock?.type)}}</td>
+										<td class="text-nowrap">{{ stock?.date | date: 'dd/MM/YYYY' }}</td>
+										
+									</tr>
+								</ng-container>
+								<tr style=" margin-bottom: 5px;" *ngIf="item.stock_outs?.length > 1">
+									<td class="px-3 text-center" colspan="8">
+										<div class="cursor-pointer text-info" (click)="showDetail(i, genViewMore(item?.stock_outs))">{{genViewMore(item?.stock_outs) ? 'Ẩn bớt' : 'Xem thêm'}}</div>
+									</td>
+								</tr>
+							</ng-container>
+						</ng-container>
+						<ng-template #noData>
+							<tr class="border-bottom-0">
+								<td class="text-nowrap text-center" colspan="8" translate>Không có dữ liệu</td>
+							</tr>
+						</ng-template>
+
+					</tbody>
+				</table>
+			</div>
+		</ng-template>
+
 		<app-pagination [paging]="paging" (changePaged)="changePage($event)"></app-pagination>
 	</div>
 </div>

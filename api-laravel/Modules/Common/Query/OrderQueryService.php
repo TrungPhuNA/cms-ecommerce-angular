@@ -31,7 +31,7 @@ class OrderQueryService extends ModelService
 
     public static function getAll(Request $request, $items = null)
     {
-        $items = Order::with('user:id,name,email', 'transactions', 'supplier:id,name');
+        $items = Order::with('user:id,name,email', 'transactions', 'supplier:id,name', 'stockOuts');
         return parent::getAll($request, $items);
     }
 

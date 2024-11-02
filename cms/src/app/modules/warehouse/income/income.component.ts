@@ -7,6 +7,9 @@ import { ALERT_ERROR, ALERT_SUCCESS, Breadcrumb, HomeBreadcrumb } from 'src/app/
 import { DEFAULT_IMG, STATUS_PRODUCTS } from 'src/app/shared/constants/common';
 import { FormComponent } from '../form/form.component';
 import { ActivatedRoute } from '@angular/router';
+import { FormStockOutComponent } from '../components/form-stock-out/form-stock-out.component';
+import moment from 'moment';
+import { ModalPdfComponent } from '../components/modal-pdf/modal-pdf.component';
 
 
 @Component({
@@ -65,7 +68,7 @@ export class IncomeComponent implements OnInit {
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((res => {
 			console.log(res);
-			this.type = res?.type || 'stock-in';
+			this.type = res.type || 'stock-in';
 			this.breadcrumbs = [
 				new HomeBreadcrumb(),
 				new Breadcrumb(this.type == 'stock-out' ? 'Xuất kho' : 'Nhập kho', '/warehouse/' + this.type),
@@ -92,14 +95,21 @@ export class IncomeComponent implements OnInit {
 			...this.paging,
 			...this.helperService.buildSearchValueByKeyFilter(this.searchForm.value)
 		}
-		this.service.getListData(params, this.type)
+		console.log(this.type);
+		this.service.getListData(params, this.type  == 'stock-out' ? 'stock-out/list' : 'stock-in')
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				this.loading = false;
 				if (res?.status == 'success') {
 					let data = res?.data?.stockIns || [];
 					if (this.type == 'stock-out') {
-						data = res?.data?.stockOuts || []
+						data = res?.data?.stockOuts?.map((item: any) => {
+							item.stock_outs = item.stock_outs?.map((e: any, index: number) => {
+								e.show = index == 0;
+								return e
+							})
+							return item;
+						}) || []
 					}
 
 					this.listData = data?.map((item: any) => {
@@ -116,6 +126,14 @@ export class IncomeComponent implements OnInit {
 	changePage(e: any) {
 		this.paging.page = e;
 		this.getListData();
+	}
+
+	genWareHouseType(value: any) {
+		return this.typeWareHouse.find((e: any) => e?.value == value)?.name
+	}
+
+	genViewMore(stocks: any) {
+		return stocks?.every((item: any) => item?.show);
 	}
 
 	deleteData(item: any) {
@@ -140,8 +158,8 @@ export class IncomeComponent implements OnInit {
 	openModal(item?: any) {
 		const dialogConfig = new MatDialogConfig();
 
-		dialogConfig.width = '500px';
 		dialogConfig.maxHeight = '95vh';
+		dialogConfig.width = '500px';
 		dialogConfig.maxWidth = '95vw';
 		dialogConfig.disableClose = true;
 		dialogConfig.data = {
@@ -151,7 +169,13 @@ export class IncomeComponent implements OnInit {
 		};
 
 
-		let dialogRef = this.dialog.open(FormComponent, dialogConfig);
+		let dialogRef;
+		if(this.type == 'stock-out') {
+			dialogRef = this.dialog.open(FormStockOutComponent, dialogConfig);
+		} else {
+			dialogRef = this.dialog.open(FormComponent, dialogConfig);
+
+		}
 
 		// action sau khi đóng modal
 		dialogRef.afterClosed().subscribe((event: any) => {
@@ -164,7 +188,53 @@ export class IncomeComponent implements OnInit {
 	}
 
 	export(data: any) {
+		const dialogConfig = new MatDialogConfig();
 
+		dialogConfig.width = '900px';
+		dialogConfig.maxHeight = '95vh';
+		dialogConfig.maxWidth = '95vw';
+		dialogConfig.disableClose = true;
+		dialogConfig.data = {
+			item: {
+				...data, 
+				key: `${data.id}_${this.type == 'stock-in'? moment(data?.created_at).valueOf() 
+					: data?.code}`
+			},
+			type: this.type,
+			title: this.type == 'stock-in' ? 'PHIẾU NHẬP KHO' : 'PHIẾU XUẤT KHO KIÊM VẬN CHUYỂN',
+		};
+
+
+		let dialogRef;
+		if(this.type == 'stock-out') {
+			dialogRef = this.dialog.open(ModalPdfComponent, dialogConfig);
+		} else {
+			dialogRef = this.dialog.open(ModalPdfComponent, dialogConfig);
+
+		}
+	}
+
+	showDetail(index: any, hide?: boolean) {
+		console.log(hide);
+		this.listData.map((item: any, i: number) => {
+			if(index == i) {
+				item.stock_outs = item.stock_outs?.map((e: any, indexStock: number) => {
+					if(indexStock != 0) {
+						e.show = !hide;
+					}
+					return e
+				})
+			} else {
+				item.stock_outs = item.stock_outs?.map((e: any, indexStock: number) => {
+					e.show = index == 0;
+					return e
+				})
+			}
+			
+			
+			return;
+		});
+		this.cdr.detectChanges();
 	}
 }
 

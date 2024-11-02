@@ -8,6 +8,8 @@
 namespace Modules\Common\Query;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Modules\Admin\App\Models\Order;
 use Modules\Admin\App\Models\StockOut;
 use Modules\Common\Base\ModelService;
 
@@ -15,7 +17,15 @@ class StockOutQueryService extends ModelService
 {
     public static function getAll(Request $request, $items = null)
     {
-        $items = StockOut::with(['user:id,name,email', 'product:id,avatar,name']);
+        $items = StockOut::with(['user:id,name,email', 'product:id,avatar,name', 'order', 'order.transactions']);
+        return parent::getAll($request, $items);
+    }
+
+    public static function getAllStockOutV2(Request $request)
+    {
+        $items = Order::with(['stockOuts','stockOuts.product', 'supplier'])->whereHas('stockOuts', function ($q){
+            $q->whereNotNull('id');
+        });
         return parent::getAll($request, $items);
     }
 
@@ -23,6 +33,17 @@ class StockOutQueryService extends ModelService
     {
         $dataInput = $request->all();
         return StockOut::create($dataInput);
+    }
+
+    public static function storeData($dataInput)
+    {
+        $data = Arr::get($dataInput, 'stock_out');
+        if($data && !empty($data)) {
+            foreach ($data as $item) {
+                StockOut::create($item);
+            }
+        }
+        return $data;
     }
 
     public static function update(Request $request, $id)

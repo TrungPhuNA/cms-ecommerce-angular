@@ -19,6 +19,7 @@ import { FileSizeNoteModule } from 'src/app/shared/components/file-size-note/fil
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { FormComponent } from './form/form.component';
 import { ModalPdfComponent } from './components/modal-pdf/modal-pdf.component';
+import { FormStockOutComponent } from './components/form-stock-out/form-stock-out.component';
 
 const routes: Route[] = [
 	{
@@ -46,7 +47,8 @@ const routes: Route[] = [
 	declarations: [
 		IncomeComponent,
 		FormComponent,
-  ModalPdfComponent
+  ModalPdfComponent,
+  FormStockOutComponent
 	],
 	imports: [
 		CommonModule,

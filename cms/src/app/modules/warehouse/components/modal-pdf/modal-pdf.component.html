@@ -1,100 +1,130 @@
-<!-- <div class="modal-header">
-	<h5 class="modal-title">{{title}}</h5>
+<div class="modal-header">
+	<h5 class="modal-title fs-px-16">Mẫu File</h5>
 
 	<button type="button" class="close" aria-label="Close" (click)="onClose()">
 		<span aria-hidden="true">&times;</span>
 	</button>
 </div>
 <div class="modal-body">
-
-	<div class="recommend-payment" id="exportDNTT" style="font-size: 12px">
-		<div class="d-flex justify-content-center">
-			<p class="label-recom-pay " style="font-size: 16px">{{this.data.created_at | date}}</p>
+	<div class="m-2" id="exportDNTT" style="font-size: 12px">
+		<p class="text-center" style="font-size: 16px; font-weight: 700;">{{title}}</p>
+		<p class=" text-center text-dark" style="font-size: 16px">{{time}}</p>
+		<div class="d-flex justify-content-end">
 			<div class="label-recom-pay d-flex justify-content-end" style="font-size: 16px">
 				<div class="row">
-					<p class="col-12 text-left">
-						Ký hiệu: {{data.key}}
+					<p class="col-12 text-left text-nowrap fs-px-14">
+						<span>Ký hiệu: </span> <span class="fw-600 fs-px-16 mx-1 text-nowrap">{{data.key}}</span>
 					</p>
-					<p class="col-12 text-left">
-						Số: {{data.id}}
+					<p class="col-12 text-left text-nowrap fs-px-14">
+						Số: <span class="fw-600 fs-px-16">{{data.id}}</span>
 					</p>
 				</div>
 			</div>
 		</div>
 
-		<div class="recom-pay-header">
-			
-			<p>Tên người nhận hàng: {{beneficiary}}</p>
-			<p>Số tài khoản: {{accountNumber}}</p>
-			<p>Ngân hàng: {{bankName}}</p>
-			<p>Chi nhánh: {{bankBranch}}</p>
-			<p>Thời hạn thanh toán: </p>
-			<p><b style="text-decoration: underline;margin-top: 10px;display: block">Đề nghị Quý khách hàng thanh
-					toán/tạm ứng theo nội dung:</b></p>
-			<p><b><i>{{ dataBill['company_name'].toUpperCase() }} thanh toán phí dịch vụ tháng {{
-						formatDate(dataBill['date_to'], 'M')}}</i> </b></p>
+		<div class="recom-pay-header mb-1" *ngIf="type == 'stock-out'">
+			<p class="fs-px-14">Nhà cung cấp: <b>{{data?.supplier?.name}}</b></p>
+			<p class="fs-px-14">Ngày tạo: <b>{{data?.created_at | date: 'HH:mm DD-MM-yyyy'}}</b></p>
 		</div>
 
 		<div class="list-bill-campaign table-responsive table-scroll">
-			<table class="table table-bordered table-hover main-table">
+			<table class="table">
 				<thead>
-					<tr class="text-center">
-						<th scope="col" class="align-middle font-weight-bold" translate>STT</th>
-						<th scope="col" class="align-middle font-weight-bold" translate>Nội dung(Content)</th>
-						<th scope="col" class="align-middle font-weight-bold" translate>
-							Doanh Thu [{{ companyName }}] <br> được hưởng <br> <i>(Revenue are
-								received)</i>
-						</th>
+					<tr class="fw-500 border-top">
+						<th class="text-nowrap fw-bold fs-px-14 fw-600" translate>STT</th>
+						<th class="text-nowrap fw-bold fs-px-14 fw-600" translate>Tên sản phẩm</th>
+						<th class="text-nowrap fw-bold fs-px-14 fw-600" translate>Mã sản phẩm</th>
+						<th class="text-nowrap fw-bold fs-px-14 fw-600 text-right" translate>Số lượng</th>
+						<th class="text-nowrap fw-bold fs-px-14 fw-600 text-right" translate>Giá tiền</th>
+						<th class="text-nowrap fw-bold fs-px-14 fw-600" translate>Phân loại</th>
+						<th class="text-nowrap fw-bold fs-px-14 fw-600" translate>{{type == 'stock-out' ? 'Ngày xuất' :
+							'Ngày nhập'}} </th>
+						<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Thành tiền</th>
 					</tr>
 				</thead>
-				<tbody *ngIf="dataBill">
-					<tr>
-						<td>1</td>
-						<td>Doanh thu đến ngày đối soát {{ formatDate(dataBill['date_to'], 'DD/MM/YYYY')}}
-							theo HĐ số {{dataBill['contactNo'] ? '[' + dataBill['contactNo'] + ']' : ''}} </td>
-						<td class="text-red">{{ formatCurrency(dataBill.total_commission) }}</td>
-					</tr>
+				<tbody>
+					<ng-container *ngIf="listData?.length > 0">
+						<ng-container *ngFor="let item of listData; index as i">
+							<tr class="border-bottom">
+								<td class="text-center px-2">{{i + 1}}</td>
+								<td>
+									{{ item.product?.name }}
+								</td>
+								<td>
+									{{ item.product?.id }}
+								</td>
+								<td class="text-nowrap text-right">
+									{{ item.quantity | thousandsSeparator: '' }}
+								</td>
+								<td class="text-nowrap text-right">
+									{{item.price | thousandsSeparator:' đ'}}
+								</td>
+								<td class="text-nowrap">{{ genWareHouseType(item.type)}}</td>
+								<td class="text-nowrap">{{ item.date | date: 'dd/MM/YYYY' }}</td>
+								<td class="text-nowrap text-right">
+									{{ item.total_price | thousandsSeparator: ' đ' }}
+								</td>
+							</tr>
+						</ng-container>
+						<ng-container *ngIf="type == 'stock-out'">
+							<tr class="border-bottom">
+								<td class="text-center px-2"></td>
+								<td colspan="6">
+									<p class="fw-700">Giá ship</p>
+								</td>
+								<td class="text-right">
+									{{ data.shipping_amount | thousandsSeparator: ' đ' }}
+								</td>
+								
+							</tr>
+							<tr class="border-bottom">
+								<td class="text-center px-2"></td>
+								<td colspan="6">
+									<p class="fw-700">Thuế</p>
+								</td>
+								<td class="text-right">
+									{{ data.tax_amount | thousandsSeparator: ' đ' }}
+								</td>
+								
+							</tr>
+							<tr class="border-bottom">
+								<td class="text-center px-2"></td>
+								<td colspan="6">
+									<p class="fw-700">Giảm giá</p>
+								</td>
+								<td class="text-right">
+									{{ data?.discount_amount | thousandsSeparator: ' đ' }}
+								</td>
+								
+							</tr>
+						</ng-container>
+						
+						<tr class="border-bottom">
+							<td class="text-center px-2"></td>
+							<td colspan="6">
+								<p class="fw-700">Tổng tiền</p>
+							</td>
+							<td class="text-right">
+								{{ total | thousandsSeparator: ' đ' }}
+							</td>
+							
+						</tr>
+					</ng-container>
 				</tbody>
 			</table>
 		</div>
-
-		<div class="bill-total-item">
-			<p>Tổng số tiền hàng hóa dịch vụ</p>
-			<p> {{ getTotalBill(dataBill, labelRevenueAT) }} </p>
-		</div>
-
-		<div class="bill-total-item">
-			<p>Thuế VAT ({{dataBill['vat']}})%</p>
-			<p> {{ getTotalBill(dataBill, labelRevenueAT, true) }} </p>
-		</div>
-
-		<div class="bill-total-item">
-			<p>Sô tiền tạm ứng (nếu có)</p>
-			<p> - </p>
-		</div>
-
-		<div class="bill-total-item">
-			<p>Tổng sô tiền phải thanh toán)</p>
-			<p class="text-light-green"> {{getTotal(dataBill, labelRevenueAT)}} </p>
-		</div>
-
-		<div class="bill-total-item">
-			<p class="label-revenue text-red">Bằng
-				chữ: {{ advBillService.convertNumberToText(getTotal(dataBill, labelRevenueAT, true).toString()) }} ./.
-			</p>
-		</div>
-
 		<div class="bill-footer">
 			<div class="bill-footer-left"></div>
-			<div class="bill-footer-right">
-				<p>Hà Nội, <i><span>ngày</span> <span>tháng</span>năm</i></p>
-				<p> Người đề nghị </p>
-				<p class="recom-pay-user"></p>
+			<div class="bill-footer-right" style="margin-bottom: 10px;">
+				<p class="fs-px-14 fw-600"> Người đề nghị </p>
+				<i class="fs-px-12">(Chữ ký điện tử, Chữ ký số)</i>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="modal-footer bill-export">
+<div class="modal-footer bill-export mt-2 ">
 	<button class="btn btn-md btn-info" (click)="exportPdf()" translate> Export PDF</button>
-</div> -->
+</div>
+
+<app-spinner [loading]="loading"></app-spinner>
