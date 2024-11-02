@@ -1,0 +1,100 @@
+<!-- <div class="modal-header">
+	<h5 class="modal-title">{{title}}</h5>
+
+	<button type="button" class="close" aria-label="Close" (click)="onClose()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+
+	<div class="recommend-payment" id="exportDNTT" style="font-size: 12px">
+		<div class="d-flex justify-content-center">
+			<p class="label-recom-pay " style="font-size: 16px">{{this.data.created_at | date}}</p>
+			<div class="label-recom-pay d-flex justify-content-end" style="font-size: 16px">
+				<div class="row">
+					<p class="col-12 text-left">
+						Ký hiệu: {{data.key}}
+					</p>
+					<p class="col-12 text-left">
+						Số: {{data.id}}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="recom-pay-header">
+			
+			<p>Tên người nhận hàng: {{beneficiary}}</p>
+			<p>Số tài khoản: {{accountNumber}}</p>
+			<p>Ngân hàng: {{bankName}}</p>
+			<p>Chi nhánh: {{bankBranch}}</p>
+			<p>Thời hạn thanh toán: </p>
+			<p><b style="text-decoration: underline;margin-top: 10px;display: block">Đề nghị Quý khách hàng thanh
+					toán/tạm ứng theo nội dung:</b></p>
+			<p><b><i>{{ dataBill['company_name'].toUpperCase() }} thanh toán phí dịch vụ tháng {{
+						formatDate(dataBill['date_to'], 'M')}}</i> </b></p>
+		</div>
+
+		<div class="list-bill-campaign table-responsive table-scroll">
+			<table class="table table-bordered table-hover main-table">
+				<thead>
+					<tr class="text-center">
+						<th scope="col" class="align-middle font-weight-bold" translate>STT</th>
+						<th scope="col" class="align-middle font-weight-bold" translate>Nội dung(Content)</th>
+						<th scope="col" class="align-middle font-weight-bold" translate>
+							Doanh Thu [{{ companyName }}] <br> được hưởng <br> <i>(Revenue are
+								received)</i>
+						</th>
+					</tr>
+				</thead>
+				<tbody *ngIf="dataBill">
+					<tr>
+						<td>1</td>
+						<td>Doanh thu đến ngày đối soát {{ formatDate(dataBill['date_to'], 'DD/MM/YYYY')}}
+							theo HĐ số {{dataBill['contactNo'] ? '[' + dataBill['contactNo'] + ']' : ''}} </td>
+						<td class="text-red">{{ formatCurrency(dataBill.total_commission) }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="bill-total-item">
+			<p>Tổng số tiền hàng hóa dịch vụ</p>
+			<p> {{ getTotalBill(dataBill, labelRevenueAT) }} </p>
+		</div>
+
+		<div class="bill-total-item">
+			<p>Thuế VAT ({{dataBill['vat']}})%</p>
+			<p> {{ getTotalBill(dataBill, labelRevenueAT, true) }} </p>
+		</div>
+
+		<div class="bill-total-item">
+			<p>Sô tiền tạm ứng (nếu có)</p>
+			<p> - </p>
+		</div>
+
+		<div class="bill-total-item">
+			<p>Tổng sô tiền phải thanh toán)</p>
+			<p class="text-light-green"> {{getTotal(dataBill, labelRevenueAT)}} </p>
+		</div>
+
+		<div class="bill-total-item">
+			<p class="label-revenue text-red">Bằng
+				chữ: {{ advBillService.convertNumberToText(getTotal(dataBill, labelRevenueAT, true).toString()) }} ./.
+			</p>
+		</div>
+
+		<div class="bill-footer">
+			<div class="bill-footer-left"></div>
+			<div class="bill-footer-right">
+				<p>Hà Nội, <i><span>ngày</span> <span>tháng</span>năm</i></p>
+				<p> Người đề nghị </p>
+				<p class="recom-pay-user"></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer bill-export">
+	<button class="btn btn-md btn-info" (click)="exportPdf()" translate> Export PDF</button>
+</div> -->

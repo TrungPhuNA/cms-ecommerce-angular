@@ -22,6 +22,7 @@ class ApiAdminProfileController extends Controller
         try {
             $user = auth()->user();
             $user->load('types');
+            $user->load('rolesAccount');
             return ResponseService::sendSuccess([
                 'user' => $user
             ]);

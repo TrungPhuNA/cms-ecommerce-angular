@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ISideBarItem, SideBarItem } from '../sidebar';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-sidebar-menu',
@@ -24,6 +25,8 @@ export class SidebarMenuComponent implements OnInit {
 
     constructor(
         private router: Router,
+		private authService: AuthService,
+		private cdr: ChangeDetectorRef
     ) {
         const user_info: any = localStorage.getItem('user');
         this.userInfo = JSON.parse(user_info);
@@ -31,7 +34,23 @@ export class SidebarMenuComponent implements OnInit {
 
     ngOnInit(): void {
         this.toggleAttr = `app-sidebar-${this.toggleType}`;
-        
+		
+        this.authService.currentUser$.subscribe((res: any) => {
+			if(res) {
+				let roles = res?.roles_account.map((item: any) => item.name);
+				if(roles?.length > 0 ){
+					this.sideBarNavItem = SideBarItem.reduce(( newData: any ,sidebarnavItem: ISideBarItem) => {
+						let check: any = sidebarnavItem.roles?.filter((e: any) => roles?.includes(e));
+						if(check?.length > 0) {
+							newData.push(sidebarnavItem);
+						}
+						return newData;
+					}, []);
+				}
+				this.cdr.detectChanges();
+				
+			}
+		})
         this.getListAside();
     }
 

@@ -152,7 +152,9 @@ export class FormComponent implements OnInit {
 	}
 
 	createOrUpdateProduct() {
-		this.service.createOrUpdateData(this.form.value, this.data?.id)
+		let data: any = {...this.form.value};
+		data.price = this.helperService.deleteComma((data.price || 0) + '');
+		this.service.createOrUpdateData(data, this.data?.id)
 		.pipe(finalize(() => this.cdr.detectChanges()))
 		.subscribe((res: any) => {
 			this.loading = false;

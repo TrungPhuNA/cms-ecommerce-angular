@@ -162,5 +162,9 @@ export class IncomeComponent implements OnInit {
 		});
 
 	}
+
+	export(data: any) {
+
+	}
 }
 

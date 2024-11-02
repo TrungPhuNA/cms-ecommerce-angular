@@ -18,6 +18,7 @@ import { UploadModule } from 'src/app/shared/components/upload/upload.module';
 import { FileSizeNoteModule } from 'src/app/shared/components/file-size-note/file-size-note.module';
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { FormComponent } from './form/form.component';
+import { ModalPdfComponent } from './components/modal-pdf/modal-pdf.component';
 
 const routes: Route[] = [
 	{
@@ -44,7 +45,8 @@ const routes: Route[] = [
 @NgModule({
 	declarations: [
 		IncomeComponent,
-		FormComponent
+		FormComponent,
+  ModalPdfComponent
 	],
 	imports: [
 		CommonModule,

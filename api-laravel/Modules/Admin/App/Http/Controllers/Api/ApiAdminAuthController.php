@@ -36,6 +36,8 @@ class ApiAdminAuthController extends Controller
     {
         try {
             $user = RegisterServiceUser::login($request);
+            $user->load('rolesAccount');
+
             return ResponseService::sendSuccess([
                 'user' => $user
             ]);

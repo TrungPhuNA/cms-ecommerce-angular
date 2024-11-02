@@ -23,8 +23,14 @@ export class AuthService {
 	isLoadingSubject: BehaviorSubject<boolean>;
 	userInfo$: Subscription;
 
-	currentUserSubject: BehaviorSubject<any>;
-	currentUser$: Observable<any>;
+	currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+	currentUser$: Observable<any> = this.currentUserSubject.asObservable();
+
+	
+	dataUser: any;
+    listUserPermission = [];
+    listUserRole = [];
+    subscription: Subscription;
 
 	constructor(private http: HttpClient,
 		private alertService: AlertService,
@@ -33,8 +39,15 @@ export class AuthService {
 		this.loggedInStatus = !!Helpers.prototype.getCookie(this.tokenField);
 		this.isLoadingSubject = new BehaviorSubject<boolean>(false);
 		this.isLoading$ = this.isLoadingSubject.asObservable();
-		this.currentUserSubject = new BehaviorSubject<any>(undefined);
-		this.currentUser$ = this.currentUserSubject.asObservable();
+
+		this.subscription = this.currentUser$.subscribe(data => {
+			this.dataUser = data;
+			if(this.dataUser)
+			{
+				this.listUserPermission = this.dataUser.list_permissions;
+				this.listUserRole = this.dataUser.list_roles;
+			}
+		});
 	}
 
 	headers = new HttpHeaders({
@@ -118,5 +131,8 @@ export class AuthService {
 
 		return parameters.join('&');
 	}
+
+
+	
     
 }

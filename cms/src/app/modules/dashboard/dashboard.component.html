@@ -1,6 +1,7 @@
 <oat-page-title [title]="title" [breadcrumb]="breadcrumbs"></oat-page-title>
 <div class="card">
 	<div class="card-body mt-5">
+		
 		<div class="row">
 			<ng-container *ngFor="let item of listTotalData">
 				<div class="col-md-6 col-lg-3 col-12 mb-3">
@@ -24,20 +25,86 @@
 	</div>
 </div>
 
-<div class="card  my-10">
-	<div class="card-body">
-		<h3 class="fs16 text-widget-dark fw-bold mb-5">
-			Doanh số tháng {{months}}
-		</h3>
-		<app-chart-line [data]="dataMonths"></app-chart-line>
+<div class="row">
+	<div class="card col-md-6 col-12  my-10">
+		<div class="card-body">
+			<h3 class="fs16 text-widget-dark fw-bold mb-5">
+				Doanh số tháng {{months}}
+			</h3>
+			<app-chart-line [data]="dataMonths"></app-chart-line>
+		</div>
+	</div>
+	<div class="card col-md-6 col-12 my-10">
+		<div class="card-body">
+			<h3 class="fs16 text-widget-dark fw-bold mb-5">
+				Doanh số theo tháng trong năm {{year}}
+			</h3>
+			<app-chart-line [data]="dataYears" [color]="{lightColor: '#ffc700',baseColor: '#ffc107'}"></app-chart-line>
+		</div>
 	</div>
 </div>
-<div class="card  my-10">
+
+<div class="card my-10">
 	<div class="card-body">
-		<h3 class="fs16 text-widget-dark fw-bold mb-5">
-			Doanh số theo tháng trong năm {{year}}
-		</h3>
-		<app-chart-line [data]="dataYears" [color]="{lightColor: '#ffc700',baseColor: '#ffc107'}"></app-chart-line>
+		<div class="d-flex justify-content-between mb-5">
+			<h3 class="fs16 text-widget-dark fw-bold mb-5">
+				Xuất - Nhập hàng
+			</h3>
+			<button class="btn btn-secondary" (click)="export(listInOutProduct)"><i class="fa-solid fa-download"></i></button>
+		</div>
+		<div class="table-responsive" style="overflow-y: auto; max-height:2000px">
+			<table class="table table-row-bordered table-hover align-middle cursor-default">
+				<div class="position-relative h-400px" *ngIf="loading">
+					<app-spinner [loading]="loading"></app-spinner>
+				</div>
+				<ng-container *ngIf="!loading">
+					<thead style="background-color: #F9FAFB;">
+						<tr class="fw-500 border-top">
+							<th class="text-nowrap fw-bold fs-px-14" translate>Tên sản phẩm</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Số lượng ban đầu</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Tổng nhập</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Tổng xuất</th>
+							<th class="text-nowrap fw-bold fs-px-14 text-right" translate>Tổng số lượng</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngIf="listInOutProduct?.length > 0, else noData">
+							<ng-container *ngFor="let item of listInOutProduct; index as i">
+								<tr class="border-bottom">
+									<td style="min-width: 100px;">
+										{{ item?.product_name }}
+									</td>
+									<td class="text-right text-nowrap">
+										{{ item?.product_quantity | thousandsSeparator:'' }}
+									</td>
+									<td class="text-right text-nowrap">
+										{{ item?.stock_in | thousandsSeparator:'' }}
+									</td>
+									<td class="text-right text-nowrap">
+										{{ item?.stock_out | thousandsSeparator:'' }}
+									</td>
+									<td class="text-right text-nowrap">
+										{{ item?.total | thousandsSeparator:'' }}
+									</td>
+
+									
+								</tr>
+							</ng-container>
+						</ng-container>
+						<ng-template #noData>
+							<tr class="border-bottom-0">
+								<td class="text-nowrap text-center" colspan="6" translate>Empty data</td>
+							</tr>
+						</ng-template>
+
+					</tbody>
+				</ng-container>
+			</table>
+		</div>
 	</div>
 </div>
+
+
+
+
 <app-spinner [loading]="loading"></app-spinner>
