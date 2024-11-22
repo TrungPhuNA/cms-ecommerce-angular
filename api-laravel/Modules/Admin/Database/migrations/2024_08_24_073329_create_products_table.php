@@ -120,7 +120,7 @@ return new class extends Migration {
             $table->string('value')->nullable();
             $table->timestamps();
         });
-        Schema::create('product_variants', function (Blueprint $table) {
+        Schema::create('ec_product_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('ec_products')->onDelete('cascade');
             $table->integer('price');
@@ -128,9 +128,9 @@ return new class extends Migration {
             $table->string('image')->nullable();
             $table->timestamps();
         });
-        Schema::create('variant_attributes', function (Blueprint $table) {
+        Schema::create('ec_variant_attributes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('variant_id')->constrained('product_variants')->onDelete('cascade');
+            $table->foreignId('variant_id')->constrained('ec_product_variants')->onDelete('cascade');
             $table->foreignId('attribute_value_id')->constrained('ec_attribute_values')->onDelete('cascade');
             $table->timestamps();
         });
@@ -212,9 +212,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('variant_attributes');
+        Schema::dropIfExists('ec_variant_attributes');
         Schema::dropIfExists('ec_attribute_values');
-        Schema::dropIfExists('product_variants');
+        Schema::dropIfExists('ec_product_variants');
         Schema::dropIfExists('ec_product_options_values');
         Schema::dropIfExists('ec_product_options');
         Schema::dropIfExists('ec_attributes');
@@ -228,5 +228,6 @@ return new class extends Migration {
         Schema::dropIfExists('ec_brands');
         Schema::dropIfExists('payment_methods');
         Schema::dropIfExists('categories');
+        Schema::dropIfExists('ec_warehouses');
     }
 };

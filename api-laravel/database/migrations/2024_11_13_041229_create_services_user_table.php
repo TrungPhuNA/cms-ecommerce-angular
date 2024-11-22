@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->integer("user_id")->index();
             $table->integer("service_id")->index();
+            $table->integer("action_id")->index()->comment("nhân viên được giao");
             $table->integer("price")->default(0);
             $table->enum("status", ["pending", "processing", "completed", "canceled"])->default("pending");
             $table->string("name")->nullable();
+            $table->string("address")->nullable();
+            $table->date("date")->nullable();
             $table->boolean("is_home_service")->default(false);
             $table->timestamps();
         });
