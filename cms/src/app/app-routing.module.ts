@@ -8,6 +8,11 @@ export const routes: Routes = [
         loadChildren: () =>
             import('./auth/auth.module').then((m) => m.AuthModule),
     },
+	{
+        path: 'qr-code',
+        loadChildren: () =>
+            import('./qr-code/qr-code.module').then((m) => m.QrCodeModule),
+    },
     {
         path: 'error',
         loadChildren: () =>

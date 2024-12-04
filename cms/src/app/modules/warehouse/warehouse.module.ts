@@ -21,7 +21,7 @@ import { FormComponent } from './form/form.component';
 import { ModalPdfComponent } from './components/modal-pdf/modal-pdf.component';
 import { FormStockOutComponent } from './components/form-stock-out/form-stock-out.component';
 import { QrCodeComponent } from './components/qr-code/qr-code.component';
-import { OrderComponent } from './components/qrCode/order/order.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 const routes: Route[] = [
 	{
@@ -51,8 +51,7 @@ const routes: Route[] = [
 		FormComponent,
 		ModalPdfComponent,
 		FormStockOutComponent,
-  QrCodeComponent,
-  OrderComponent
+		QrCodeComponent,
 	],
 	imports: [
 		CommonModule,
@@ -72,7 +71,8 @@ const routes: Route[] = [
 		UploadModule,
 		FileSizeNoteModule,
 		PipesModule,
-		NgxSummernoteModule
+		NgxSummernoteModule,
+		NgxQRCodeModule
 	]
 })
 export class WarehouseModule { }

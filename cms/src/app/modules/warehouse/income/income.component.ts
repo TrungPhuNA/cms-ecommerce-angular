@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormStockOutComponent } from '../components/form-stock-out/form-stock-out.component';
 import moment from 'moment';
 import { ModalPdfComponent } from '../components/modal-pdf/modal-pdf.component';
+import { QrCodeComponent } from '../components/qr-code/qr-code.component';
 
 
 @Component({
@@ -238,7 +239,24 @@ export class IncomeComponent implements OnInit {
 	}
 
 	exportQRCode(item: any) {
-		
+		const dialogConfig = new MatDialogConfig();
+
+		dialogConfig.maxHeight = '95vh';
+		dialogConfig.width = '500px';
+		dialogConfig.maxWidth = '95vw';
+		dialogConfig.disableClose = true;
+		dialogConfig.data = {
+			item: item,
+			type: this.type
+		};
+
+
+		let dialogRef = this.dialog.open(QrCodeComponent, dialogConfig);
+
+		dialogRef.afterClosed().subscribe((event: any) => {
+			
+		});
+
 	}
 }
 

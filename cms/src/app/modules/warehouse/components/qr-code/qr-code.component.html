@@ -1,1 +1,7 @@
-<p>qr-code works!</p>
+<div class="card card-body">
+	<h2 class="fs16 fw-600 mb-5 text-br">QR Code chi tiết đơn hàng {{title}}</h2>
+	<div class="position-absolute right-0 px-2 cursor-pointer" (click)="onClose()">
+		<i class="fa fa-xmark" style="font-size: 1.25rem;"></i>
+	</div>
+	<ngx-qrcode [elementType]="elementType" class="mx-auto" [value]="value" [errorCorrectionLevel]="errorCorrectionLevel"></ngx-qrcode>
+</div>
