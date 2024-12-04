@@ -15,6 +15,11 @@ class Transaction extends Model
      */
     protected $table = 'ec_transactions';
     protected $guarded = [''];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class,'product_id');
+    }
     
     protected static function newFactory(): TransactionFactory
     {

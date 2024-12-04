@@ -63,7 +63,6 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::resource('agency',\Modules\Admin\App\Http\Controllers\Api\ApiAdminAgencyController::class);
 
         Route::put('orders/update-column/{id}',[ApiAdminOrderController::class,'updateColumnOrder']);
-        Route::get('qr-code/orders/{id}',[ApiAdminOrderController::class,'generateQRCode']);
 
         Route::resource('orders',ApiAdminOrderController::class);
         Route::prefix('stock-out')->group(function () {

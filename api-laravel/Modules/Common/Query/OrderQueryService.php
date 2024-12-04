@@ -31,7 +31,7 @@ class OrderQueryService extends ModelService
 
     public static function getAll(Request $request, $items = null)
     {
-        $items = Order::with('user:id,name,email', 'transactions', 'supplier:id,name', 'stockOuts');
+        $items = Order::with('user:id,name,email,phone', 'transactions', 'supplier:id,name', 'stockOuts');
         return parent::getAll($request, $items);
     }
 
@@ -98,7 +98,7 @@ class OrderQueryService extends ModelService
 
     public static function findById(Request $request, $id)
     {
-        return Order::with('user:id,name,email', 'transactions', 'supplier:id,name')->find($id);
+        return Order::with('user:id,name,email,phone', 'transactions','transactions.product:id,name,avatar', 'supplier:id,name', 'stockOuts', "stockOuts.agency")->find($id);
     }
 
     public static function updateColumnOrder(Request $request, $id)

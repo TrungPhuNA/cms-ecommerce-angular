@@ -37,29 +37,6 @@ class ApiAdminOrderController extends Controller
         }
     }
 
-    public function generateQRCode(Request $request, $id)
-    {
-
-        try {
-            // Lấy thông tin chi tiết đơn từ cơ sở dữ liệu
-            $order = OrderQueryService::findById($request, $id); // Giả sử có model Order
-
-            if (!$order) {
-                return  ResponseService::sendError("Không tìm thấy đơn hàng");
-
-            }
-            $fileName = 'uploads/order_' . $order->code . '.png';
-            $filePath = storage_path('app/public/' . $fileName);
-
-//            QrCode::format('png')->size(300)->generate(json_encode($order), $filePath);
-            return  ResponseService::sendSuccess(asset('storage/' . $fileName));
-        } catch (\Exception $exception) {
-            $message = ErrorLogService::logException($request->route()->getName(), $exception);
-            return ResponseService::sendError($message);
-        }
-
-    }
-
     /**
      * AdmCreateOrder
      */
