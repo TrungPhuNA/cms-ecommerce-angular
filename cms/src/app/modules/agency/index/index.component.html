@@ -18,7 +18,7 @@
 					</a>
 					<a class="btn btn-secondary text-right h-40 d-flex align-items-center gap-2" (click)="reset()">
 						<i class="fa fa-sync m-0"></i>
-	
+
 					</a>
 				</div>
 				<button type="button" class="btn btn-orange mb-4 text-right h-40 d-flex align-items-center gap-2"
@@ -53,9 +53,11 @@
 								<td style="min-width: 200px;">
 									{{ item.slug }}
 								</td>
-								<span class="{{item.status_class}}">
-									{{item.status_name}}
-								</span>
+								<td>
+									<span class="{{item.status_class}}">
+										{{item.status_name}}
+									</span>
+								</td>
 								<td class="text-nowrap">{{ item.created_at | date: 'dd/MM/YYYY' }}</td>
 
 								<td class="text-nowrap text-center px-4">
