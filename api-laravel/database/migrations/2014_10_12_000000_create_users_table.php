@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->string('provider_id')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->string('avatar')->nullable();
+            $table->enum("user_type", ["USER", "ADMIN"])->default("USER");
             $table->rememberToken();
             $table->timestamps();
         });
