@@ -35,6 +35,7 @@ export class FormStockOutComponent implements OnInit {
 
 	form = new FormGroup({
 		order_id: new FormControl(null, Validators.required),
+		agency_id: new FormControl(null, Validators.required),
 		transactions: new FormControl(null),
 		type: new FormControl(null, Validators.required)
 	});
@@ -71,11 +72,31 @@ export class FormStockOutComponent implements OnInit {
 	userInfo: any;
 	ngOnInit(): void {
 		this.getListData();
+		this.getListDataAgency();
+
 		let data: any = localStorage.getItem('user');
 		if (data) {
 			this.userInfo = JSON.parse(data);
 		}
 
+	}
+
+	listDataAgency = []
+	getListDataAgency() {
+		this.loading = true;
+		let params = {
+			page: 1, page_size: 10000,
+		}
+		this.service.getListData(params, 'agency')
+			.pipe(finalize(() => this.cdr.detectChanges()))
+			.subscribe((res: any) => {
+				this.loading = false;
+				if (res?.status == 'success') {
+					this.listDataAgency = res?.data?.agencies?.map((item: any) => {
+						return item;
+					}) || [];
+				}
+			});
 	}
 
 	listData = []
@@ -119,6 +140,7 @@ export class FormStockOutComponent implements OnInit {
 		let dataForm: any = {
 			...this.form.value,
 		}
+		console.log(dataForm);
 		dataForm.stock_out = dataForm?.transactions?.reduce((newData: any, item: any) => {
 			newData.push({
 				order_id: item.order_id,
@@ -136,12 +158,12 @@ export class FormStockOutComponent implements OnInit {
 			.pipe(finalize(() => this.cdr.detectChanges()))
 			.subscribe((res: any) => {
 				this.loading = false;
-				if (res?.status == 'success') {
+				if (res?.status == 'success' && res?.data?.stockOut) {
 					this.submitted = false;
 					this.alertService.fireSmall('success', this.data?.id ? ALERT_SUCCESS.update : ALERT_SUCCESS.create);
 					this.onClose(true)
 				} else {
-					this.alertService.fireSmall('error', res?.message || (this.data?.id ? ALERT_SUCCESS.update : ALERT_SUCCESS.create));
+					this.alertService.fireSmall('error', (res?.message != 'successfully' && res?.message) || (this.data?.id ? ALERT_SUCCESS.update : ALERT_SUCCESS.create));
 				}
 			})
 	}

@@ -4,20 +4,25 @@ namespace Modules\Admin\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Modules\Admin\App\Http\Requests\Api\RequestApiStoreStockOut;
+use Modules\Common\Query\AgencyQueryService;
 use Modules\Common\Query\OrderQueryService;
+use Modules\Common\Query\StockOutQueryService;
 use Modules\Common\Service\ErrorLogService;
 use Modules\Common\Service\ResponseService;
 
-class ApiAdminOrderController extends Controller
+class ApiAdminAgencyController extends Controller
 {
     /**
-     * AdmGetListOrders
+     * AdmGetListProduct
      */
     public function index(Request $request)
     {
         try {
-            $paginator = OrderQueryService::getAll($request);
-            $orders = $paginator->getCollection();
+            $paginator = AgencyQueryService::getAll($request);
+            $stockOuts = $paginator->getCollection();
 
             $meta = [
                 "total"        => $paginator->total(),
@@ -27,8 +32,8 @@ class ApiAdminOrderController extends Controller
             ];
 
             $data = [
-                'meta'  => $meta,
-                'orders' => $orders
+                'meta'      => $meta,
+                'agencies' => $stockOuts
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -37,43 +42,22 @@ class ApiAdminOrderController extends Controller
         }
     }
 
-    public function generateQRCode(Request $request, $id)
-    {
-
-        try {
-            // Lấy thông tin chi tiết đơn từ cơ sở dữ liệu
-            $order = OrderQueryService::findById($request, $id); // Giả sử có model Order
-
-            if (!$order) {
-                return  ResponseService::sendError("Không tìm thấy đơn hàng");
-
-            }
-            $fileName = 'uploads/order_' . $order->code . '.png';
-            $filePath = storage_path('app/public/' . $fileName);
-
-//            QrCode::format('png')->size(300)->generate(json_encode($order), $filePath);
-            return  ResponseService::sendSuccess(asset('storage/' . $fileName));
-        } catch (\Exception $exception) {
-            $message = ErrorLogService::logException($request->route()->getName(), $exception);
-            return ResponseService::sendError($message);
-        }
-
-    }
 
     /**
-     * AdmCreateOrder
+     * AdmCreateProduct
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request)
     {
         try {
-            $order = OrderQueryService::create($request);
+            $input = $request->all();
+            $stockOut = AgencyQueryService::create($input);
             $data = [
-                'order' => $order
+                'agency' => $stockOut
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
             $message = ErrorLogService::logException($request->route()->getName(), $exception);
-            return ResponseService::sendError($message);
+            return ResponseService::sendError($exception->getMessage());
         }
     }
 
@@ -83,9 +67,9 @@ class ApiAdminOrderController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $order = OrderQueryService::findById($request, $id);
+            $stockOut = AgencyQueryService::findById($request, $id);
             $data = [
-                'order' => $order
+                'agency' => $stockOut
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -95,14 +79,14 @@ class ApiAdminOrderController extends Controller
     }
 
     /**
-     * AdmUpdateCategory
+     * AdmUpdateProduct
      */
     public function update(Request $request, $id)
     {
         try {
-            OrderQueryService::update($request, $id);
+            AgencyQueryService::update($request->all(), $id);
             $data = [
-                'order' => OrderQueryService::findById($request, $id)
+                'agency' => AgencyQueryService::findById($request, $id)
             ];
             return ResponseService::sendSuccess($data);
         } catch (\Exception $exception) {
@@ -111,15 +95,12 @@ class ApiAdminOrderController extends Controller
         }
     }
 
-    public function updateColumnOrder(Request $request, $id)
+    public function delete(Request $request, $id)
     {
-        try{
-            $orderUpdate = OrderQueryService::updateColumnOrder($request, $id);
-            $data = [
-                'order' => $orderUpdate
-            ];
-            return ResponseService::sendSuccess($data);
-        }catch (\Exception $exception){
+        try {
+            AgencyQueryService::deleteById($request, $id);
+            return ResponseService::sendSuccess(null);
+        } catch (\Exception $exception) {
             $message = ErrorLogService::logException($request->route()->getName(), $exception);
             return ResponseService::sendError($message);
         }

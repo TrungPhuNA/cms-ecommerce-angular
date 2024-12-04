@@ -91,6 +91,12 @@ export const SideBarItem: ISideBarItem[] = [
 		module_prefix: ['warehouse'],
 		sub_menu: [
 			{
+				path: 'warehouse-agency',
+				roles: ['staff', 'general_director', 'manage', 'administrator'],
+				title: 'Chi nhánh',
+				icon: null,
+			},
+			{
 				path: 'warehouse/stock-in',
 				roles: ['staff', 'general_director', 'manage', 'administrator'],
 

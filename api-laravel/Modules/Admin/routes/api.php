@@ -60,8 +60,11 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
         Route::post('products/store-v2',[ApiAdminProductController::class,'storeV2']);
         Route::get('products/show-v2/{id}',[ApiAdminProductController::class,'showV2']);
         Route::resource('products',ApiAdminProductController::class);
+        Route::resource('agency',\Modules\Admin\App\Http\Controllers\Api\ApiAdminAgencyController::class);
 
         Route::put('orders/update-column/{id}',[ApiAdminOrderController::class,'updateColumnOrder']);
+        Route::get('qr-code/orders/{id}',[ApiAdminOrderController::class,'generateQRCode']);
+
         Route::resource('orders',ApiAdminOrderController::class);
         Route::prefix('stock-out')->group(function () {
             Route::get('/list',[ApiAdminStockOutController::class,'getListStockOut']);

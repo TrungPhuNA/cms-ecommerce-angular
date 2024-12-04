@@ -6,9 +6,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { ALERT_SUCCESS } from 'src/app/shared';
 import { PERMISSION_GROUPS } from 'src/app/shared/constants/permission';
-import { IncomeComponent } from '../income/income.component';
-import { VALIDATOR_MESSAGES } from 'src/app/shared/constants/common';
+import { STATUS_PRODUCTS, VALIDATOR_MESSAGES } from 'src/app/shared/constants/common';
 import moment from 'moment';
+import { IndexComponent } from '../index/index.component';
 
 @Component({
 	selector: 'app-form',
@@ -23,25 +23,14 @@ export class FormComponent implements OnInit {
 	content: any;
 	clickSelect = false;
 
-	typeWareHouse = [
-		{
-			value: 'final',
-			name: 'Kho thành phẩm '
-		},
-		{
-			value: 'ingredient',
-			name: 'Kho nguyên liệu '
-		}
-	]
+	statuses = STATUS_PRODUCTS
 
 	form = new FormGroup({
-		product_id: new FormControl(null, Validators.required),
-		quantity: new FormControl(null, Validators.required),
-		type: new FormControl(null, Validators.required),
-		user_id: new FormControl(null),
-		date: new FormControl(null),
-		price: new FormControl(null, Validators.required)
+		name: new FormControl(null, Validators.required),
+		description: new FormControl(null, Validators.required),
+		status: new FormControl(null, Validators.required),
 	});
+
 	data: any;
 	loading = false;
 	submitted = false;
@@ -55,15 +44,13 @@ export class FormComponent implements OnInit {
 
 	constructor(
 		private cdr: ChangeDetectorRef,
-		private dialogRef: MatDialogRef<IncomeComponent>,
+		private dialogRef: MatDialogRef<IndexComponent>,
 		@Inject(MAT_DIALOG_DATA) data: any,
 		private alertService: AlertService,
 		public helperService: HelperService,
-		private productService: ProductService,
 		private service: WarehouseService
 	) {
 		this.data = data?.item;
-		this.dataType = data?.type
 		this.title = data?.title;
 		if(this.data) {
 			this.form.patchValue(this.data);
@@ -72,34 +59,13 @@ export class FormComponent implements OnInit {
 
 	userInfo: any;
 	ngOnInit(): void {
-		this.getListData();
 		let data: any = localStorage.getItem('user');
 		if(data) {
 			this.userInfo = JSON.parse(data);
 		}
 	}
 
-
-	listData = []
-	getListData() {
-		this.loading = true;
-		let params = {
-			page: 1, page_size: 10000,
-		}
-		this.productService.getListData(params)
-			.pipe(finalize(() => this.cdr.detectChanges()))
-			.subscribe((res: any) => {
-				this.loading = false;
-				if (res?.status == 'success') {
-					this.listData = res?.data?.products?.map((item: any) => {
-						return item;
-					}) || [];
-				}
-			});
-	}
-
 	
-
 	onClose(status?: any) {
 		this.form.reset();
 		this.dialogRef.close({
@@ -121,7 +87,7 @@ export class FormComponent implements OnInit {
 			dataForm.date = moment().format('yyyy-MM-DD');
 		}
 		this.loading = true;
-		this.service.createOrUpdateData(dataForm, this.data?.id, this.dataType)
+		this.service.createOrUpdateData(dataForm, this.data?.id, "agency")
 		.pipe(finalize(() => this.cdr.detectChanges()))
 		.subscribe((res:any) => {
 			this.loading = false;

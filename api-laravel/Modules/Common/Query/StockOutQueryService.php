@@ -17,13 +17,13 @@ class StockOutQueryService extends ModelService
 {
     public static function getAll(Request $request, $items = null)
     {
-        $items = StockOut::with(['user:id,name,email', 'product:id,avatar,name', 'order', 'order.transactions']);
+        $items = StockOut::with(['user:id,name,email', 'product:id,avatar,name', 'order', 'order.transactions', 'agency']);
         return parent::getAll($request, $items);
     }
 
     public static function getAllStockOutV2(Request $request)
     {
-        $items = Order::with(['stockOuts','stockOuts.product', 'supplier'])->whereHas('stockOuts', function ($q){
+        $items = Order::with(['stockOuts','stockOuts.product', 'stockOuts.agency','supplier'])->whereHas('stockOuts', function ($q){
             $q->whereNotNull('id');
         });
         return parent::getAll($request, $items);
@@ -54,6 +54,8 @@ class StockOutQueryService extends ModelService
 
     public static function findById(Request $request, $id)
     {
-        return StockOut::with(['user:id,name,email', 'product:id,avatar,name'])->find($id);
+        return StockOut::with(['user:id,name,email', 'product:id,avatar,name', 'agency'])->find($id);
     }
+
+
 }

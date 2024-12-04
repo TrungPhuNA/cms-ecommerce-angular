@@ -3,7 +3,7 @@
 	<div class="position-absolute right-0 px-2 cursor-pointer" (click)="onClose()">
 		<i class="fa fa-xmark" style="font-size: 1.25rem;"></i>
 	</div>
-	<form [formGroup]="form" class="overflow-scroll pb-4" style="max-height: 70vh;">
+	<form [formGroup]="form" class="overflow-scroll pb-4" style="max-height: 80vh;">
 
 		<div class="row mt-5">
 			<div class="col-12 form-group ">
@@ -17,28 +17,19 @@
 					message="Trường này không được để trống.">
 				</at-error>
 			</div>
-			<!-- <div class="col-12 form-group mt-5" [ngClass]="{'expand-card': clickSelect}">
-				<label class="form-label required" translate>Số lượng</label>
-				<input class="form-control" [ngClass]="{'is-invalid': 
-							(helperService.showStatusError(form, 'quantity', submitted))}"
-					onkeypress="return (event.charCode == 8 || event.charCode == 0 ) ? null : event.charCode >= 48 && event.charCode <= 57"
-					(focusout)="helperService.onTrimFocusOutForm(form, 'quantity', $event)"
-					placeholder="{{ 'Nhập giá trị'}}" formControlName="quantity" maxlength="255" />
-				<at-error [submitted]="submitted" [control]="form.get('quantity')" validation="required"
-					[message]="validatorMessages.required">
+
+			<div class="col-12 form-group ">
+				<label class="form-label required" translate>Chi nhánh</label>
+				<ng-select [items]="listDataAgency" bindLabel="name" bindValue="id" placeholder="Chọn giá trị" (change)="handleChangeOrder($event)"
+					[searchable]="true" class="" [ngClass]="{'is-invalid': 
+					(helperService.showStatusError(form, 'agency_id', submitted))}" placeholder="{{ 'Chọn giá trị'}}"
+					formControlName="agency_id">
+				</ng-select>
+				<at-error [submitted]="submitted" [control]="form.get('agency_id')" validation="required"
+					message="Trường này không được để trống.">
 				</at-error>
 			</div>
-			<div class="col-12 form-group mt-5" [ngClass]="{'expand-card': clickSelect}">
-				<label class="form-label required" translate>Giá tiền</label>
-				<input class="form-control" [ngClass]="{'is-invalid': 
-							(helperService.showStatusError(form, 'price', submitted))}"
-					onkeypress="return (event.charCode == 8 || event.charCode == 0 ) ? null : event.charCode >= 48 && event.charCode <= 57"
-					(focusout)="helperService.onTrimFocusOutForm(form, 'price', $event)"
-					placeholder="{{ 'Nhập giá trị'}}" formControlName="price"/>
-				<at-error [submitted]="submitted" [control]="form.get('price')" validation="required"
-					[message]="validatorMessages.required">
-				</at-error>
-			</div> -->
+			
 			<div class="col-12 form-group mt-5">
 				<label class="form-label required" translate>Phân loại kho</label>
 				<ng-select [items]="typeWareHouse" bindLabel="name" bindValue="value" placeholder="Chọn giá trị"
