@@ -216,8 +216,8 @@ export class IncomeComponent implements OnInit {
 	}
 
 	showDetail(index: any, hide?: boolean) {
-		console.log(hide);
-		this.listData.map((item: any, i: number) => {
+		console.log(index, hide);
+		this.listData = this.listData.map((item: any, i: number) => {
 			if(index == i) {
 				item.stock_outs = item.stock_outs?.map((e: any, indexStock: number) => {
 					if(indexStock != 0) {
@@ -225,15 +225,16 @@ export class IncomeComponent implements OnInit {
 					}
 					return e
 				})
-			} else {
-				item.stock_outs = item.stock_outs?.map((e: any, indexStock: number) => {
-					e.show = index == 0;
-					return e
-				})
-			}
+			} 
+			// else {
+			// 	item.stock_outs = item.stock_outs?.map((e: any, indexStock: number) => {
+			// 		e.show = index == 0;
+			// 		return e
+			// 	})
+			// }
 			
 			
-			return;
+			return item;
 		});
 		this.cdr.detectChanges();
 	}
