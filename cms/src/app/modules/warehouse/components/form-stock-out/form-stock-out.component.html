@@ -20,7 +20,7 @@
 
 			<div class="col-12 form-group ">
 				<label class="form-label required" translate>Chi nhánh</label>
-				<ng-select [items]="listDataAgency" bindLabel="name" bindValue="id" placeholder="Chọn giá trị" (change)="handleChangeOrder($event)"
+				<ng-select [items]="listDataAgency" bindLabel="name" bindValue="id" placeholder="Chọn giá trị" 
 					[searchable]="true" class="" [ngClass]="{'is-invalid': 
 					(helperService.showStatusError(form, 'agency_id', submitted))}" placeholder="{{ 'Chọn giá trị'}}"
 					formControlName="agency_id">
