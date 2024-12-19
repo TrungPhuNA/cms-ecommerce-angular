@@ -13,7 +13,7 @@ class RequestApiStoreUser extends BaseFormRequest
     {
         return [
             'email'    => 'required|unique:users',
-            'name'     => 'required|min:5',
+            'name'     => 'required',
             'phone'    => 'required',
             'password' => 'required|min:8',
         ];
