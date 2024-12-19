@@ -9,8 +9,11 @@ namespace Modules\Common\Query;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Modules\Admin\App\Models\Order;
+use Modules\Admin\App\Models\Product;
 use Modules\Admin\App\Models\StockOut;
+use Modules\Admin\App\Models\Transaction;
 use Modules\Common\Base\ModelService;
 
 class StockOutQueryService extends ModelService
@@ -32,6 +35,21 @@ class StockOutQueryService extends ModelService
     public static function create(Request $request)
     {
         $dataInput = $request->all();
+        $transactions = Transaction::query()->where('order_id', Arr::get($dataInput, 'order_id'))->get();
+        if($transactions && count($transactions) > 0) {
+            foreach ($transactions as $item) {
+                $product = Product::query()->where("id", $item)->first();
+                if($product) {
+                    $number = ($product->number ?? 0) - (int)($item->qty ?? 0);
+                    if($number < 0) {
+                        $number = 0;
+                    }
+                    $product->number = $number;
+                    $product->save();
+                }
+            }
+        }
+
         return StockOut::create($dataInput);
     }
 
@@ -41,6 +59,16 @@ class StockOutQueryService extends ModelService
         if($data && !empty($data)) {
             foreach ($data as $item) {
                 StockOut::create($item);
+                $product = Product::query()->where("id", Arr::get($item, 'product_id'))->first();
+                if($product) {
+                    $number = ($product->number ?? 0) - (int)( Arr::get($item, 'quantity') ?? 0);
+                    if($number < 0) {
+                        $number = 0;
+                    }
+                    $product->number = $number;
+                    $product->save();
+                }
+                Log::info(json_encode($product));
             }
         }
         return $data;

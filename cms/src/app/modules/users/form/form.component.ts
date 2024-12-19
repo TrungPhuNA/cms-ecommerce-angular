@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSummernoteDirective } from 'ngx-summernote';
 import { finalize } from 'rxjs';
 import { AccountService, AlertService, FileUploadService, HelperService, ProductService } from 'src/app/services';
@@ -78,7 +78,8 @@ export class FormComponent implements OnInit {
 		private service: AccountService,
 		private cdr: ChangeDetectorRef,
 		private activeRoute: ActivatedRoute,
-		private uploadService: FileUploadService
+		private uploadService: FileUploadService,
+		private router: Router
 
 	) {
 
@@ -147,7 +148,6 @@ export class FormComponent implements OnInit {
 
 	submit() {
 		this.submitted = true;
-		console.log(this.form);
 
 		if (this.form.invalid) {
 			return;
@@ -182,7 +182,9 @@ export class FormComponent implements OnInit {
 				this.loading = false;
 				if (res?.status == 'success') {
 					this.submitted = false;
-					this.alertService.fireSmall("success", this.data? ALERT_SUCCESS.update : ALERT_SUCCESS.create)
+					
+					this.alertService.fireSmall("success", this.data? ALERT_SUCCESS.update : ALERT_SUCCESS.create);
+					// this.route
 				} else {
 					this.alertService.fireSmall("error", res?.message || (this.data? ALERT_ERROR.update : ALERT_ERROR.create))
 
@@ -191,6 +193,7 @@ export class FormComponent implements OnInit {
 	}
 
 	getImages(e: any) {
+		console.log(e);
 		this.images = e;
 	}
 
